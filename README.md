@@ -1,50 +1,36 @@
-# React + TypeScript + Vite
+# FRAPPE : Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the front-end part of the FRAPPE project.
 
-Currently, two official plugins are available:
+## Installation (to be modified)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+First of all, clone the repository:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone https://gitlab-df.imt-atlantique.fr/frappe/front.git frappe-front-web
+cd frappe-front-web
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Then, install the dependencies:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+Finally, you can run the project in dev mod:
+
+```bash
+npm run dev
+```
+
+The project should be live on `http://localhost:3000`.
+
+## Dependencies
+
+The list of dependencies/packages is described in the `package.json` file. The major packages used in the project are:
+
+- `react` and `react-dom` for the front-end
+- `vite` for the build
+- `tailwindcss` for the CSS
+- `shadcn` as a base to build the component library
+- `eslint` and `prettier` for the code quality
