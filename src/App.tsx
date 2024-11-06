@@ -1,4 +1,3 @@
-import { Button } from "./components/ui/button";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 

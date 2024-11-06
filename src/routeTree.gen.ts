@@ -11,9 +11,37 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as RendezVousImport } from './routes/rendez-vous'
+import { Route as RegisterImport } from './routes/register'
+import { Route as RecoverPasswordImport } from './routes/recover-password'
+import { Route as FaqImport } from './routes/faq'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
+
+const RendezVousRoute = RendezVousImport.update({
+  id: '/rendez-vous',
+  path: '/rendez-vous',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterRoute = RegisterImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RecoverPasswordRoute = RecoverPasswordImport.update({
+  id: '/recover-password',
+  path: '/recover-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FaqRoute = FaqImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
@@ -32,6 +60,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqImport
+      parentRoute: typeof rootRoute
+    }
+    '/recover-password': {
+      id: '/recover-password'
+      path: '/recover-password'
+      fullPath: '/recover-password'
+      preLoaderRoute: typeof RecoverPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterImport
+      parentRoute: typeof rootRoute
+    }
+    '/rendez-vous': {
+      id: '/rendez-vous'
+      path: '/rendez-vous'
+      fullPath: '/rendez-vous'
+      preLoaderRoute: typeof RendezVousImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -39,32 +95,58 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/recover-password': typeof RecoverPasswordRoute
+  '/register': typeof RegisterRoute
+  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/recover-password': typeof RecoverPasswordRoute
+  '/register': typeof RegisterRoute
+  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
+  '/recover-password': typeof RecoverPasswordRoute
+  '/register': typeof RegisterRoute
+  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
+  id:
+    | '__root__'
+    | '/'
+    | '/faq'
+    | '/recover-password'
+    | '/register'
+    | '/rendez-vous'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FaqRoute: typeof FaqRoute
+  RecoverPasswordRoute: typeof RecoverPasswordRoute
+  RegisterRoute: typeof RegisterRoute
+  RendezVousRoute: typeof RendezVousRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FaqRoute: FaqRoute,
+  RecoverPasswordRoute: RecoverPasswordRoute,
+  RegisterRoute: RegisterRoute,
+  RendezVousRoute: RendezVousRoute,
 }
 
 export const routeTree = rootRoute
@@ -77,11 +159,27 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/faq",
+        "/recover-password",
+        "/register",
+        "/rendez-vous"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/faq": {
+      "filePath": "faq.tsx"
+    },
+    "/recover-password": {
+      "filePath": "recover-password.tsx"
+    },
+    "/register": {
+      "filePath": "register.tsx"
+    },
+    "/rendez-vous": {
+      "filePath": "rendez-vous.tsx"
     }
   }
 }
