@@ -23,7 +23,7 @@ Finally, you can run the project in dev mod:
 npm run dev
 ```
 
-The project should be live on `http://localhost:3000`.
+The project should be live on `http://localhost:5173/`.
 
 ## Dependencies
 

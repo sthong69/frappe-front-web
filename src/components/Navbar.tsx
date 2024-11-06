@@ -3,6 +3,7 @@ import { User } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 
 export default function Navbar() {
+  const [isConnected, setIsConnected] = useState(false);
   const location = useLocation();
 
   return (
@@ -43,7 +44,9 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <div className="flex flex-col items-center gap-1">
             <User className="h-6 w-6" />
-            <span className="text-[10px] font-medium">HORS CONNEXION</span>
+            <span className="text-[10px] font-medium">
+              {isConnected ? "CONNECTÉ" : "HORS CONNEXION"}
+            </span>
           </div>
         </div>
       </div>
