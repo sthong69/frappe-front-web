@@ -8,11 +8,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <React.Fragment>
-      <body className="flex h-screen flex-col">
-        <Navbar />
-        <Outlet />
-      </body>
-    </React.Fragment>
+    <main className="flex min-h-screen flex-col">
+      <Navbar />
+      <Outlet />
+    </main>
   );
 }

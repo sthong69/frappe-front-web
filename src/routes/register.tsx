@@ -1,5 +1,5 @@
 import Page from "@/components/Page";
-import RegisterForm from "@/components/RegisterForm";
+import RegisterForm from "@/components/form/RegisterForm";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/register")({
@@ -8,8 +8,10 @@ export const Route = createFileRoute("/register")({
 
 function RouteComponent() {
   return (
-    <Page className="flex flex-1 flex-col">
-      <h2>CRÉATION D'UN COMPTE ÉTUDIANT</h2>
+    <Page
+      className="flex flex-1 flex-col"
+      title="CRÉATION D'UN COMPTE ÉTUDIANT"
+    >
       <RegisterForm />
     </Page>
   );

@@ -3,10 +3,25 @@ import React from "react";
 interface PageProps {
   children: React.ReactNode;
   className?: string;
+  title?: string;
+  subtitle?: string;
 }
 
-const Page: React.FC<PageProps> = ({ children, className }) => {
-  return <div className={`p-8 ${className}`}>{children}</div>;
+const Page: React.FC<PageProps> = ({
+  children,
+  className,
+  title,
+  subtitle,
+}) => {
+  return (
+    <div className={`p-8 ${className}`}>
+      <div className="p-4">
+        <h2 className={`${subtitle ? "font-semibold" : ""}`}>{title}</h2>
+        <h3>{subtitle}</h3>
+      </div>
+      {children}
+    </div>
+  );
 };
 
 export default Page;
