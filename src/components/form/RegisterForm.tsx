@@ -11,6 +11,7 @@ import {
   FormControl,
   FormMessage,
 } from "../ui/form";
+import { toast } from "sonner";
 import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
 
@@ -39,11 +40,14 @@ const RegisterForm = () => {
   );
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
+  const specialCharacterRegex =
+    /[~`¿¡!#$%\^&*€£@+÷=éÉèÈçÇàÀùÙ§\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g;
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isPasswordValid) {
       console.log(values);
     } else {
-      console.log("Invalid password");
+      toast("Merci de fournir un mot de passe répondant aux critères.");
     }
   }
 
