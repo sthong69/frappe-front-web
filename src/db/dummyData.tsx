@@ -13,3 +13,23 @@ export const ENCADRANTS: string[] = [
   "Encadrant 2",
   "Encadrant 3",
 ];
+
+export const adminUser = {
+  id: 1,
+  user_name: "admin",
+  first_name: "NomAdmin",
+  last_name: "PrénomAdmin",
+  email: "admin@frappe.fr",
+  phone_number: "0600000000",
+  campus_id: 1,
+};
+
+export const userUser = {
+  id: 2,
+  user_name: "user",
+  first_name: "NomUser",
+  last_name: "PrénomUser",
+  email: "user@frappe.fr",
+  phone_number: "0600000000",
+  campus_id: 2,
+};

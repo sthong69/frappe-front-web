@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as RendezVousImport } from './routes/rendez-vous'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
+import { Route as LoginImport } from './routes/login'
 import { Route as FaqImport } from './routes/faq'
 import { Route as IndexImport } from './routes/index'
 
@@ -34,6 +35,12 @@ const RegisterRoute = RegisterImport.update({
 const RecoverPasswordRoute = RecoverPasswordImport.update({
   id: '/recover-password',
   path: '/recover-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LoginRoute = LoginImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,6 +74,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqImport
       parentRoute: typeof rootRoute
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginImport
+      parentRoute: typeof rootRoute
+    }
     '/recover-password': {
       id: '/recover-password'
       path: '/recover-password'
@@ -96,6 +110,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
@@ -104,6 +119,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
@@ -113,6 +129,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/faq': typeof FaqRoute
+  '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
@@ -120,13 +137,26 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
+  fullPaths:
+    | '/'
+    | '/faq'
+    | '/login'
+    | '/recover-password'
+    | '/register'
+    | '/rendez-vous'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
+  to:
+    | '/'
+    | '/faq'
+    | '/login'
+    | '/recover-password'
+    | '/register'
+    | '/rendez-vous'
   id:
     | '__root__'
     | '/'
     | '/faq'
+    | '/login'
     | '/recover-password'
     | '/register'
     | '/rendez-vous'
@@ -136,6 +166,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FaqRoute: typeof FaqRoute
+  LoginRoute: typeof LoginRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
   RendezVousRoute: typeof RendezVousRoute
@@ -144,6 +175,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FaqRoute: FaqRoute,
+  LoginRoute: LoginRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
   RendezVousRoute: RendezVousRoute,
@@ -161,6 +193,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/faq",
+        "/login",
         "/recover-password",
         "/register",
         "/rendez-vous"
@@ -171,6 +204,9 @@ export const routeTree = rootRoute
     },
     "/faq": {
       "filePath": "faq.tsx"
+    },
+    "/login": {
+      "filePath": "login.tsx"
     },
     "/recover-password": {
       "filePath": "recover-password.tsx"

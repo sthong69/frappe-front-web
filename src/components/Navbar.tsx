@@ -1,9 +1,20 @@
-import React, { useState } from "react";
-import { User } from "lucide-react";
+import { useContext } from "react";
+import { LogOut, User } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
+import { AuthContext } from "@/context/Auth";
+import { AuthContextType } from "@/types/AuthTypes";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
-  const [isConnected, setIsConnected] = useState(false);
+  const { user, logout } = useContext(AuthContext) as AuthContextType;
   const location = useLocation();
 
   return (
@@ -42,12 +53,45 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <div className="flex flex-col items-center gap-1">
-            <User className="h-6 w-6" />
-            <span className="text-[10px] font-medium">
-              {isConnected ? "CONNECTÉ" : "HORS CONNEXION"}
-            </span>
-          </div>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="flex flex-col items-center gap-1">
+                  <User className="h-6 w-6" />
+                  <span className="text-[10px] font-medium">
+                    {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                  </span>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>
+                  {user?.first_name} {user?.last_name}
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>Profil</DropdownMenuItem>
+                <DropdownMenuItem
+                  asChild
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  <Link to="/">
+                    <LogOut />
+                    <span>Déconnexion</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/login">
+              <div className="flex flex-col items-center gap-1">
+                <User className="h-6 w-6" />
+                <span className="text-[10px] font-medium">
+                  {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </header>

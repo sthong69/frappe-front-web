@@ -12,8 +12,13 @@ import {
   FormMessage,
 } from "../ui/form";
 import { PasswordInput } from "../PasswordInput";
+import { useContext } from "react";
+import { AuthContextType } from "@/types/AuthTypes";
+import { AuthContext } from "@/context/Auth";
 
 const LoginForm = () => {
+  const { login } = useContext(AuthContext) as AuthContextType;
+
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -28,7 +33,7 @@ const LoginForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    login({ email: values.email, password: values.password });
   }
 
   return (
