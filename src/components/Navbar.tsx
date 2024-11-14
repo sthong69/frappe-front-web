@@ -18,7 +18,7 @@ export default function Navbar() {
   const location = useLocation();
 
   return (
-    <header className="border-b bg-transparent px-8">
+    <header className="border-b border-black px-8 file:bg-transparent">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium">
           <Link

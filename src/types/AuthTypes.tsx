@@ -6,6 +6,8 @@ export interface User {
   email: string;
   phone_number: string;
   campus_id: number;
+  supervisor: boolean;
+  student: boolean;
 }
 
 export type AuthContextType = {

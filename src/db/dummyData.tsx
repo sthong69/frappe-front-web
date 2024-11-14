@@ -22,6 +22,8 @@ export const adminUser = {
   email: "admin@frappe.fr",
   phone_number: "0600000000",
   campus_id: 1,
+  supervisor: true,
+  student: false,
 };
 
 export const userUser = {
@@ -32,4 +34,6 @@ export const userUser = {
   email: "user@frappe.fr",
   phone_number: "0600000000",
   campus_id: 2,
+  supervisor: false,
+  student: true,
 };

@@ -28,11 +28,17 @@ export const AuthProvider = ({ children }: { children: any }) => {
       setAuthToken(token);
       localStorage.setItem("authToken", token);
       setUserInfos(token);
+      throw redirect({
+        to: "/dashboard",
+      });
     } else if (input.email === "user@frappe.fr" && input.password === "user") {
       const token = "userToken";
       setAuthToken(token);
       localStorage.setItem("authToken", token);
       setUserInfos(token);
+      throw redirect({
+        to: "/dashboard",
+      });
     } else {
       throw new Error("Invalid username or password");
     }
