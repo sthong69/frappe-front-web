@@ -1,21 +1,24 @@
-import * as React from "react";
-import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthContext } from "@/context/Auth";
 import { AuthContextType } from "@/types/AuthTypes";
+import { useAuth } from "@/context/Auth";
 
-export const Route = createRootRoute({
-  component: RootComponent,
+interface RouterContext {
+  auth: AuthContextType;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  component: () => <RootComponent />,
 });
 
 function RootComponent() {
-  const { user } = React.useContext(AuthContext) as AuthContextType;
+  const auth = useAuth();
   return (
     <>
       <main className="flex min-h-screen flex-col">
         <div
-          className={`min-h-screen ${user ? (user.student ? "bg-student" : "bg-supervisor") : "bg-white"}`}
+          className={`min-h-screen ${auth.user ? (auth.user.student ? "bg-student" : "bg-supervisor") : "bg-white"}`}
         >
           <Navbar />
           <Outlet />

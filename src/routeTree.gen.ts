@@ -10,202 +10,253 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as RendezVousImport } from './routes/rendez-vous'
-import { Route as RegisterImport } from './routes/register'
-import { Route as RecoverPasswordImport } from './routes/recover-password'
-import { Route as LoginImport } from './routes/login'
-import { Route as FaqImport } from './routes/faq'
-import { Route as DashboardImport } from './routes/dashboard'
-import { Route as IndexImport } from './routes/index'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as RendezVousImport } from "./routes/rendez-vous";
+import { Route as RegisterImport } from "./routes/register";
+import { Route as RecoverPasswordImport } from "./routes/recover-password";
+import { Route as LoginImport } from "./routes/login";
+import { Route as FaqImport } from "./routes/faq";
+import { Route as AddSupervisorImport } from "./routes/add-supervisor";
+import { Route as AuthImport } from "./routes/_auth";
+import { Route as IndexImport } from "./routes/index";
+import { Route as AuthDashboardImport } from "./routes/_auth.dashboard";
 
 // Create/Update Routes
 
 const RendezVousRoute = RendezVousImport.update({
-  id: '/rendez-vous',
-  path: '/rendez-vous',
+  id: "/rendez-vous",
+  path: "/rendez-vous",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const RegisterRoute = RegisterImport.update({
-  id: '/register',
-  path: '/register',
+  id: "/register",
+  path: "/register",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const RecoverPasswordRoute = RecoverPasswordImport.update({
-  id: '/recover-password',
-  path: '/recover-password',
+  id: "/recover-password",
+  path: "/recover-password",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const FaqRoute = FaqImport.update({
-  id: '/faq',
-  path: '/faq',
+  id: "/faq",
+  path: "/faq",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
-const DashboardRoute = DashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AddSupervisorRoute = AddSupervisorImport.update({
+  id: "/add-supervisor",
+  path: "/add-supervisor",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const AuthRoute = AuthImport.update({
+  id: "/_auth",
+  getParentRoute: () => rootRoute,
+} as any);
 
 const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
+
+const AuthDashboardRoute = AuthDashboardImport.update({
+  id: "/dashboard",
+  path: "/dashboard",
+  getParentRoute: () => AuthRoute,
+} as any);
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/recover-password': {
-      id: '/recover-password'
-      path: '/recover-password'
-      fullPath: '/recover-password'
-      preLoaderRoute: typeof RecoverPasswordImport
-      parentRoute: typeof rootRoute
-    }
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterImport
-      parentRoute: typeof rootRoute
-    }
-    '/rendez-vous': {
-      id: '/rendez-vous'
-      path: '/rendez-vous'
-      fullPath: '/rendez-vous'
-      preLoaderRoute: typeof RendezVousImport
-      parentRoute: typeof rootRoute
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth": {
+      id: "/_auth";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/add-supervisor": {
+      id: "/add-supervisor";
+      path: "/add-supervisor";
+      fullPath: "/add-supervisor";
+      preLoaderRoute: typeof AddSupervisorImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/faq": {
+      id: "/faq";
+      path: "/faq";
+      fullPath: "/faq";
+      preLoaderRoute: typeof FaqImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/recover-password": {
+      id: "/recover-password";
+      path: "/recover-password";
+      fullPath: "/recover-password";
+      preLoaderRoute: typeof RecoverPasswordImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/register": {
+      id: "/register";
+      path: "/register";
+      fullPath: "/register";
+      preLoaderRoute: typeof RegisterImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/rendez-vous": {
+      id: "/rendez-vous";
+      path: "/rendez-vous";
+      fullPath: "/rendez-vous";
+      preLoaderRoute: typeof RendezVousImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_auth/dashboard": {
+      id: "/_auth/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthDashboardImport;
+      parentRoute: typeof AuthImport;
+    };
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthDashboardRoute: typeof AuthDashboardRoute;
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthDashboardRoute: AuthDashboardRoute,
+};
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren);
+
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/faq': typeof FaqRoute
-  '/login': typeof LoginRoute
-  '/recover-password': typeof RecoverPasswordRoute
-  '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthRouteWithChildren;
+  "/add-supervisor": typeof AddSupervisorRoute;
+  "/faq": typeof FaqRoute;
+  "/login": typeof LoginRoute;
+  "/recover-password": typeof RecoverPasswordRoute;
+  "/register": typeof RegisterRoute;
+  "/rendez-vous": typeof RendezVousRoute;
+  "/dashboard": typeof AuthDashboardRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/faq': typeof FaqRoute
-  '/login': typeof LoginRoute
-  '/recover-password': typeof RecoverPasswordRoute
-  '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthRouteWithChildren;
+  "/add-supervisor": typeof AddSupervisorRoute;
+  "/faq": typeof FaqRoute;
+  "/login": typeof LoginRoute;
+  "/recover-password": typeof RecoverPasswordRoute;
+  "/register": typeof RegisterRoute;
+  "/rendez-vous": typeof RendezVousRoute;
+  "/dashboard": typeof AuthDashboardRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/faq': typeof FaqRoute
-  '/login': typeof LoginRoute
-  '/recover-password': typeof RecoverPasswordRoute
-  '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
+  __root__: typeof rootRoute;
+  "/": typeof IndexRoute;
+  "/_auth": typeof AuthRouteWithChildren;
+  "/add-supervisor": typeof AddSupervisorRoute;
+  "/faq": typeof FaqRoute;
+  "/login": typeof LoginRoute;
+  "/recover-password": typeof RecoverPasswordRoute;
+  "/register": typeof RegisterRoute;
+  "/rendez-vous": typeof RendezVousRoute;
+  "/_auth/dashboard": typeof AuthDashboardRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/dashboard'
-    | '/faq'
-    | '/login'
-    | '/recover-password'
-    | '/register'
-    | '/rendez-vous'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | ""
+    | "/add-supervisor"
+    | "/faq"
+    | "/login"
+    | "/recover-password"
+    | "/register"
+    | "/rendez-vous"
+    | "/dashboard";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/dashboard'
-    | '/faq'
-    | '/login'
-    | '/recover-password'
-    | '/register'
-    | '/rendez-vous'
+    | "/"
+    | ""
+    | "/add-supervisor"
+    | "/faq"
+    | "/login"
+    | "/recover-password"
+    | "/register"
+    | "/rendez-vous"
+    | "/dashboard";
   id:
-    | '__root__'
-    | '/'
-    | '/dashboard'
-    | '/faq'
-    | '/login'
-    | '/recover-password'
-    | '/register'
-    | '/rendez-vous'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_auth"
+    | "/add-supervisor"
+    | "/faq"
+    | "/login"
+    | "/recover-password"
+    | "/register"
+    | "/rendez-vous"
+    | "/_auth/dashboard";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
-  FaqRoute: typeof FaqRoute
-  LoginRoute: typeof LoginRoute
-  RecoverPasswordRoute: typeof RecoverPasswordRoute
-  RegisterRoute: typeof RegisterRoute
-  RendezVousRoute: typeof RendezVousRoute
+  IndexRoute: typeof IndexRoute;
+  AuthRoute: typeof AuthRouteWithChildren;
+  AddSupervisorRoute: typeof AddSupervisorRoute;
+  FaqRoute: typeof FaqRoute;
+  LoginRoute: typeof LoginRoute;
+  RecoverPasswordRoute: typeof RecoverPasswordRoute;
+  RegisterRoute: typeof RegisterRoute;
+  RendezVousRoute: typeof RendezVousRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DashboardRoute: DashboardRoute,
+  AuthRoute: AuthRouteWithChildren,
+  AddSupervisorRoute: AddSupervisorRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
   RendezVousRoute: RendezVousRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -214,7 +265,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/dashboard",
+        "/_auth",
+        "/add-supervisor",
         "/faq",
         "/login",
         "/recover-password",
@@ -225,8 +277,14 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
-    "/dashboard": {
-      "filePath": "dashboard.tsx"
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/dashboard"
+      ]
+    },
+    "/add-supervisor": {
+      "filePath": "add-supervisor.tsx"
     },
     "/faq": {
       "filePath": "faq.tsx"
@@ -242,6 +300,10 @@ export const routeTree = rootRoute
     },
     "/rendez-vous": {
       "filePath": "rendez-vous.tsx"
+    },
+    "/_auth/dashboard": {
+      "filePath": "_auth.dashboard.tsx",
+      "parent": "/_auth"
     }
   }
 }

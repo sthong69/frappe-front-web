@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import { LogOut, User } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { AuthContext } from "@/context/Auth";
-import { AuthContextType } from "@/types/AuthTypes";
+import { useAuth } from "@/context/Auth";
 
 import {
   DropdownMenu,
@@ -14,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
-  const { user, logout } = useContext(AuthContext) as AuthContextType;
+  const auth = useAuth();
   const location = useLocation();
 
   return (
@@ -53,26 +51,26 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          {user ? (
+          {auth.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex flex-col items-center gap-1">
                   <User className="h-6 w-6" />
                   <span className="text-[10px] font-medium">
-                    {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                    {auth.user ? "CONNECTÉ" : "HORS CONNEXION"}
                   </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>
-                  {user?.first_name} {user?.last_name}
+                  {auth.user?.first_name} {auth.user?.last_name}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profil</DropdownMenuItem>
                 <DropdownMenuItem
                   asChild
                   onClick={() => {
-                    logout();
+                    auth.logout();
                   }}
                 >
                   <Link to="/">
@@ -87,7 +85,7 @@ export default function Navbar() {
               <div className="flex flex-col items-center gap-1">
                 <User className="h-6 w-6" />
                 <span className="text-[10px] font-medium">
-                  {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                  {auth.user ? "CONNECTÉ" : "HORS CONNEXION"}
                 </span>
               </div>
             </Link>

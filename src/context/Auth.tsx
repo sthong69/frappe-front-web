@@ -1,21 +1,23 @@
 import { adminUser, userUser } from "@/db/dummyData";
+import { router } from "@/router";
 import { AuthContextType, User } from "@/types/AuthTypes";
-import { redirect } from "@tanstack/react-router";
-import { createContext, useState, useEffect } from "react";
+import { redirect, useRouter } from "@tanstack/react-router";
+import { createContext, useState, useEffect, useContext } from "react";
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
   const [user, setUser] = useState<User | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
+  const isAuthenticated = !!user;
 
   useEffect(() => {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken) {
-      setAuthToken(authToken);
-      setUserInfos(authToken);
+    const storedAuthToken = localStorage.getItem("authToken");
+    if (storedAuthToken) {
+      setAuthToken(storedAuthToken);
+      setUserInfos(storedAuthToken);
     }
-  }, [authToken]);
+  }, []);
 
   const login = (input: { email: string; password: string }) => {
     // Make a request to the server to login
@@ -74,9 +76,18 @@ export const AuthProvider = ({ children }: { children: any }) => {
         user,
         login,
         logout,
+        isAuthenticated,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
+
+export function useAuth() {
+  const context = useContext(AuthContext) as AuthContextType;
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
+}

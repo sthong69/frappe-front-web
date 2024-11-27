@@ -1,4 +1,4 @@
-import { Link, redirect } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,12 +12,10 @@ import {
   FormMessage,
 } from "../ui/form";
 import { PasswordInput } from "../PasswordInput";
-import { useContext } from "react";
-import { AuthContextType } from "@/types/AuthTypes";
-import { AuthContext } from "@/context/Auth";
+import { useAuth } from "@/context/Auth";
 
 const LoginForm = () => {
-  const { login } = useContext(AuthContext) as AuthContextType;
+  const auth = useAuth();
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -33,7 +31,7 @@ const LoginForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    login({ email: values.email, password: values.password });
+    auth.login({ email: values.email, password: values.password });
   }
 
   return (
