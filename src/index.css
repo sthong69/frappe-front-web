@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+main {
   font-family: "Inter Variable", sans-serif;
 }
 
