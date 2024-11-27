@@ -40,8 +40,7 @@ const RegisterForm = () => {
   );
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
-  const specialCharacterRegex =
-    /[~`¿¡!#$%\^&*€£@+÷=éÉèÈçÇàÀùÙ§\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g;
+  // const specialCharacterRegex = /[~`¿¡!#$%\^&*€£@+÷=éÉèÈçÇàÀùÙ§\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isPasswordValid) {
