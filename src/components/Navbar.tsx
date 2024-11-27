@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { User } from "lucide-react";
 import { Link, useLocation } from "@tanstack/react-router";
 
 export default function Navbar() {
-  const [isConnected, setIsConnected] = useState(false);
+  const [isConnected] = useState(false);
   const location = useLocation();
 
   return (

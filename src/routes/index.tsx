@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import Page from "@/components/Page";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginForm from "@/components/LoginForm";
 
