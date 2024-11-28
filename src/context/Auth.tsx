@@ -6,9 +6,24 @@ import { createContext, useState, useEffect, useContext } from "react";
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [authToken, setAuthToken] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(
+    localStorage.getItem("authToken"),
+  );
+
+  const getUserInfos = (authToken: string | null): User | null => {
+    switch (authToken) {
+      case "adminToken": {
+        return adminUser;
+      }
+      case "userToken": {
+        return userUser;
+      }
+      default:
+        return null;
+    }
+  };
+
+  const [user, setUser] = useState<User | null>(getUserInfos(authToken));
 
   const router = useRouter();
 
@@ -18,7 +33,6 @@ export const AuthProvider = ({ children }: { children: any }) => {
       setAuthToken(storedAuthToken);
       setUserInfos(storedAuthToken);
     }
-    setIsLoaded(true);
   }, []);
 
   const login = (input: { email: string; password: string }) => {
@@ -82,7 +96,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
         login,
         logout,
         isAuthenticated: !!user,
-        isLoaded,
+        isLoaded: !!authToken,
       }}
     >
       {children}
