@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
-  const auth = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   return (
@@ -51,26 +51,26 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          {auth.user ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex flex-col items-center gap-1">
                   <User className="h-6 w-6" />
                   <span className="text-[10px] font-medium">
-                    {auth.user ? "CONNECTÉ" : "HORS CONNEXION"}
+                    {user ? "CONNECTÉ" : "HORS CONNEXION"}
                   </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>
-                  {auth.user?.first_name} {auth.user?.last_name}
+                  {user?.first_name} {user?.last_name}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Profil</DropdownMenuItem>
                 <DropdownMenuItem
                   asChild
                   onClick={() => {
-                    auth.logout();
+                    logout();
                   }}
                 >
                   <Link to="/">
@@ -81,11 +81,11 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link to="/login">
+            <Link to="/">
               <div className="flex flex-col items-center gap-1">
                 <User className="h-6 w-6" />
                 <span className="text-[10px] font-medium">
-                  {auth.user ? "CONNECTÉ" : "HORS CONNEXION"}
+                  {user ? "CONNECTÉ" : "HORS CONNEXION"}
                 </span>
               </div>
             </Link>

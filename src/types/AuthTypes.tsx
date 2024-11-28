@@ -15,4 +15,5 @@ export type AuthContextType = {
   login: (input: { email: string; password: string }) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoaded: boolean;
 };

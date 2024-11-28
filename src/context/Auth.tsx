@@ -1,5 +1,4 @@
 import { adminUser, userUser } from "@/db/dummyData";
-import { router } from "@/router";
 import { AuthContextType, User } from "@/types/AuthTypes";
 import { redirect, useRouter } from "@tanstack/react-router";
 import { createContext, useState, useEffect, useContext } from "react";
@@ -9,7 +8,9 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: any }) => {
   const [user, setUser] = useState<User | null>(null);
   const [authToken, setAuthToken] = useState<string | null>(null);
-  const isAuthenticated = !!user;
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const storedAuthToken = localStorage.getItem("authToken");
@@ -17,6 +18,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
       setAuthToken(storedAuthToken);
       setUserInfos(storedAuthToken);
     }
+    setIsLoaded(true);
   }, []);
 
   const login = (input: { email: string; password: string }) => {
@@ -26,12 +28,12 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
     if (input.email === "admin@frappe.fr" && input.password === "admin") {
       const token = "adminToken";
-
       setAuthToken(token);
       localStorage.setItem("authToken", token);
       setUserInfos(token);
       throw redirect({
         to: "/dashboard",
+        throw: true,
       });
     } else if (input.email === "user@frappe.fr" && input.password === "user") {
       const token = "userToken";
@@ -40,6 +42,7 @@ export const AuthProvider = ({ children }: { children: any }) => {
       setUserInfos(token);
       throw redirect({
         to: "/dashboard",
+        throw: true,
       });
     } else {
       throw new Error("Invalid username or password");
@@ -62,9 +65,11 @@ export const AuthProvider = ({ children }: { children: any }) => {
   };
 
   const logout = () => {
+    console.log("logout");
     localStorage.removeItem("authToken");
     setAuthToken(null);
     setUser(null);
+    router.invalidate();
     throw redirect({
       to: "/",
     });
@@ -76,7 +81,8 @@ export const AuthProvider = ({ children }: { children: any }) => {
         user,
         login,
         logout,
-        isAuthenticated,
+        isAuthenticated: !!user,
+        isLoaded,
       }}
     >
       {children}

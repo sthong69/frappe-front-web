@@ -7,11 +7,11 @@ export const Route = createFileRoute("/_auth/dashboard")({
 });
 
 function RouteComponent() {
-  const auth = useAuth();
+  const { user } = useAuth();
 
   return (
     <Page
-      title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ${auth.user?.student ? "ÉTUDIANT" : "ENCADRANT"}`}
+      title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ${user?.student ? "ÉTUDIANT" : "ENCADRANT"}`}
     >
       Dashboard
     </Page>
