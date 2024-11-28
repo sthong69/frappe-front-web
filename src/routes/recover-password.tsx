@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/recover-password')({
+export const Route = createFileRoute("/recover-password")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return 'Hello /recover-password!'
+  return "Hello /recover-password!";
 }
