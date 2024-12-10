@@ -12,8 +12,11 @@ import {
   FormMessage,
 } from "../ui/form";
 import { PasswordInput } from "../PasswordInput";
+import { useAuth } from "@/context/Auth";
 
 const LoginForm = () => {
+  const auth = useAuth();
+
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -28,7 +31,7 @@ const LoginForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    auth.login({ email: values.email, password: values.password });
   }
 
   return (

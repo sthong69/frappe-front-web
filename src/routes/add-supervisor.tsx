@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/recover-password")({
+export const Route = createFileRoute("/add-supervisor")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return "Hello /recover-password!";
+  return "Hello /add-supervisor!";
 }

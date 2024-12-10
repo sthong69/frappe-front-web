@@ -15,7 +15,10 @@ import { Route as RendezVousImport } from './routes/rendez-vous'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as FaqImport } from './routes/faq'
+import { Route as AddSupervisorImport } from './routes/add-supervisor'
+import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 
 // Create/Update Routes
 
@@ -43,10 +46,27 @@ const FaqRoute = FaqImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const AddSupervisorRoute = AddSupervisorImport.update({
+  id: '/add-supervisor',
+  path: '/add-supervisor',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthDashboardRoute = AuthDashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -58,6 +78,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/add-supervisor': {
+      id: '/add-supervisor'
+      path: '/add-supervisor'
+      fullPath: '/add-supervisor'
+      preLoaderRoute: typeof AddSupervisorImport
       parentRoute: typeof rootRoute
     }
     '/faq': {
@@ -88,53 +122,100 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RendezVousImport
       parentRoute: typeof rootRoute
     }
+    '/_auth/dashboard': {
+      id: '/_auth/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthDashboardRoute: typeof AuthDashboardRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthDashboardRoute: AuthDashboardRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/add-supervisor': typeof AddSupervisorRoute
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
+  '/dashboard': typeof AuthDashboardRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '': typeof AuthRouteWithChildren
+  '/add-supervisor': typeof AddSupervisorRoute
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
+  '/dashboard': typeof AuthDashboardRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/add-supervisor': typeof AddSupervisorRoute
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/rendez-vous': typeof RendezVousRoute
+  '/_auth/dashboard': typeof AuthDashboardRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
+    | ''
+    | '/add-supervisor'
     | '/faq'
     | '/recover-password'
     | '/register'
     | '/rendez-vous'
+    | '/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | ''
+    | '/add-supervisor'
+    | '/faq'
+    | '/recover-password'
+    | '/register'
+    | '/rendez-vous'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/add-supervisor'
+    | '/faq'
+    | '/recover-password'
+    | '/register'
+    | '/rendez-vous'
+    | '/_auth/dashboard'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  AddSupervisorRoute: typeof AddSupervisorRoute
   FaqRoute: typeof FaqRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
@@ -143,6 +224,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRouteWithChildren,
+  AddSupervisorRoute: AddSupervisorRoute,
   FaqRoute: FaqRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
@@ -160,6 +243,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_auth",
+        "/add-supervisor",
         "/faq",
         "/recover-password",
         "/register",
@@ -168,6 +253,15 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/dashboard"
+      ]
+    },
+    "/add-supervisor": {
+      "filePath": "add-supervisor.tsx"
     },
     "/faq": {
       "filePath": "faq.tsx"
@@ -180,6 +274,10 @@ export const routeTree = rootRoute
     },
     "/rendez-vous": {
       "filePath": "rendez-vous.tsx"
+    },
+    "/_auth/dashboard": {
+      "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
     }
   }
 }
