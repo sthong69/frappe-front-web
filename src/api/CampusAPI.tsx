@@ -9,11 +9,10 @@ export const getAllCampuses = async (): Promise<
   return axiosInstance
     .get("/campuses/")
     .then(function (response) {
-      return response.data;
+      return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
-      throw error;
+      return Promise.reject(error);
     });
 };
 
@@ -26,10 +25,9 @@ export const getCampus = async (
   return axiosInstance
     .get("/campuses/" + id + "/")
     .then(function (response) {
-      return response.data;
+      return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
-      throw error;
+      return Promise.reject(error);
     });
 };

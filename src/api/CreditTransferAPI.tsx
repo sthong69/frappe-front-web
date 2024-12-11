@@ -12,11 +12,10 @@ export const getAllCreditTransfers = async (): Promise<
   return axiosInstance
     .get("/credit-transfers/")
     .then(function (response) {
-      return response.data;
+      return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
-      throw error;
+      return Promise.reject(error);
     });
 };
 
@@ -32,10 +31,10 @@ export const getCreditTransfer = async (
   return axiosInstance
     .get("/credit-transfers/" + id + "/")
     .then(function (response) {
-      return response.data;
+      return Promise.resolve(response.data);
     })
     .catch(function (error) {
       console.log(error);
-      throw error;
+      return Promise.reject(error);
     });
 };

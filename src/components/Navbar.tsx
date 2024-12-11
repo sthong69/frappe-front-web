@@ -66,7 +66,9 @@ export default function Navbar() {
                   {user?.first_name} {user?.last_name}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profil</DropdownMenuItem>
+                <Link to="/profile">
+                  <DropdownMenuItem>Profil</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem
                   asChild
                   onClick={() => {

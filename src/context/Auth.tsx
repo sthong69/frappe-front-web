@@ -1,102 +1,66 @@
-import { adminUser, userUser } from "@/db/dummyData";
+import { router } from "@/router";
 import { AuthContextType, User } from "@/types/AuthTypes";
-import { redirect, useRouter } from "@tanstack/react-router";
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
-  const [authToken, setAuthToken] = useState<string | null>(
+  const [token, setToken] = useState<string | null>(
     localStorage.getItem("authToken"),
   );
 
-  const getUserInfos = (authToken: string | null): User | null => {
-    switch (authToken) {
-      case "adminToken": {
-        return adminUser;
-      }
-      case "userToken": {
-        return userUser;
-      }
-      default:
-        return null;
+  //const [user, setUser] = useState<User | null>(getStudentInfo(token));
+  const getStudentInfo = (token: string | null) => {
+    if (token) {
+      return {
+        id: 1,
+        user_name: "sylvain.thong@imt-atlantique.net",
+        first_name: "Sylvain",
+        last_name: "Thong",
+        email: "sylvain.thong@imt-atlantique.net",
+        phone_number: undefined,
+        campus_id: undefined,
+        supervisor: false,
+        student: true,
+      };
+    } else {
+      return null;
     }
   };
-
-  const [user, setUser] = useState<User | null>(getUserInfos(authToken));
-
-  const router = useRouter();
+  const [user, setUser] = useState<User | null>(getStudentInfo(token));
 
   useEffect(() => {
-    const storedAuthToken = localStorage.getItem("authToken");
-    if (storedAuthToken) {
-      setAuthToken(storedAuthToken);
-      setUserInfos(storedAuthToken);
-    }
-  }, []);
-
-  const login = (input: { email: string; password: string }) => {
-    // Make a request to the server to login
-    // If the login is successful, set the user and the authToken
-    // in the state and in the local storage
-
-    if (input.email === "admin@frappe.fr" && input.password === "admin") {
-      const token = "adminToken";
+    if (token) {
       setAuthToken(token);
-      localStorage.setItem("authToken", token);
-      setUserInfos(token);
-      throw redirect({
-        to: "/dashboard",
-        throw: true,
-      });
-    } else if (input.email === "user@frappe.fr" && input.password === "user") {
-      const token = "userToken";
-      setAuthToken(token);
-      localStorage.setItem("authToken", token);
-      setUserInfos(token);
-      throw redirect({
-        to: "/dashboard",
-        throw: true,
-      });
-    } else {
-      throw new Error("Invalid username or password");
+      setUser(getStudentInfo(token));
     }
+  }, [token]);
+
+  const setAuthToken = (token: string) => {
+    localStorage.setItem("authToken", token);
+    setToken(token);
   };
 
-  const setUserInfos = (authToken: string) => {
-    switch (authToken) {
-      case "adminToken": {
-        setUser(adminUser);
-        break;
-      }
-      case "userToken": {
-        setUser(userUser);
-        break;
-      }
-      default:
-        throw new Error("Invalid token");
-    }
+  const removeAuthToken = () => {
+    localStorage.removeItem("authToken");
+    setToken(null);
   };
 
   const logout = () => {
-    console.log("logout");
-    localStorage.removeItem("authToken");
-    setAuthToken(null);
+    removeAuthToken();
     setUser(null);
-    router.invalidate();
-    throw redirect({
-      to: "/",
-    });
+    router.navigate({ to: "/" });
   };
 
   return (
     <AuthContext.Provider
       value={{
+        token,
         user,
-        login,
-        logout,
         isAuthenticated: !!user,
-        isLoaded: !!authToken,
+        setAuthToken,
+        removeAuthToken,
+        logout,
       }}
     >
       {children}

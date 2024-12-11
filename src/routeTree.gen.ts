@@ -11,17 +11,26 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as TestImport } from './routes/test'
 import { Route as RendezVousImport } from './routes/rendez-vous'
+import { Route as RegisterEmailSentImport } from './routes/register-email-sent'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as FaqImport } from './routes/faq'
 import { Route as AddSupervisorImport } from './routes/add-supervisor'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthProfileImport } from './routes/_auth/profile'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 
 // Create/Update Routes
+
+const VerifyEmailRoute = VerifyEmailImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const TestRoute = TestImport.update({
   id: '/test',
@@ -32,6 +41,12 @@ const TestRoute = TestImport.update({
 const RendezVousRoute = RendezVousImport.update({
   id: '/rendez-vous',
   path: '/rendez-vous',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const RegisterEmailSentRoute = RegisterEmailSentImport.update({
+  id: '/register-email-sent',
+  path: '/register-email-sent',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -68,6 +83,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthProfileRoute = AuthProfileImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthDashboardRoute = AuthDashboardImport.update({
@@ -122,6 +143,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/register-email-sent': {
+      id: '/register-email-sent'
+      path: '/register-email-sent'
+      fullPath: '/register-email-sent'
+      preLoaderRoute: typeof RegisterEmailSentImport
+      parentRoute: typeof rootRoute
+    }
     '/rendez-vous': {
       id: '/rendez-vous'
       path: '/rendez-vous'
@@ -136,11 +164,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/dashboard': {
       id: '/_auth/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthDashboardImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/profile': {
+      id: '/_auth/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthProfileImport
       parentRoute: typeof AuthImport
     }
   }
@@ -150,10 +192,12 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthProfileRoute: typeof AuthProfileRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthProfileRoute: AuthProfileRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -165,9 +209,12 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
+  '/register-email-sent': typeof RegisterEmailSentRoute
   '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/profile': typeof AuthProfileRoute
 }
 
 export interface FileRoutesByTo {
@@ -177,9 +224,12 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
+  '/register-email-sent': typeof RegisterEmailSentRoute
   '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/profile': typeof AuthProfileRoute
 }
 
 export interface FileRoutesById {
@@ -190,9 +240,12 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
+  '/register-email-sent': typeof RegisterEmailSentRoute
   '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/profile': typeof AuthProfileRoute
 }
 
 export interface FileRouteTypes {
@@ -204,9 +257,12 @@ export interface FileRouteTypes {
     | '/faq'
     | '/recover-password'
     | '/register'
+    | '/register-email-sent'
     | '/rendez-vous'
     | '/test'
+    | '/verify-email'
     | '/dashboard'
+    | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -215,9 +271,12 @@ export interface FileRouteTypes {
     | '/faq'
     | '/recover-password'
     | '/register'
+    | '/register-email-sent'
     | '/rendez-vous'
     | '/test'
+    | '/verify-email'
     | '/dashboard'
+    | '/profile'
   id:
     | '__root__'
     | '/'
@@ -226,9 +285,12 @@ export interface FileRouteTypes {
     | '/faq'
     | '/recover-password'
     | '/register'
+    | '/register-email-sent'
     | '/rendez-vous'
     | '/test'
+    | '/verify-email'
     | '/_auth/dashboard'
+    | '/_auth/profile'
   fileRoutesById: FileRoutesById
 }
 
@@ -239,8 +301,10 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
+  RegisterEmailSentRoute: typeof RegisterEmailSentRoute
   RendezVousRoute: typeof RendezVousRoute
   TestRoute: typeof TestRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -250,8 +314,10 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
+  RegisterEmailSentRoute: RegisterEmailSentRoute,
   RendezVousRoute: RendezVousRoute,
   TestRoute: TestRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 
 export const routeTree = rootRoute
@@ -270,8 +336,10 @@ export const routeTree = rootRoute
         "/faq",
         "/recover-password",
         "/register",
+        "/register-email-sent",
         "/rendez-vous",
-        "/test"
+        "/test",
+        "/verify-email"
       ]
     },
     "/": {
@@ -280,7 +348,8 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/dashboard"
+        "/_auth/dashboard",
+        "/_auth/profile"
       ]
     },
     "/add-supervisor": {
@@ -295,14 +364,24 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.tsx"
     },
+    "/register-email-sent": {
+      "filePath": "register-email-sent.tsx"
+    },
     "/rendez-vous": {
       "filePath": "rendez-vous.tsx"
     },
     "/test": {
       "filePath": "test.tsx"
     },
+    "/verify-email": {
+      "filePath": "verify-email.tsx"
+    },
     "/_auth/dashboard": {
       "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/profile": {
+      "filePath": "_auth/profile.tsx",
       "parent": "/_auth"
     }
   }

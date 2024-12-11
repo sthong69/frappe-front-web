@@ -12,14 +12,26 @@ import {
   FormMessage,
 } from "../ui/form";
 import { PasswordInput } from "../PasswordInput";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/api/AuthAPI";
+import { router } from "@/router";
 import { useAuth } from "@/context/Auth";
 
 const LoginForm = () => {
-  const auth = useAuth();
-
+  const authContext = useAuth();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
+  });
+
+  const mutation = useMutation({
+    mutationFn: (userData: { email: string; password: string }) => {
+      return login(userData);
+    },
+    onSuccess: (data) => {
+      authContext.setAuthToken(data.token);
+      router.navigate({ to: "/dashboard" });
+    },
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -31,7 +43,7 @@ const LoginForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    auth.login({ email: values.email, password: values.password });
+    mutation.mutate(values);
   }
 
   return (
