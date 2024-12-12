@@ -21,7 +21,7 @@ export default function Navbar() {
             ACCUEIL
           </Link>
           <Link
-            to="/rendez-vous"
+            to="/meeting"
             className={`relative text-foreground/90 transition-colors hover:text-foreground/60 ${
               location.pathname === "/rendez-vous"
                 ? "after:absolute after:-bottom-[1.5px] after:left-0 after:h-[2px] after:w-full after:bg-foreground"

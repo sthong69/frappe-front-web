@@ -11,19 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as RendezVousImport } from './routes/rendez-vous'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
+import { Route as MeetingImport } from './routes/meeting'
 import { Route as FaqImport } from './routes/faq'
+import { Route as CommentImport } from './routes/comment'
+import { Route as ChoosetimeImport } from './routes/choosetime'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
-
-const RendezVousRoute = RendezVousImport.update({
-  id: '/rendez-vous',
-  path: '/rendez-vous',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
@@ -37,9 +33,27 @@ const RecoverPasswordRoute = RecoverPasswordImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const MeetingRoute = MeetingImport.update({
+  id: '/meeting',
+  path: '/meeting',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const FaqRoute = FaqImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CommentRoute = CommentImport.update({
+  id: '/comment',
+  path: '/comment',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChoosetimeRoute = ChoosetimeImport.update({
+  id: '/choosetime',
+  path: '/choosetime',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,11 +74,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/choosetime': {
+      id: '/choosetime'
+      path: '/choosetime'
+      fullPath: '/choosetime'
+      preLoaderRoute: typeof ChoosetimeImport
+      parentRoute: typeof rootRoute
+    }
+    '/comment': {
+      id: '/comment'
+      path: '/comment'
+      fullPath: '/comment'
+      preLoaderRoute: typeof CommentImport
+      parentRoute: typeof rootRoute
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqImport
+      parentRoute: typeof rootRoute
+    }
+    '/meeting': {
+      id: '/meeting'
+      path: '/meeting'
+      fullPath: '/meeting'
+      preLoaderRoute: typeof MeetingImport
       parentRoute: typeof rootRoute
     }
     '/recover-password': {
@@ -81,13 +116,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
-    '/rendez-vous': {
-      id: '/rendez-vous'
-      path: '/rendez-vous'
-      fullPath: '/rendez-vous'
-      preLoaderRoute: typeof RendezVousImport
-      parentRoute: typeof rootRoute
-    }
   }
 }
 
@@ -95,58 +123,84 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/rendez-vous': typeof RendezVousRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
+  fullPaths:
+    | '/'
+    | '/choosetime'
+    | '/comment'
+    | '/faq'
+    | '/meeting'
+    | '/recover-password'
+    | '/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/faq' | '/recover-password' | '/register' | '/rendez-vous'
+  to:
+    | '/'
+    | '/choosetime'
+    | '/comment'
+    | '/faq'
+    | '/meeting'
+    | '/recover-password'
+    | '/register'
   id:
     | '__root__'
     | '/'
+    | '/choosetime'
+    | '/comment'
     | '/faq'
+    | '/meeting'
     | '/recover-password'
     | '/register'
-    | '/rendez-vous'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ChoosetimeRoute: typeof ChoosetimeRoute
+  CommentRoute: typeof CommentRoute
   FaqRoute: typeof FaqRoute
+  MeetingRoute: typeof MeetingRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
-  RendezVousRoute: typeof RendezVousRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ChoosetimeRoute: ChoosetimeRoute,
+  CommentRoute: CommentRoute,
   FaqRoute: FaqRoute,
+  MeetingRoute: MeetingRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
-  RendezVousRoute: RendezVousRoute,
 }
 
 export const routeTree = rootRoute
@@ -160,26 +214,34 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/choosetime",
+        "/comment",
         "/faq",
+        "/meeting",
         "/recover-password",
-        "/register",
-        "/rendez-vous"
+        "/register"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/choosetime": {
+      "filePath": "choosetime.tsx"
+    },
+    "/comment": {
+      "filePath": "comment.tsx"
+    },
     "/faq": {
       "filePath": "faq.tsx"
+    },
+    "/meeting": {
+      "filePath": "meeting.tsx"
     },
     "/recover-password": {
       "filePath": "recover-password.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
-    },
-    "/rendez-vous": {
-      "filePath": "rendez-vous.tsx"
     }
   }
 }
