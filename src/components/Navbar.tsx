@@ -22,7 +22,7 @@ export default function Navbar() {
           <Link
             to="/"
             className={`relative text-foreground/90 transition-colors hover:text-foreground/60 ${
-              location.pathname === "/"
+              location.pathname === "/" || location.pathname === "/dashboard"
                 ? "after:absolute after:-bottom-[1.5px] after:left-0 after:h-[2px] after:w-full after:bg-foreground"
                 : ""
             }`}
@@ -32,7 +32,7 @@ export default function Navbar() {
           <Link
             to="/meeting"
             className={`relative text-foreground/90 transition-colors hover:text-foreground/60 ${
-              location.pathname === "/rendez-vous"
+              location.pathname === "/meeting"
                 ? "after:absolute after:-bottom-[1.5px] after:left-0 after:h-[2px] after:w-full after:bg-foreground"
                 : ""
             }`}
