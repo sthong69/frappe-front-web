@@ -13,11 +13,13 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as TestImport } from './routes/test'
-import { Route as RendezVousImport } from './routes/rendez-vous'
 import { Route as RegisterEmailSentImport } from './routes/register-email-sent'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
+import { Route as MeetingImport } from './routes/meeting'
 import { Route as FaqImport } from './routes/faq'
+import { Route as CommentImport } from './routes/comment'
+import { Route as ChoosetimeImport } from './routes/choosetime'
 import { Route as AddSupervisorImport } from './routes/add-supervisor'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
@@ -35,12 +37,6 @@ const VerifyEmailRoute = VerifyEmailImport.update({
 const TestRoute = TestImport.update({
   id: '/test',
   path: '/test',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const RendezVousRoute = RendezVousImport.update({
-  id: '/rendez-vous',
-  path: '/rendez-vous',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -62,9 +58,27 @@ const RecoverPasswordRoute = RecoverPasswordImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const MeetingRoute = MeetingImport.update({
+  id: '/meeting',
+  path: '/meeting',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const FaqRoute = FaqImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CommentRoute = CommentImport.update({
+  id: '/comment',
+  path: '/comment',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChoosetimeRoute = ChoosetimeImport.update({
+  id: '/choosetime',
+  path: '/choosetime',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -122,11 +136,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AddSupervisorImport
       parentRoute: typeof rootRoute
     }
+    '/choosetime': {
+      id: '/choosetime'
+      path: '/choosetime'
+      fullPath: '/choosetime'
+      preLoaderRoute: typeof ChoosetimeImport
+      parentRoute: typeof rootRoute
+    }
+    '/comment': {
+      id: '/comment'
+      path: '/comment'
+      fullPath: '/comment'
+      preLoaderRoute: typeof CommentImport
+      parentRoute: typeof rootRoute
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqImport
+      parentRoute: typeof rootRoute
+    }
+    '/meeting': {
+      id: '/meeting'
+      path: '/meeting'
+      fullPath: '/meeting'
+      preLoaderRoute: typeof MeetingImport
       parentRoute: typeof rootRoute
     }
     '/recover-password': {
@@ -148,13 +183,6 @@ declare module '@tanstack/react-router' {
       path: '/register-email-sent'
       fullPath: '/register-email-sent'
       preLoaderRoute: typeof RegisterEmailSentImport
-      parentRoute: typeof rootRoute
-    }
-    '/rendez-vous': {
-      id: '/rendez-vous'
-      path: '/rendez-vous'
-      fullPath: '/rendez-vous'
-      preLoaderRoute: typeof RendezVousImport
       parentRoute: typeof rootRoute
     }
     '/test': {
@@ -206,11 +234,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/register-email-sent': typeof RegisterEmailSentRoute
-  '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -221,11 +251,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/register-email-sent': typeof RegisterEmailSentRoute
-  '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
@@ -237,11 +269,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
+  '/choosetime': typeof ChoosetimeRoute
+  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
+  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
   '/register-email-sent': typeof RegisterEmailSentRoute
-  '/rendez-vous': typeof RendezVousRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
@@ -254,11 +288,13 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
+    | '/choosetime'
+    | '/comment'
     | '/faq'
+    | '/meeting'
     | '/recover-password'
     | '/register'
     | '/register-email-sent'
-    | '/rendez-vous'
     | '/test'
     | '/verify-email'
     | '/dashboard'
@@ -268,11 +304,13 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
+    | '/choosetime'
+    | '/comment'
     | '/faq'
+    | '/meeting'
     | '/recover-password'
     | '/register'
     | '/register-email-sent'
-    | '/rendez-vous'
     | '/test'
     | '/verify-email'
     | '/dashboard'
@@ -282,11 +320,13 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/add-supervisor'
+    | '/choosetime'
+    | '/comment'
     | '/faq'
+    | '/meeting'
     | '/recover-password'
     | '/register'
     | '/register-email-sent'
-    | '/rendez-vous'
     | '/test'
     | '/verify-email'
     | '/_auth/dashboard'
@@ -298,11 +338,13 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   AddSupervisorRoute: typeof AddSupervisorRoute
+  ChoosetimeRoute: typeof ChoosetimeRoute
+  CommentRoute: typeof CommentRoute
   FaqRoute: typeof FaqRoute
+  MeetingRoute: typeof MeetingRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
   RegisterEmailSentRoute: typeof RegisterEmailSentRoute
-  RendezVousRoute: typeof RendezVousRoute
   TestRoute: typeof TestRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
 }
@@ -311,11 +353,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   AddSupervisorRoute: AddSupervisorRoute,
+  ChoosetimeRoute: ChoosetimeRoute,
+  CommentRoute: CommentRoute,
   FaqRoute: FaqRoute,
+  MeetingRoute: MeetingRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
   RegisterEmailSentRoute: RegisterEmailSentRoute,
-  RendezVousRoute: RendezVousRoute,
   TestRoute: TestRoute,
   VerifyEmailRoute: VerifyEmailRoute,
 }
@@ -333,11 +377,13 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/add-supervisor",
+        "/choosetime",
+        "/comment",
         "/faq",
+        "/meeting",
         "/recover-password",
         "/register",
         "/register-email-sent",
-        "/rendez-vous",
         "/test",
         "/verify-email"
       ]
@@ -355,8 +401,17 @@ export const routeTree = rootRoute
     "/add-supervisor": {
       "filePath": "add-supervisor.tsx"
     },
+    "/choosetime": {
+      "filePath": "choosetime.tsx"
+    },
+    "/comment": {
+      "filePath": "comment.tsx"
+    },
     "/faq": {
       "filePath": "faq.tsx"
+    },
+    "/meeting": {
+      "filePath": "meeting.tsx"
     },
     "/recover-password": {
       "filePath": "recover-password.tsx"
@@ -366,9 +421,6 @@ export const routeTree = rootRoute
     },
     "/register-email-sent": {
       "filePath": "register-email-sent.tsx"
-    },
-    "/rendez-vous": {
-      "filePath": "rendez-vous.tsx"
     },
     "/test": {
       "filePath": "test.tsx"
