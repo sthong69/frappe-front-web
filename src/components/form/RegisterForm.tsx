@@ -14,9 +14,6 @@ import {
 import { toast } from "sonner";
 import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
-import { useMutation } from "@tanstack/react-query";
-import { register } from "@/api/AuthAPI";
-import { router } from "@/router";
 
 const RegisterForm = () => {
   const formSchema = z.object({
@@ -25,21 +22,6 @@ const RegisterForm = () => {
     email: z.string().email(),
     createPassword: z.string().max(128),
     confirmPassword: z.string().max(128),
-  });
-
-  const mutation = useMutation({
-    mutationFn: (newUserData: {
-      username: string;
-      password: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-    }) => {
-      return register(newUserData);
-    },
-    onSuccess: () => {
-      router.navigate({ to: "/register-email-sent" });
-    },
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -62,13 +44,7 @@ const RegisterForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isPasswordValid) {
-      mutation.mutate({
-        username: values.email,
-        password: values.createPassword,
-        email: values.email,
-        firstName: values.firstName,
-        lastName: values.lastName,
-      });
+      console.log(values);
     } else {
       toast("Merci de fournir un mot de passe répondant aux critères.");
     }
@@ -172,16 +148,9 @@ const RegisterForm = () => {
               match: "Les mots de passe doivent correspondre.",
             }}
           />
-          <Button
-            className="w-full text-center font-semibold text-black"
-            type="submit"
-            disabled={mutation.isPending}
-          >
+          <Button className="w-96 font-semibold text-black" type="submit">
             S'inscrire
           </Button>
-          {mutation.isError ? (
-            <p className="text-center text-red-600">{mutation.error.message}</p>
-          ) : null}
         </form>
       </Form>
     </div>
