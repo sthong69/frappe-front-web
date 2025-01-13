@@ -1,4 +1,4 @@
-import { axiosInstance } from "./axios";
+import { publicAPI } from "./axios";
 
 export const getAllCampuses = async (): Promise<
   {
@@ -6,7 +6,7 @@ export const getAllCampuses = async (): Promise<
     name: string;
   }[]
 > => {
-  return axiosInstance
+  return publicAPI
     .get("/campuses/")
     .then(function (response) {
       return Promise.resolve(response.data);
@@ -22,7 +22,7 @@ export const getCampus = async (
   id: number;
   name: string;
 }> => {
-  return axiosInstance
+  return publicAPI
     .get("/campuses/" + id + "/")
     .then(function (response) {
       return Promise.resolve(response.data);

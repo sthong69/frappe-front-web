@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { student, logout } = useAuth();
   const location = useLocation();
 
   return (
@@ -51,19 +51,19 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          {user ? (
+          {student ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex flex-col items-center gap-1">
                   <User className="h-6 w-6" />
                   <span className="text-[10px] font-medium">
-                    {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                    {student ? "CONNECTÉ" : "HORS CONNEXION"}
                   </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>
-                  {user?.first_name} {user?.last_name}
+                  {student?.firstName} {student?.lastName}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link to="/profile">
@@ -87,7 +87,7 @@ export default function Navbar() {
               <div className="flex flex-col items-center gap-1">
                 <User className="h-6 w-6" />
                 <span className="text-[10px] font-medium">
-                  {user ? "CONNECTÉ" : "HORS CONNEXION"}
+                  {student ? "CONNECTÉ" : "HORS CONNEXION"}
                 </span>
               </div>
             </Link>

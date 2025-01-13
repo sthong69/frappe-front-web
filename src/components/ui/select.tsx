@@ -22,7 +22,7 @@ const SelectTrigger = React.forwardRef<
     )}
     {...props}
   >
-    <p className="opacity-50">{children}</p>
+    <p>{children}</p>
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;

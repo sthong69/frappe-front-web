@@ -16,22 +16,37 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "@/api/AuthAPI";
 import { router } from "@/router";
 import { useAuth } from "@/context/Auth";
+import { AxiosError } from "axios";
+import { useState } from "react";
 
 const LoginForm = () => {
   const authContext = useAuth();
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
-  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: (userData: { email: string; password: string }) => {
       return login(userData);
     },
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       authContext.setAuthToken(data.token);
+      const isAuth = await authContext.isAuthenticated();
+      console.log(isAuth);
+      setIsLoading(false);
       router.navigate({ to: "/dashboard" });
     },
+    onError: (error: AxiosError<{ message: string }>) => {
+      setIsLoading(false);
+      setError(
+        error.response?.data.message ??
+          "Une erreur est survenue, veuillez réessayer.",
+      );
+    },
+  });
+
+  const formSchema = z.object({
+    email: z.string().email(),
+    password: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +58,8 @@ const LoginForm = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setError(null);
+    setIsLoading(true);
     mutation.mutate(values);
   }
 
@@ -75,9 +92,14 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
-            <Button className="w-96 font-semibold text-black" type="submit">
+            <Button
+              className="w-96 font-semibold text-black"
+              type="submit"
+              disabled={isLoading}
+            >
               Connexion
             </Button>
+            {error && <p className="text-center text-red-500">{error}</p>}
           </form>
         </Form>
 

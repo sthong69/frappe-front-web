@@ -1,7 +1,7 @@
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthContextType } from "@/types/AuthTypes";
+import { AuthContextType } from "@/lib/types/AuthTypes";
 import { useAuth } from "@/context/Auth";
 
 interface RouterContext {
@@ -13,18 +13,18 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-  const { user } = useAuth();
+  const { student } = useAuth();
   return (
     <>
       <main className="flex min-h-screen flex-col">
         <div
-          className={`min-h-screen ${user ? (user.student ? "bg-student" : "bg-supervisor") : "bg-white"}`}
+          className={`min-h-screen ${student ? (student.student ? "bg-student" : "bg-supervisor") : "bg-white"}`}
         >
           <Navbar />
           <Outlet />
+          <Toaster />
         </div>
       </main>
-      <Toaster />
     </>
   );
 }
