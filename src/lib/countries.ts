@@ -328,8 +328,8 @@ export const COUNTRIES = [
     value: "Gambia",
   },
   {
-    label: "Territoire Palestinien Occupé",
-    value: "Occupied Palestinian Territory",
+    label: "Palestine",
+    value: "Palestine",
   },
   {
     label: "Allemagne",
@@ -951,14 +951,13 @@ export const COUNTRIES = [
     label: "Samoa",
     value: "Samoa",
   },
+  { label: "Serbie", value: "Serbia" },
+  { label: "Monténégro", value: "Montenegro" },
   {
     label: "Yémen",
     value: "Yemen",
   },
-  {
-    label: "Serbie-et-Monténégro",
-    value: "Serbia and Montenegro",
-  },
+
   {
     label: "Zambie",
     value: "Zambia",
