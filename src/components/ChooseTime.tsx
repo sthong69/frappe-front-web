@@ -5,8 +5,7 @@ import { getHours, isSameDay } from "date-fns";
 
 interface ChooseTimeProps {
   meetingInfos: {
-    campusId: string;
-    supervisorId: string;
+    supervisorId: number;
     duration: string;
   };
   input: {
@@ -31,7 +30,7 @@ const ChooseTime = (props: ChooseTimeProps) => {
     queryFn: () =>
       getAvailableHours({
         ...props.meetingInfos,
-        supervisorId: parseInt(props.meetingInfos.supervisorId),
+        supervisorId: props.meetingInfos.supervisorId,
         day: props.input.selectedDate,
       }),
   });

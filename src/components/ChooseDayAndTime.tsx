@@ -10,20 +10,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface ChooseDayAndTimeProps {
   meetingInfos: {
-    campusId: string;
-    supervisorId: string;
+    campusInfos: { id: number; name: string };
+    supervisorInfos: { id: number; firstName: string; lastName: string };
     duration: string;
   };
   setMeetingInfos: React.Dispatch<
     React.SetStateAction<{
-      campusId: string;
-      supervisorId: string;
+      campusInfos: {
+        id: number;
+        name: string;
+      };
+      supervisorInfos: {
+        id: number;
+        firstName: string;
+        lastName: string;
+      };
       duration: string;
     } | null>
   >;
-  campus_label: string;
-  supervisor_firstname: string;
-  supervisor_lastname: string;
 }
 
 const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
@@ -38,7 +42,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
     queryFn: () =>
       getAvailableDays({
         ...props.meetingInfos,
-        supervisorId: parseInt(props.meetingInfos.supervisorId),
+        supervisorId: props.meetingInfos.supervisorInfos.id,
       }),
   });
 
@@ -72,10 +76,11 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
       </p>
       <div className="flex flex-row justify-center gap-8">
         <div className="w-64 rounded-lg bg-white p-2 text-center">
-          {props.campus_label}
+          {props.meetingInfos.campusInfos.name}
         </div>
         <div className="w-64 rounded-lg bg-white p-2 text-center">
-          {props.supervisor_firstname} {props.supervisor_lastname}
+          {props.meetingInfos.supervisorInfos.firstName}{" "}
+          {props.meetingInfos.supervisorInfos.lastName}
         </div>
         <div className="w-64 rounded-lg bg-white p-2 text-center">
           {props.meetingInfos.duration == "30m" ? "30 minutes" : "1 heure"}
@@ -89,7 +94,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
           Modifier
         </Button>
       </div>
-      <Tabs defaultValue="nbPersonnes" className="pb-8">
+      <Tabs defaultValue="date" className="pb-8">
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="date" className="w-full">
             {input.selectedDate == null
@@ -126,7 +131,10 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         <TabsContent value="time">
           {input.selectedDate != null ? (
             <ChooseTime
-              meetingInfos={props.meetingInfos}
+              meetingInfos={{
+                supervisorId: props.meetingInfos.supervisorInfos.id,
+                ...props.meetingInfos,
+              }}
               input={{ ...input, selectedDate: input.selectedDate }}
               setInput={setInput}
             />
@@ -135,7 +143,6 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
           )}
         </TabsContent>
       </Tabs>
-      ;
     </div>
   );
 };
