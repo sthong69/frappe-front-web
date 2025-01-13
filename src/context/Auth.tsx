@@ -1,5 +1,6 @@
+import { fetchStudentInfo } from "@/api/StudentsAPI";
 import { router } from "@/router";
-import { AuthContextType, User } from "@/types/AuthTypes";
+import { AuthContextType, Student } from "@/lib/types/AuthTypes";
 import { createContext, useState, useContext, useEffect } from "react";
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -8,32 +9,17 @@ export const AuthProvider = ({ children }: { children: any }) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("authToken"),
   );
-
-  //const [user, setUser] = useState<User | null>(getStudentInfo(token));
-  const getStudentInfo = (token: string | null) => {
-    if (token) {
-      return {
-        id: 1,
-        user_name: "sylvain.thong@imt-atlantique.net",
-        first_name: "Sylvain",
-        last_name: "Thong",
-        email: "sylvain.thong@imt-atlantique.net",
-        phone_number: undefined,
-        campus_id: undefined,
-        supervisor: false,
-        student: true,
-      };
-    } else {
-      return null;
-    }
-  };
-  const [user, setUser] = useState<User | null>(getStudentInfo(token));
+  const [student, setStudent] = useState<Student | null>(null);
 
   useEffect(() => {
-    if (token) {
-      setAuthToken(token);
-      setUser(getStudentInfo(token));
-    }
+    const fetchData = async () => {
+      if (token) {
+        setAuthToken(token);
+        const studentInfo = await getStudentInfo();
+        setStudent(studentInfo ?? null);
+      }
+    };
+    fetchData();
   }, [token]);
 
   const setAuthToken = (token: string) => {
@@ -46,21 +32,59 @@ export const AuthProvider = ({ children }: { children: any }) => {
     setToken(null);
   };
 
+  const getStudentInfo = async () => {
+    try {
+      const student = await fetchStudentInfo();
+      return student;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const logout = () => {
     removeAuthToken();
-    setUser(null);
+    setStudent(null);
     router.navigate({ to: "/" });
+  };
+
+  const isAuthenticated = async () => {
+    if (!token) {
+      return false;
+    }
+
+    const fetchStudent = await fetchStudentInfo();
+    if (fetchStudent) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const isProfileComplete = () => {
+    if (student) {
+      return (
+        student.firstName !== "" &&
+        student.lastName !== "" &&
+        student.email !== "" &&
+        student.phoneNumber !== undefined &&
+        student.campusId !== undefined &&
+        student.nationality !== "" &&
+        student.gender !== ""
+      );
+    }
+    return false;
   };
 
   return (
     <AuthContext.Provider
       value={{
         token,
-        user,
-        isAuthenticated: !!user,
+        student,
+        isAuthenticated,
         setAuthToken,
         removeAuthToken,
         logout,
+        isProfileComplete,
       }}
     >
       {children}

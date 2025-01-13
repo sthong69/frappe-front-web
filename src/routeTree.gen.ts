@@ -19,7 +19,6 @@ import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as MeetingImport } from './routes/meeting'
 import { Route as FaqImport } from './routes/faq'
 import { Route as CommentImport } from './routes/comment'
-import { Route as ChoosetimeImport } from './routes/choosetime'
 import { Route as AddSupervisorImport } from './routes/add-supervisor'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
@@ -76,12 +75,6 @@ const CommentRoute = CommentImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ChoosetimeRoute = ChoosetimeImport.update({
-  id: '/choosetime',
-  path: '/choosetime',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AddSupervisorRoute = AddSupervisorImport.update({
   id: '/add-supervisor',
   path: '/add-supervisor',
@@ -134,13 +127,6 @@ declare module '@tanstack/react-router' {
       path: '/add-supervisor'
       fullPath: '/add-supervisor'
       preLoaderRoute: typeof AddSupervisorImport
-      parentRoute: typeof rootRoute
-    }
-    '/choosetime': {
-      id: '/choosetime'
-      path: '/choosetime'
-      fullPath: '/choosetime'
-      preLoaderRoute: typeof ChoosetimeImport
       parentRoute: typeof rootRoute
     }
     '/comment': {
@@ -234,7 +220,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/choosetime': typeof ChoosetimeRoute
   '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
@@ -251,7 +236,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/choosetime': typeof ChoosetimeRoute
   '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
@@ -269,7 +253,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/choosetime': typeof ChoosetimeRoute
   '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
@@ -288,7 +271,6 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
-    | '/choosetime'
     | '/comment'
     | '/faq'
     | '/meeting'
@@ -304,7 +286,6 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
-    | '/choosetime'
     | '/comment'
     | '/faq'
     | '/meeting'
@@ -320,7 +301,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/add-supervisor'
-    | '/choosetime'
     | '/comment'
     | '/faq'
     | '/meeting'
@@ -338,7 +318,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   AddSupervisorRoute: typeof AddSupervisorRoute
-  ChoosetimeRoute: typeof ChoosetimeRoute
   CommentRoute: typeof CommentRoute
   FaqRoute: typeof FaqRoute
   MeetingRoute: typeof MeetingRoute
@@ -353,7 +332,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   AddSupervisorRoute: AddSupervisorRoute,
-  ChoosetimeRoute: ChoosetimeRoute,
   CommentRoute: CommentRoute,
   FaqRoute: FaqRoute,
   MeetingRoute: MeetingRoute,
@@ -377,7 +355,6 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/add-supervisor",
-        "/choosetime",
         "/comment",
         "/faq",
         "/meeting",
@@ -400,9 +377,6 @@ export const routeTree = rootRoute
     },
     "/add-supervisor": {
       "filePath": "add-supervisor.tsx"
-    },
-    "/choosetime": {
-      "filePath": "choosetime.tsx"
     },
     "/comment": {
       "filePath": "comment.tsx"

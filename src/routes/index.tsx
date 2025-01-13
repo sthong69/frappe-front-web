@@ -1,7 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 import Page from "@/components/Page";
 import LoginForm from "@/components/form/LoginForm";
 export const Route = createFileRoute("/")({
+  beforeLoad: async ({ context }) => {
+    if (await context.auth.isAuthenticated()) {
+      throw redirect({
+        to: "/dashboard",
+      });
+    }
+  },
   component: RouteComponent,
 });
 
