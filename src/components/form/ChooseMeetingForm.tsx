@@ -23,6 +23,7 @@ import { getAllSupervisors } from "@/api/SupervisorsAPI";
 import { useQuery } from "@tanstack/react-query";
 import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
+import ChooseMeetingType from "../ChooseMeetingType";
 
 const DURATIONS = [
   { value: "30m", label: "30 minutes" },
@@ -30,11 +31,16 @@ const DURATIONS = [
 ];
 
 const ChooseMeetingForm = () => {
-  const [meetingInfos, setMeetingInfos] = useState<{
-    campusInfos: { id: number; name: string };
-    supervisorInfos: { id: number; firstName: string; lastName: string };
-    duration: string;
-  } | null>(null);
+  const [meetingInfos, setMeetingInfos] = useState<
+    | {
+        campusInfos: { id: number; name: string };
+        supervisorInfos: { id: number; firstName: string; lastName: string };
+        startDate: Date | undefined;
+        endDate: Date | undefined;
+        duration: string;
+      }
+    | undefined
+  >(undefined);
   const [campusId, setCampusId] = useState<string | null>(null);
 
   const CAMPUSES = useQuery({
@@ -74,7 +80,6 @@ const ChooseMeetingForm = () => {
       toast.error("Veuillez sélectionner une durée pour le rendez-vous");
       return;
     }
-    console.log(values);
     const supervisor = SUPERVISORS.data!.find(
       (supervisor) => supervisor.id == parseInt(values.supervisorId),
     );
@@ -93,6 +98,8 @@ const ChooseMeetingForm = () => {
       ...values,
       supervisorInfos: supervisor,
       campusInfos: campus,
+      startDate: undefined,
+      endDate: undefined,
     });
   }
 
@@ -117,7 +124,121 @@ const ChooseMeetingForm = () => {
     );
   }
 
-  if (meetingInfos) {
+  if (!meetingInfos) {
+    return (
+      <>
+        <p className="-mt-4 mb-4 px-4">
+          Veuillez sélectionner le campus, l’encadrante TING et la durée estimée
+          du rendez-vous.
+        </p>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-1 flex-col items-center justify-center space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="campusId"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setCampusId(value);
+                    }}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-96">
+                        <SelectValue placeholder="Campus" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {CAMPUSES.data.map((campus) => (
+                        <SelectItem
+                          key={campus.id}
+                          value={campus.id.toString()}
+                        >
+                          {campus.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="supervisorId"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger disabled={!campusId} className="w-96">
+                        <SelectValue placeholder="Encadrante" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {filterSupervisorsPerCampusId(
+                        SUPERVISORS.data,
+                        parseInt(campusId!),
+                      ).map((supervisor) => (
+                        <SelectItem
+                          key={supervisor.id}
+                          value={supervisor.id.toString()}
+                        >
+                          {supervisor.firstName} {supervisor.lastName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="duration"
+              render={({ field }) => (
+                <FormItem>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="w-96">
+                        <SelectValue placeholder="Durée" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {DURATIONS.map((duration) => (
+                        <SelectItem key={duration.value} value={duration.value}>
+                          {duration.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              className="absolute bottom-10 right-10 w-96 font-semibold text-black"
+              type="submit"
+            >
+              Continuer
+            </Button>
+          </form>
+        </Form>
+      </>
+    );
+  }
+
+  if (!meetingInfos.startDate && !meetingInfos.endDate) {
     return (
       <ChooseDayAndTime
         meetingInfos={meetingInfos}
@@ -126,114 +247,18 @@ const ChooseMeetingForm = () => {
     );
   }
 
-  return (
-    <>
-      <p className="-mt-4 mb-4 px-4">
-        Veuillez sélectionner le campus, l’encadrante TING et la durée estimée
-        du rendez-vous.
-      </p>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-1 flex-col items-center justify-center space-y-6"
-        >
-          <FormField
-            control={form.control}
-            name="campusId"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  onValueChange={(value) => {
-                    field.onChange(value);
-                    setCampusId(value);
-                  }}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-96">
-                      <SelectValue placeholder="Campus" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {CAMPUSES.data.map((campus) => (
-                      <SelectItem key={campus.id} value={campus.id.toString()}>
-                        {campus.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="supervisorId"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger disabled={!campusId} className="w-96">
-                      <SelectValue placeholder="Encadrante" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {filterSupervisorsPerCampusId(
-                      SUPERVISORS.data,
-                      parseInt(campusId!),
-                    ).map((supervisor) => (
-                      <SelectItem
-                        key={supervisor.id}
-                        value={supervisor.id.toString()}
-                      >
-                        {supervisor.firstName} {supervisor.lastName}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="duration"
-            render={({ field }) => (
-              <FormItem>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="w-96">
-                      <SelectValue placeholder="Durée" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {DURATIONS.map((duration) => (
-                      <SelectItem key={duration.value} value={duration.value}>
-                        {duration.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            className="absolute bottom-10 right-10 w-96 font-semibold text-black"
-            type="submit"
-          >
-            Continuer
-          </Button>
-        </form>
-      </Form>
-    </>
-  );
+  if (meetingInfos.startDate && meetingInfos.endDate) {
+    console.log(meetingInfos);
+    return (
+      <ChooseMeetingType
+        meetingInfos={{
+          ...meetingInfos,
+          startDate: meetingInfos.startDate,
+          endDate: meetingInfos.endDate,
+        }}
+      />
+    );
+  }
 };
 
 export default ChooseMeetingForm;

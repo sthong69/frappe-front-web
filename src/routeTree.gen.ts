@@ -18,7 +18,6 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as MeetingImport } from './routes/meeting'
 import { Route as FaqImport } from './routes/faq'
-import { Route as CommentImport } from './routes/comment'
 import { Route as AddSupervisorImport } from './routes/add-supervisor'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
@@ -66,12 +65,6 @@ const MeetingRoute = MeetingImport.update({
 const FaqRoute = FaqImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CommentRoute = CommentImport.update({
-  id: '/comment',
-  path: '/comment',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -127,13 +120,6 @@ declare module '@tanstack/react-router' {
       path: '/add-supervisor'
       fullPath: '/add-supervisor'
       preLoaderRoute: typeof AddSupervisorImport
-      parentRoute: typeof rootRoute
-    }
-    '/comment': {
-      id: '/comment'
-      path: '/comment'
-      fullPath: '/comment'
-      preLoaderRoute: typeof CommentImport
       parentRoute: typeof rootRoute
     }
     '/faq': {
@@ -220,7 +206,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
@@ -236,7 +221,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
@@ -253,7 +237,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
   '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
@@ -271,7 +254,6 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
     | '/meeting'
     | '/recover-password'
@@ -286,7 +268,6 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
     | '/meeting'
     | '/recover-password'
@@ -301,7 +282,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_auth'
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
     | '/meeting'
     | '/recover-password'
@@ -318,7 +298,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   AddSupervisorRoute: typeof AddSupervisorRoute
-  CommentRoute: typeof CommentRoute
   FaqRoute: typeof FaqRoute
   MeetingRoute: typeof MeetingRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
@@ -332,7 +311,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   AddSupervisorRoute: AddSupervisorRoute,
-  CommentRoute: CommentRoute,
   FaqRoute: FaqRoute,
   MeetingRoute: MeetingRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
@@ -355,7 +333,6 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/add-supervisor",
-        "/comment",
         "/faq",
         "/meeting",
         "/recover-password",
@@ -377,9 +354,6 @@ export const routeTree = rootRoute
     },
     "/add-supervisor": {
       "filePath": "add-supervisor.tsx"
-    },
-    "/comment": {
-      "filePath": "comment.tsx"
     },
     "/faq": {
       "filePath": "faq.tsx"

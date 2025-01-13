@@ -3,39 +3,57 @@ import { Calendar } from "react-calendar";
 import "@/lib/styles/Calendar.css";
 import { useQuery } from "@tanstack/react-query";
 import { getAvailableDays } from "@/api/AvailabilitiesAPI";
-import { addDays, isSameDay } from "date-fns";
+import { addDays, isSameDay, setHours, setMinutes } from "date-fns";
 import { useState } from "react";
 import ChooseTime from "./ChooseTime";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { formatDateToFrench } from "@/lib/utils";
+import { DAYS_RANGE_FOR_MEETING } from "@/lib/consts";
+import { toast } from "sonner";
 
 interface ChooseDayAndTimeProps {
   meetingInfos: {
     campusInfos: { id: number; name: string };
     supervisorInfos: { id: number; firstName: string; lastName: string };
     duration: string;
+    startDate: Date | undefined;
+    endDate: Date | undefined;
   };
   setMeetingInfos: React.Dispatch<
-    React.SetStateAction<{
-      campusInfos: {
-        id: number;
-        name: string;
-      };
-      supervisorInfos: {
-        id: number;
-        firstName: string;
-        lastName: string;
-      };
-      duration: string;
-    } | null>
+    React.SetStateAction<
+      | {
+          campusInfos: {
+            id: number;
+            name: string;
+          };
+          supervisorInfos: {
+            id: number;
+            firstName: string;
+            lastName: string;
+          };
+          duration: string;
+          startDate: Date | undefined;
+          endDate: Date | undefined;
+        }
+      | undefined
+    >
   >;
 }
 
 const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
   const [input, setInput] = useState<{
-    selectedDate: Date | null;
-    hours: number | null;
-    minutes: number | null;
-  }>({ selectedDate: null, hours: null, minutes: null });
+    selectedDate: Date | undefined;
+    startHours: number | undefined;
+    startMinutes: number | undefined;
+    endHours: number | undefined;
+    endMinutes: number | undefined;
+  }>({
+    selectedDate: undefined,
+    startHours: undefined,
+    startMinutes: undefined,
+    endHours: undefined,
+    endMinutes: undefined,
+  });
 
   const AVAILABLE_DAYS = useQuery({
     queryKey: ["availableDays", props.meetingInfos],
@@ -88,29 +106,37 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         <Button
           className="w-64 font-semibold text-black"
           onClick={() => {
-            props.setMeetingInfos(null);
+            props.setMeetingInfos(undefined);
           }}
         >
           Modifier
         </Button>
       </div>
-      <Tabs defaultValue="date" className="pb-8">
+      <Tabs defaultValue="date" className="px-16 py-8">
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="date" className="w-full">
-            {input.selectedDate == null
-              ? "Date"
-              : input.selectedDate.toLocaleDateString()}
+            {AVAILABLE_DAYS.isLoading
+              ? "Récupération des jours disponibles..."
+              : input.selectedDate == null
+                ? "Veuilez sélectionner une date"
+                : formatDateToFrench(input.selectedDate)}
           </TabsTrigger>
           <TabsTrigger
             value="time"
             className="w-full"
             disabled={input.selectedDate == null}
           >
-            {input.hours == null
+            {input.startHours == undefined ||
+            input.startMinutes == undefined ||
+            input.endHours == undefined ||
+            input.endMinutes == undefined
               ? "Horaire"
-              : `${input.hours.toString()}:${
-                  input.minutes == 0 ? "00" : input.minutes
-                }`}
+              : `${input.startHours.toString()}:${input.startMinutes
+                  .toString()
+                  .padEnd(
+                    2,
+                    "0",
+                  )} - ${input.endHours.toString()}:${input.endMinutes.toString().padEnd(2, "0")}`}
           </TabsTrigger>
         </TabsList>
 
@@ -119,11 +145,17 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
             <Calendar
               locale="fr"
               minDate={new Date()}
-              maxDate={addDays(new Date(), 30)}
+              maxDate={addDays(new Date(), DAYS_RANGE_FOR_MEETING)}
               defaultView="month"
               tileDisabled={checkDay}
               onClickDay={(date) => {
-                setInput({ selectedDate: date, hours: null, minutes: null });
+                setInput({
+                  selectedDate: date,
+                  startHours: undefined,
+                  startMinutes: undefined,
+                  endHours: undefined,
+                  endMinutes: undefined,
+                });
               }}
             />
           </div>
@@ -143,6 +175,38 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
           )}
         </TabsContent>
       </Tabs>
+      <Button
+        onClick={() => {
+          if (input.selectedDate == undefined) {
+            toast.error("Veuillez sélectionner une date pour le rendez-vous.");
+            return;
+          }
+          if (
+            input.startHours == undefined ||
+            input.startMinutes == undefined ||
+            input.endHours == undefined ||
+            input.endMinutes == undefined
+          ) {
+            toast.error(
+              "Veuillez sélectionner un créneau pour le rendez-vous.",
+            );
+            return;
+          }
+          props.setMeetingInfos({
+            ...props.meetingInfos,
+            startDate: setHours(
+              setMinutes(input.selectedDate, input.startMinutes),
+              input.startHours,
+            ),
+            endDate: setHours(
+              setMinutes(input.selectedDate, input.endMinutes),
+              input.endHours,
+            ),
+          });
+        }}
+      >
+        Valider
+      </Button>
     </div>
   );
 };

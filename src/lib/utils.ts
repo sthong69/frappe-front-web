@@ -20,3 +20,13 @@ export function filterSupervisorsPerCampusId(
 ) {
   return supervisors.filter((supervisor) => supervisor.campusId === campusId);
 }
+
+export function formatDateToFrench(date: Date) {
+  const formattedDate = new Intl.DateTimeFormat("fr-FR", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  }).format(date);
+  return formattedDate.replace(/^\w/, (c) => c.toUpperCase());
+}
