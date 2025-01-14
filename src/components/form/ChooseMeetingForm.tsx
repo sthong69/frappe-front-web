@@ -134,7 +134,7 @@ const ChooseMeetingForm = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="flex flex-1 flex-col items-center justify-center space-y-6"
+            className="relative flex flex-1 flex-col items-center justify-center space-y-6"
           >
             <FormField
               control={form.control}
@@ -227,7 +227,7 @@ const ChooseMeetingForm = () => {
               )}
             />
             <Button
-              className="absolute bottom-10 right-10 w-96 font-semibold text-black"
+              className="absolute bottom-0 right-0 w-96 font-semibold text-black"
               type="submit"
             >
               Continuer

@@ -1,6 +1,5 @@
 import { publicAPI } from "./axios";
 import {
-  getHours,
   getMinutes,
   setHours,
   setMinutes,
@@ -9,16 +8,21 @@ import {
   getDate,
   parseJSON,
   parseISO,
+  getHours,
 } from "date-fns";
 
 export const getAvailableDays = async (meetingInfos: {
   supervisorId: number;
   duration: string;
+  startDate: Date;
+  endDate: Date;
 }): Promise<Date[]> => {
   return publicAPI
     .get(`/availabilities/${meetingInfos.supervisorId}/days`, {
       params: {
         duration: meetingInfos.duration,
+        startDate: meetingInfos.startDate.toISOString().split("T")[0],
+        endDate: meetingInfos.endDate.toISOString().split("T")[0],
       },
     })
     .then(function (response: { data: string[] }) {
@@ -60,9 +64,9 @@ export const getAvailableSlots = async (meetingInfos: {
       data: { start: string; end: string; duration: string; remote: boolean }[];
     }) {
       let parsedData = response.data.map((item) => ({
-        startHours: parseJSON(item.start).getUTCHours(),
+        startHours: getHours(parseJSON(item.start)),
         startMinutes: getMinutes(parseJSON(item.start)),
-        endHours: parseISO(item.end).getUTCHours(),
+        endHours: getHours(parseISO(item.end)),
         endMinutes: getMinutes(parseJSON(item.end)),
       }));
       return Promise.resolve(parsedData);

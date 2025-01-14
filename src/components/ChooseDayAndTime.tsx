@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { formatDateToFrench } from "@/lib/utils";
 import { DAYS_RANGE_FOR_MEETING } from "@/lib/consts";
 import { toast } from "sonner";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface ChooseDayAndTimeProps {
   meetingInfos: {
@@ -61,6 +62,8 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
       getAvailableDays({
         ...props.meetingInfos,
         supervisorId: props.meetingInfos.supervisorInfos.id,
+        startDate: new Date(),
+        endDate: addDays(new Date(), DAYS_RANGE_FOR_MEETING),
       }),
   });
 
@@ -116,7 +119,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="date" className="w-full">
             {AVAILABLE_DAYS.isLoading
-              ? "Récupération des jours disponibles..."
+              ? "Récupération des disponibilités..."
               : input.selectedDate == null
                 ? "Veuilez sélectionner une date"
                 : formatDateToFrench(input.selectedDate)}
@@ -142,22 +145,27 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
 
         <TabsContent value="date">
           <div className="flex justify-center pt-2">
-            <Calendar
-              locale="fr"
-              minDate={new Date()}
-              maxDate={addDays(new Date(), DAYS_RANGE_FOR_MEETING)}
-              defaultView="month"
-              tileDisabled={checkDay}
-              onClickDay={(date) => {
-                setInput({
-                  selectedDate: date,
-                  startHours: undefined,
-                  startMinutes: undefined,
-                  endHours: undefined,
-                  endMinutes: undefined,
-                });
-              }}
-            />
+            {AVAILABLE_DAYS.isLoading ? (
+              <LoadingSpinner waitingText="Récupération des disponibilités" />
+            ) : (
+              <Calendar
+                locale="fr"
+                minDate={new Date()}
+                maxDate={addDays(new Date(), DAYS_RANGE_FOR_MEETING)}
+                defaultView="month"
+                defaultValue={input.selectedDate}
+                tileDisabled={checkDay}
+                onClickDay={(date) => {
+                  setInput({
+                    selectedDate: date,
+                    startHours: undefined,
+                    startMinutes: undefined,
+                    endHours: undefined,
+                    endMinutes: undefined,
+                  });
+                }}
+              />
+            )}
           </div>
         </TabsContent>
         <TabsContent value="time">
@@ -176,6 +184,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         </TabsContent>
       </Tabs>
       <Button
+        className="ml-auto w-96 font-semibold text-black"
         onClick={() => {
           if (input.selectedDate == undefined) {
             toast.error("Veuillez sélectionner une date pour le rendez-vous.");

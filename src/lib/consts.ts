@@ -5,8 +5,17 @@ export const GENDERS = [
 ];
 
 export const MEETING_THEMES = [
-  { label: "Recherche de stages", value: "Internship request" },
-  { label: "Orientation TAF", value: "TAF orientation" },
+  { label: "Recherche de stage", value: "Internship request" },
+  { label: "Project professionnel", value: "Professional project" },
+  { label: "Orientation", value: "Orientation" },
+  { label: "Correction outil", value: "Correction outil" },
+  { label: "Simulation d'entretien", value: "Interview simulation" },
+  {
+    label: "Problème au sein du stage",
+    value: "Problem within the internship",
+  },
+  { label: "Premier emploi", value: "First job" },
+  { label: "Autre", value: "Other" },
 ];
 
 export const HOUR_LIMIT_BEFORE_MEETING = 1;
