@@ -14,8 +14,26 @@ import {
 import { toast } from "sonner";
 import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "@/api/AuthAPI";
+import { router } from "@/router";
 
 const RegisterForm = () => {
+  const mutation = useMutation({
+    mutationFn: (newUserData: {
+      username: string;
+      password: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+    }) => {
+      return register(newUserData);
+    },
+    onSuccess: () => {
+      router.navigate({ to: "/register-email-sent" });
+    },
+  });
+
   const formSchema = z.object({
     lastName: z.string().max(128),
     firstName: z.string().max(128),
@@ -44,7 +62,13 @@ const RegisterForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isPasswordValid) {
-      console.log(values);
+      mutation.mutate({
+        username: values.email,
+        password: values.createPassword,
+        email: values.email,
+        firstName: values.firstName,
+        lastName: values.lastName,
+      });
     } else {
       toast("Merci de fournir un mot de passe répondant aux critères.");
     }
