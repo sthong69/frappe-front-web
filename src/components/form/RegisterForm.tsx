@@ -16,9 +16,12 @@ import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api/AuthAPI";
-import { router } from "@/router";
+import Page from "../Page";
 
 const RegisterForm = () => {
+  const [registrationSuccess, setRegistrationSuccess] =
+    useState<boolean>(false);
+
   const mutation = useMutation({
     mutationFn: (newUserData: {
       username: string;
@@ -30,7 +33,7 @@ const RegisterForm = () => {
       return register(newUserData);
     },
     onSuccess: () => {
-      router.navigate({ to: "/register-email-sent" });
+      setRegistrationSuccess(true);
     },
   });
 
@@ -72,6 +75,14 @@ const RegisterForm = () => {
     } else {
       toast("Merci de fournir un mot de passe répondant aux critères.");
     }
+  }
+
+  if (registrationSuccess) {
+    return (
+      <Page className="text-center">
+        Un e-mail de confirmation a été envoyé. Merci de valider votre compte !
+      </Page>
+    );
   }
 
   return (

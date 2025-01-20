@@ -3,20 +3,27 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async ({ context, location }) => {
-    const isAuthentified = await context.auth.isAuthenticated();
-    console.log("authenticated1");
-    if (!isAuthentified) {
+    console.log("Checking auth");
+    const authStatus = await context.auth.isAuthenticated();
+
+    if (!authStatus) {
+      toast.warning("Vous devez être connecté pour accéder à cette page.");
       throw redirect({
         to: "/",
-        search: {
-          redirect: location.href,
-        },
       });
     }
-    console.log("authenticated2");
-    console.log(context.auth.isProfileComplete());
+
+    const fetchStatus = await context.auth.fetchUserInfo();
+
+    if (!fetchStatus) {
+      toast.error("Une erreur s'est produite. Veuillez vous reconnecter.");
+      throw redirect({
+        to: "/",
+      });
+    }
+
     if (!context.auth.isProfileComplete() && location.pathname !== "/profile") {
-      toast("Veuillez compléter votre profil avant de continuer.");
+      toast.warning("Veuillez compléter votre profil avant de continuer.");
       throw redirect({
         to: "/profile",
       });

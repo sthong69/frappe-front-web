@@ -30,3 +30,10 @@ export function formatDateToFrench(date: Date) {
   }).format(date);
   return formattedDate.replace(/^\w/, (c) => c.toUpperCase());
 }
+
+export function findCitiesPerCountryName(
+  cities: { city_name: string; country_name: string }[],
+  countryName: string,
+) {
+  return cities.filter((city) => city.country_name === countryName);
+}

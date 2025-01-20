@@ -1,90 +1,146 @@
 import { fetchStudentInfo } from "@/api/StudentsAPI";
 import { router } from "@/router";
-import { AuthContextType, Student } from "@/lib/types/AuthTypes";
+import { AuthContextType, Student, User } from "@/lib/types/AuthTypes";
 import { createContext, useState, useContext, useEffect } from "react";
+import { fetchSupervisorInfo } from "@/api/SupervisorsAPI";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: any }) => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("authToken"),
+  const [authToken, setAuthToken] = useState<string | undefined>(
+    localStorage.getItem("authToken") ?? undefined,
   );
-  const [student, setStudent] = useState<Student | null>(null);
+  const [userRole, setUserRole] = useState<string | undefined>(
+    localStorage.getItem("userRole") ?? undefined,
+  );
+  const [user, setUser] = useState<User | undefined>(undefined);
+
+  const fetchUserInfo = async (): Promise<boolean> => {
+    try {
+      if (localStorage.getItem("userRole") === "ROLE_STUDENT") {
+        const studentInfo = await fetchStudentInfo();
+        setUser(studentInfo);
+        return true;
+      }
+      if (localStorage.getItem("userRole") === "ROLE_SUPERVISOR") {
+        const supervisorInfo = await fetchSupervisorInfo();
+        setUser(supervisorInfo);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      setAuthToken(undefined);
+      localStorage.removeItem("authToken");
+      setUserRole(undefined);
+      localStorage.removeItem("userRole");
+      setUser(undefined);
+      router.navigate({ to: "/" });
+      return false;
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        setAuthToken(token);
-        const studentInfo = await getStudentInfo();
-        setStudent(studentInfo ?? null);
-      }
-    };
-    fetchData();
-  }, [token]);
-
-  const setAuthToken = (token: string) => {
-    localStorage.setItem("authToken", token);
-    setToken(token);
-  };
-
-  const removeAuthToken = () => {
-    localStorage.removeItem("authToken");
-    setToken(null);
-  };
-
-  const getStudentInfo = async () => {
-    try {
-      const student = await fetchStudentInfo();
-      return student;
-    } catch (error) {
-      console.log(error);
+    if (authToken) {
+      fetchUserInfo();
+    } else {
+      setUser(undefined);
     }
+  }, [authToken]);
+
+  const storeAuthToken = (token: string) => {
+    localStorage.setItem("authToken", token);
+    setAuthToken(token);
+  };
+
+  const storeUserRole = (role: string) => {
+    localStorage.setItem("userRole", role);
+    setUserRole(role);
   };
 
   const logout = () => {
-    removeAuthToken();
-    setStudent(null);
+    setAuthToken(undefined);
+    localStorage.removeItem("authToken");
+    setUserRole(undefined);
+    localStorage.removeItem("userRole");
     router.navigate({ to: "/" });
   };
 
-  const isAuthenticated = async () => {
-    if (!token) {
+  const isAuthenticated = async (): Promise<boolean> => {
+    if (localStorage.getItem("authToken") === null) {
+      console.log("no auth token");
       return false;
     }
 
-    const fetchStudent = await fetchStudentInfo();
-    if (fetchStudent) {
-      return true;
-    } else {
+    try {
+      if (
+        userRole == "ROLE_STUDENT" ||
+        localStorage.getItem("userRole") == "ROLE_STUDENT"
+      ) {
+        console.log("trying to fetch student info");
+        await fetchStudentInfo();
+        console.log("student info fetched");
+        return true;
+      }
+      if (
+        userRole == "ROLE_SUPERVISOR" ||
+        localStorage.getItem("userRole") == "ROLE_SUPERVISOR"
+      ) {
+        console.log("trying to fetch supervisor info");
+        await fetchSupervisorInfo();
+        console.log("supervisor info fetched");
+        return true;
+      }
+      console.log("fallback");
+      return false;
+    } catch (error) {
+      console.log("error", error);
       return false;
     }
   };
 
-  const isProfileComplete = () => {
-    if (student) {
+  const isProfileComplete = (): boolean => {
+    console.log("Checking profile completion");
+    if (!user) {
+      console.log("profile check no user");
+      return false;
+    }
+
+    if (userRole === "ROLE_SUPERVISOR") {
+      console.log("supervisor bypass");
+      return true;
+    }
+
+    if (userRole === "ROLE_STUDENT") {
+      console.log("student check");
+      const student = user as Student;
+      console.log(student);
       return (
         student.firstName !== "" &&
         student.lastName !== "" &&
         student.email !== "" &&
-        student.phoneNumber !== undefined &&
-        student.campusId !== undefined &&
-        student.nationality !== "" &&
-        student.gender !== ""
+        student.phoneNumber !== null &&
+        student.campusId !== null &&
+        student.nationality !== null &&
+        student.gender !== null
       );
     }
+
+    console.log("fallback profile check");
     return false;
   };
 
   return (
     <AuthContext.Provider
       value={{
-        token,
-        student,
-        isAuthenticated,
-        setAuthToken,
-        removeAuthToken,
+        authToken,
+        user,
+        userRole,
+        storeAuthToken,
+        storeUserRole,
         logout,
+        isAuthenticated,
         isProfileComplete,
+        fetchUserInfo,
       }}
     >
       {children}

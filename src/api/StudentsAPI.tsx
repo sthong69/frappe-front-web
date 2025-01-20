@@ -1,5 +1,5 @@
 import { Student } from "@/lib/types/AuthTypes";
-import { secureAPI } from "./axios";
+import secureAPI from "./axios";
 
 export const fetchStudentInfo = async (): Promise<Student> => {
   return secureAPI

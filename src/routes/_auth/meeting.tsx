@@ -2,7 +2,7 @@ import ChooseMeetingForm from "@/components/form/ChooseMeetingForm";
 import Page from "@/components/Page";
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/meeting")({
+export const Route = createFileRoute("/_auth/meeting")({
   component: RouteComponent,
 });
 
