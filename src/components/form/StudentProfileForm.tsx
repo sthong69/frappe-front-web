@@ -101,7 +101,7 @@ const StudentProfileForm = () => {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField

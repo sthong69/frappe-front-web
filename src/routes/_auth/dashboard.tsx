@@ -12,8 +12,8 @@ function RouteComponent() {
   if (userRole == "ROLE_STUDENT") {
     return (
       <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ÉTUDIANT`}>
-        <div className="grid grid-cols-2 py-8">
-          <div className="flex flex-col gap-8 p-4">
+        <div className="grid h-full flex-1 grid-cols-2 divide-x divide-black pt-8">
+          <div className="flex h-full flex-col gap-8">
             <h2 className="text-center font-bold">MES RENDEZ-VOUS</h2>
             <div>
               <h3 className="font-bold">À VENIR</h3>
@@ -22,7 +22,7 @@ function RouteComponent() {
               <h3 className="font-bold">PASSÉS</h3>
             </div>
           </div>
-          <div className="flex min-h-screen flex-1 flex-col gap-8 p-4">
+          <div className="flex h-full flex-col gap-8 pl-8">
             <h2 className="text-center font-bold">PRENDRE RENDEZ-VOUS</h2>
             <p>
               Les encadrantes TING sont là pour toi. N’hésite pas à prendre
@@ -42,12 +42,9 @@ function RouteComponent() {
 
   if (userRole == "ROLE_SUPERVISOR") {
     return (
-      <Page
-        title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ENCADRANT`}
-        className="flex flex-1 flex-col"
-      >
-        <div className="grid grid-cols-2 grid-rows-2 py-8">
-          <div className="row-span-2 flex flex-col gap-8 p-4">
+      <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ENCADRANT`}>
+        <div className="grid h-full grid-cols-2 py-8">
+          <div className="flex h-full flex-col gap-8 p-4">
             <h2 className="text-center font-bold">RENDEZ-VOUS</h2>
             <div>
               <h3 className="font-bold">À VENIR</h3>
@@ -56,14 +53,14 @@ function RouteComponent() {
               <h3 className="font-bold">PASSÉS</h3>
             </div>
           </div>
-          <div className="flex flex-col gap-8 p-4">
+          <div className="flex h-full flex-col gap-8 p-4">
             <h2 className="text-center font-bold">AJOUTEZ UN COLLABORATEUR</h2>
             <p>
               Vous pouvez ajouter un collaborateur qui pourra prendre des
               étudiants en rendez-vous et modifier le fichier de suivi.
             </p>
           </div>
-          <div className="flex flex-col gap-8 p-4">
+          <div className="flex h-full flex-col gap-8 p-4">
             <h2 className="text-center font-bold">SUIVI DES ÉLÈVES</h2>
             <p>
               Le tableau de suivi des élèves vous permet de gérer des fiches de

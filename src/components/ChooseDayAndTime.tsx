@@ -91,7 +91,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-1 flex-col gap-4">
       <p className="-mt-4 mb-4 px-4">
         Veuillez choisir le jour et l’heure du rendez-vous.
       </p>
@@ -184,7 +184,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         </TabsContent>
       </Tabs>
       <Button
-        className="ml-auto w-96 font-semibold text-black"
+        className="ml-auto mt-auto w-96 font-semibold text-black"
         onClick={() => {
           if (input.selectedDate == undefined) {
             toast.error("Veuillez sélectionner une date pour le rendez-vous.");

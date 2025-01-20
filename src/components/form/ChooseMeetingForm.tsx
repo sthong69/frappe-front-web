@@ -134,100 +134,105 @@ const ChooseMeetingForm = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="relative flex flex-1 flex-col items-center justify-center space-y-6"
+            className="flex h-full flex-1 flex-col items-center gap-4"
           >
-            <FormField
-              control={form.control}
-              name="campusId"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setCampusId(value);
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-96">
-                        <SelectValue placeholder="Campus" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {CAMPUSES.data.map((campus) => (
-                        <SelectItem
-                          key={campus.id}
-                          value={campus.id.toString()}
-                        >
-                          {campus.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="supervisorId"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger disabled={!campusId} className="w-96">
-                        <SelectValue placeholder="Encadrante" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {filterSupervisorsPerCampusId(
-                        SUPERVISORS.data,
-                        parseInt(campusId!),
-                      ).map((supervisor) => (
-                        <SelectItem
-                          key={supervisor.id}
-                          value={supervisor.id.toString()}
-                        >
-                          {supervisor.firstName} {supervisor.lastName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="duration"
-              render={({ field }) => (
-                <FormItem>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-96">
-                        <SelectValue placeholder="Durée" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {DURATIONS.map((duration) => (
-                        <SelectItem key={duration.value} value={duration.value}>
-                          {duration.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="my-auto flex flex-col gap-4">
+              <FormField
+                control={form.control}
+                name="campusId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setCampusId(value);
+                      }}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-96">
+                          <SelectValue placeholder="Campus" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {CAMPUSES.data.map((campus) => (
+                          <SelectItem
+                            key={campus.id}
+                            value={campus.id.toString()}
+                          >
+                            {campus.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="supervisorId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger disabled={!campusId} className="w-96">
+                          <SelectValue placeholder="Encadrante" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {filterSupervisorsPerCampusId(
+                          SUPERVISORS.data,
+                          parseInt(campusId!),
+                        ).map((supervisor) => (
+                          <SelectItem
+                            key={supervisor.id}
+                            value={supervisor.id.toString()}
+                          >
+                            {supervisor.firstName} {supervisor.lastName}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="duration"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="w-96">
+                          <SelectValue placeholder="Durée" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {DURATIONS.map((duration) => (
+                          <SelectItem
+                            key={duration.value}
+                            value={duration.value}
+                          >
+                            {duration.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <Button
-              className="absolute bottom-0 right-0 w-96 font-semibold text-black"
+              className="ml-auto mt-auto w-96 font-semibold text-black"
               type="submit"
             >
               Continuer

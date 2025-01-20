@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NAVBAR_HEIGHT } from "@/lib/styles/consts";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -17,7 +18,9 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-black px-8 file:bg-transparent">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <div
+        className={`container flex h-[${NAVBAR_HEIGHT}px] items-center justify-between px-4 md:px-6`}
+      >
         <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium">
           <Link
             to="/"
