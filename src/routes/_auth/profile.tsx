@@ -1,6 +1,5 @@
-import ProfileForm from "@/components/form/ProfileForm";
+import ProfileForm from "@/components/form/StudentProfileForm";
 import Page from "@/components/Page";
-import { useAuth } from "@/context/Auth";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/profile")({
@@ -8,8 +7,6 @@ export const Route = createFileRoute("/_auth/profile")({
 });
 
 function RouteComponent() {
-  const auth = useAuth();
-
   return (
     <Page title="Votre profil FRAPPE">
       <ProfileForm />

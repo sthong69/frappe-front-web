@@ -13,12 +13,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
-  const { student } = useAuth();
+  const { userRole } = useAuth();
   return (
     <>
       <main className="flex min-h-screen flex-col">
         <div
-          className={`min-h-screen ${student ? (student.student ? "bg-student" : "bg-supervisor") : "bg-white"}`}
+          className={`min-h-screen ${userRole ? (userRole === "ROLE_STUDENT" ? "bg-student" : "bg-supervisor") : "bg-white"}`}
         >
           <Navbar />
           <Outlet />

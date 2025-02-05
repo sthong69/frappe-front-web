@@ -13,16 +13,14 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as TestImport } from './routes/test'
-import { Route as RegisterEmailSentImport } from './routes/register-email-sent'
 import { Route as RegisterImport } from './routes/register'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
-import { Route as MeetingImport } from './routes/meeting'
 import { Route as FaqImport } from './routes/faq'
-import { Route as CommentImport } from './routes/comment'
 import { Route as AddSupervisorImport } from './routes/add-supervisor'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthProfileImport } from './routes/_auth/profile'
+import { Route as AuthMeetingImport } from './routes/_auth/meeting'
 import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
 
 // Create/Update Routes
@@ -39,12 +37,6 @@ const TestRoute = TestImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const RegisterEmailSentRoute = RegisterEmailSentImport.update({
-  id: '/register-email-sent',
-  path: '/register-email-sent',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const RegisterRoute = RegisterImport.update({
   id: '/register',
   path: '/register',
@@ -57,21 +49,9 @@ const RecoverPasswordRoute = RecoverPasswordImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const MeetingRoute = MeetingImport.update({
-  id: '/meeting',
-  path: '/meeting',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const FaqRoute = FaqImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const CommentRoute = CommentImport.update({
-  id: '/comment',
-  path: '/comment',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,6 +75,12 @@ const IndexRoute = IndexImport.update({
 const AuthProfileRoute = AuthProfileImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthMeetingRoute = AuthMeetingImport.update({
+  id: '/meeting',
+  path: '/meeting',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -129,25 +115,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AddSupervisorImport
       parentRoute: typeof rootRoute
     }
-    '/comment': {
-      id: '/comment'
-      path: '/comment'
-      fullPath: '/comment'
-      preLoaderRoute: typeof CommentImport
-      parentRoute: typeof rootRoute
-    }
     '/faq': {
       id: '/faq'
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqImport
-      parentRoute: typeof rootRoute
-    }
-    '/meeting': {
-      id: '/meeting'
-      path: '/meeting'
-      fullPath: '/meeting'
-      preLoaderRoute: typeof MeetingImport
       parentRoute: typeof rootRoute
     }
     '/recover-password': {
@@ -162,13 +134,6 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterImport
-      parentRoute: typeof rootRoute
-    }
-    '/register-email-sent': {
-      id: '/register-email-sent'
-      path: '/register-email-sent'
-      fullPath: '/register-email-sent'
-      preLoaderRoute: typeof RegisterEmailSentImport
       parentRoute: typeof rootRoute
     }
     '/test': {
@@ -192,6 +157,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/meeting': {
+      id: '/_auth/meeting'
+      path: '/meeting'
+      fullPath: '/meeting'
+      preLoaderRoute: typeof AuthMeetingImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/profile': {
       id: '/_auth/profile'
       path: '/profile'
@@ -206,11 +178,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthDashboardRoute: typeof AuthDashboardRoute
+  AuthMeetingRoute: typeof AuthMeetingRoute
   AuthProfileRoute: typeof AuthProfileRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthDashboardRoute: AuthDashboardRoute,
+  AuthMeetingRoute: AuthMeetingRoute,
   AuthProfileRoute: AuthProfileRoute,
 }
 
@@ -220,15 +194,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
-  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/register-email-sent': typeof RegisterEmailSentRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
 }
 
@@ -236,15 +208,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
-  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/register-email-sent': typeof RegisterEmailSentRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/dashboard': typeof AuthDashboardRoute
+  '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
 }
 
@@ -253,15 +223,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
   '/add-supervisor': typeof AddSupervisorRoute
-  '/comment': typeof CommentRoute
   '/faq': typeof FaqRoute
-  '/meeting': typeof MeetingRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/register': typeof RegisterRoute
-  '/register-email-sent': typeof RegisterEmailSentRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
   '/_auth/dashboard': typeof AuthDashboardRoute
+  '/_auth/meeting': typeof AuthMeetingRoute
   '/_auth/profile': typeof AuthProfileRoute
 }
 
@@ -271,45 +239,39 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
-    | '/meeting'
     | '/recover-password'
     | '/register'
-    | '/register-email-sent'
     | '/test'
     | '/verify-email'
     | '/dashboard'
+    | '/meeting'
     | '/profile'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
-    | '/meeting'
     | '/recover-password'
     | '/register'
-    | '/register-email-sent'
     | '/test'
     | '/verify-email'
     | '/dashboard'
+    | '/meeting'
     | '/profile'
   id:
     | '__root__'
     | '/'
     | '/_auth'
     | '/add-supervisor'
-    | '/comment'
     | '/faq'
-    | '/meeting'
     | '/recover-password'
     | '/register'
-    | '/register-email-sent'
     | '/test'
     | '/verify-email'
     | '/_auth/dashboard'
+    | '/_auth/meeting'
     | '/_auth/profile'
   fileRoutesById: FileRoutesById
 }
@@ -318,12 +280,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
   AddSupervisorRoute: typeof AddSupervisorRoute
-  CommentRoute: typeof CommentRoute
   FaqRoute: typeof FaqRoute
-  MeetingRoute: typeof MeetingRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
   RegisterRoute: typeof RegisterRoute
-  RegisterEmailSentRoute: typeof RegisterEmailSentRoute
   TestRoute: typeof TestRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
 }
@@ -332,12 +291,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
   AddSupervisorRoute: AddSupervisorRoute,
-  CommentRoute: CommentRoute,
   FaqRoute: FaqRoute,
-  MeetingRoute: MeetingRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,
   RegisterRoute: RegisterRoute,
-  RegisterEmailSentRoute: RegisterEmailSentRoute,
   TestRoute: TestRoute,
   VerifyEmailRoute: VerifyEmailRoute,
 }
@@ -355,12 +311,9 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/add-supervisor",
-        "/comment",
         "/faq",
-        "/meeting",
         "/recover-password",
         "/register",
-        "/register-email-sent",
         "/test",
         "/verify-email"
       ]
@@ -372,29 +325,21 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/dashboard",
+        "/_auth/meeting",
         "/_auth/profile"
       ]
     },
     "/add-supervisor": {
       "filePath": "add-supervisor.tsx"
     },
-    "/comment": {
-      "filePath": "comment.tsx"
-    },
     "/faq": {
       "filePath": "faq.tsx"
-    },
-    "/meeting": {
-      "filePath": "meeting.tsx"
     },
     "/recover-password": {
       "filePath": "recover-password.tsx"
     },
     "/register": {
       "filePath": "register.tsx"
-    },
-    "/register-email-sent": {
-      "filePath": "register-email-sent.tsx"
     },
     "/test": {
       "filePath": "test.tsx"
@@ -404,6 +349,10 @@ export const routeTree = rootRoute
     },
     "/_auth/dashboard": {
       "filePath": "_auth/dashboard.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/meeting": {
+      "filePath": "_auth/meeting.tsx",
       "parent": "/_auth"
     },
     "/_auth/profile": {

@@ -29,10 +29,8 @@ const LoginForm = () => {
       return login(userData);
     },
     onSuccess: async (data) => {
-      authContext.setAuthToken(data.token);
-      const isAuth = await authContext.isAuthenticated();
-      console.log(isAuth);
-      setIsLoading(false);
+      authContext.storeAuthToken(data.token);
+      authContext.storeUserRole(data.role);
       router.navigate({ to: "/dashboard" });
     },
     onError: (error: AxiosError<{ message: string }>) => {
@@ -59,7 +57,6 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
-    setIsLoading(true);
     mutation.mutate(values);
   }
 

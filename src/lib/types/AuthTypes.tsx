@@ -1,4 +1,4 @@
-export interface User {
+export interface UserBase {
   id: string;
   username: string;
   email: string;
@@ -6,24 +6,29 @@ export interface User {
   lastName: string;
   phoneNumber?: string;
   campusId?: number;
-  supervisor: boolean;
-  student: boolean;
 }
 
-export interface Student extends User {
-  student: true;
-  supervisor: false;
+export interface Student extends UserBase {
   gender?: string;
   nationality?: string;
   creditTransferId?: number;
 }
 
+export interface Supervisor extends UserBase {
+  supervisor: true;
+  meeting_url?: string;
+}
+
+export type User = Student | Supervisor;
+
 export type AuthContextType = {
-  token: string | null;
-  student: Student | null;
-  isAuthenticated: () => Promise<boolean>;
-  setAuthToken: (token: string) => void;
-  removeAuthToken: () => void;
+  authToken: string | undefined;
+  user: User | undefined;
+  userRole: string | undefined;
+  storeAuthToken: (token: string) => void;
+  storeUserRole: (role: string) => void;
   logout: () => void;
+  isAuthenticated: () => Promise<boolean>;
   isProfileComplete: () => boolean;
+  fetchUserInfo: () => Promise<boolean>;
 };

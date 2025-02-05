@@ -47,8 +47,9 @@ const CAMPUSES = [
   { id: 3, name: "Nantes" },
 ];
 
-const ProfileForm = () => {
-  const { student } = useAuth();
+const StudentProfileForm = () => {
+  const { user } = useAuth();
+  const student = user as Student;
 
   const mutation = useMutation({
     mutationFn: (newStudentInfos: Student) => {
@@ -93,8 +94,6 @@ const ProfileForm = () => {
         ...values,
         id: student.id,
         username: student.username,
-        student: true,
-        supervisor: false,
         campusId: parseInt(values.campusId),
         creditTransferId: parseInt(values.creditTransferId),
       });
@@ -102,7 +101,7 @@ const ProfileForm = () => {
   }
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -288,4 +287,4 @@ const ProfileForm = () => {
   );
 };
 
-export default ProfileForm;
+export default StudentProfileForm;

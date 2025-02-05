@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { verify } from "@/api/AuthAPI";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 type VerificationTokenSearchParams = {
   token: string;
@@ -30,14 +31,13 @@ function RouteComponent() {
   });
 
   useEffect(() => {
-    console.log(token);
     if (token) {
       mutation.mutate(token);
     }
   }, [token]);
 
   if (mutation.isPending) {
-    return <div>Vérification de votre compte...</div>;
+    return <LoadingSpinner waitingText="Vérification de votre compte" />;
   } else if (mutation.isError) {
     return <div>Une erreur est survenue : {mutation.error.message}</div>;
   } else {

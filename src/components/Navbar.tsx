@@ -10,14 +10,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NAVBAR_HEIGHT } from "@/lib/styles/consts";
 
 export default function Navbar() {
-  const { student, logout } = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   return (
     <header className="border-b border-black px-8 file:bg-transparent">
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <div
+        className={`container flex h-[${NAVBAR_HEIGHT}px] items-center justify-between px-4 md:px-6`}
+      >
         <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium">
           <Link
             to="/"
@@ -51,19 +54,19 @@ export default function Navbar() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          {student ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className="flex flex-col items-center gap-1">
                   <User className="h-6 w-6" />
                   <span className="text-[10px] font-medium">
-                    {student ? "CONNECTÉ" : "HORS CONNEXION"}
+                    {user ? "CONNECTÉ" : "HORS CONNEXION"}
                   </span>
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>
-                  {student?.firstName} {student?.lastName}
+                  {user?.firstName} {user?.lastName}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link to="/profile">
@@ -87,7 +90,7 @@ export default function Navbar() {
               <div className="flex flex-col items-center gap-1">
                 <User className="h-6 w-6" />
                 <span className="text-[10px] font-medium">
-                  {student ? "CONNECTÉ" : "HORS CONNEXION"}
+                  {user ? "CONNECTÉ" : "HORS CONNEXION"}
                 </span>
               </div>
             </Link>

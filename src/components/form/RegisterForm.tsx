@@ -14,8 +14,29 @@ import {
 import { toast } from "sonner";
 import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
+import { useMutation } from "@tanstack/react-query";
+import { register } from "@/api/AuthAPI";
+import Page from "../Page";
 
 const RegisterForm = () => {
+  const [registrationSuccess, setRegistrationSuccess] =
+    useState<boolean>(false);
+
+  const mutation = useMutation({
+    mutationFn: (newUserData: {
+      username: string;
+      password: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+    }) => {
+      return register(newUserData);
+    },
+    onSuccess: () => {
+      setRegistrationSuccess(true);
+    },
+  });
+
   const formSchema = z.object({
     lastName: z.string().max(128),
     firstName: z.string().max(128),
@@ -44,10 +65,24 @@ const RegisterForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (isPasswordValid) {
-      console.log(values);
+      mutation.mutate({
+        username: values.email,
+        password: values.createPassword,
+        email: values.email,
+        firstName: values.firstName,
+        lastName: values.lastName,
+      });
     } else {
       toast("Merci de fournir un mot de passe répondant aux critères.");
     }
+  }
+
+  if (registrationSuccess) {
+    return (
+      <Page className="text-center">
+        Un e-mail de confirmation a été envoyé. Merci de valider votre compte !
+      </Page>
+    );
   }
 
   return (
@@ -148,7 +183,7 @@ const RegisterForm = () => {
               match: "Les mots de passe doivent correspondre.",
             }}
           />
-          <Button className="w-96 font-semibold text-black" type="submit">
+          <Button className="w-full font-semibold text-black" type="submit">
             S'inscrire
           </Button>
         </form>

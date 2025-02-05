@@ -49,7 +49,11 @@ export const verify = async (input: {
 export const login = async (input: {
   email: string;
   password: string;
-}): Promise<{ token: string; message: string }> => {
+}): Promise<{
+  token: string;
+  message: string;
+  role: "ROLE_STUDENT" | "ROLE_SUPERVISOR";
+}> => {
   return publicAPI
     .post("/auth/login", {
       email: input.email,
