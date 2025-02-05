@@ -183,7 +183,7 @@ const RegisterForm = () => {
               match: "Les mots de passe doivent correspondre.",
             }}
           />
-          <Button className="w-96 font-semibold text-black" type="submit">
+          <Button className="w-full font-semibold text-black" type="submit">
             S'inscrire
           </Button>
         </form>
