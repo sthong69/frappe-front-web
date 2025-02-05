@@ -17,10 +17,14 @@ import { PasswordInput } from "../PasswordInput";
 import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api/AuthAPI";
 import Page from "../Page";
+import { AxiosError } from "axios";
+import { translateErrorCode } from "@/lib/utils";
 
 const RegisterForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
     mutationFn: (newUserData: {
@@ -34,6 +38,12 @@ const RegisterForm = () => {
     },
     onSuccess: () => {
       setRegistrationSuccess(true);
+    },
+    onError: (error: AxiosError) => {
+      setIsLoading(false);
+      setError(
+        translateErrorCode({ errorCode: error.code, language: "french" }),
+      );
     },
   });
 
@@ -64,6 +74,8 @@ const RegisterForm = () => {
   // const specialCharacterRegex = /[~`¿¡!#$%\^&*€£@+÷=éÉèÈçÇàÀùÙ§\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    setError(null);
+    setIsLoading(true);
     if (isPasswordValid) {
       mutation.mutate({
         username: values.email,
@@ -73,7 +85,8 @@ const RegisterForm = () => {
         lastName: values.lastName,
       });
     } else {
-      toast("Merci de fournir un mot de passe répondant aux critères.");
+      toast.error("Merci de fournir un mot de passe répondant aux critères.");
+      setIsLoading(false);
     }
   }
 
@@ -183,11 +196,16 @@ const RegisterForm = () => {
               match: "Les mots de passe doivent correspondre.",
             }}
           />
-          <Button className="w-full font-semibold text-black" type="submit">
+          <Button
+            className="w-full font-semibold text-black"
+            type="submit"
+            disabled={isLoading}
+          >
             S'inscrire
           </Button>
         </form>
       </Form>
+      {error && <p className="text-center text-red-500">{error}</p>}
     </div>
   );
 };

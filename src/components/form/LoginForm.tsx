@@ -57,6 +57,7 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
+    setIsLoading(true);
     mutation.mutate(values);
   }
 
@@ -106,7 +107,7 @@ const LoginForm = () => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 py-8">
         <p>PAS ENCORE DE COMPTE ?</p>
-        <Button className="w-96 font-semibold text-black">
+        <Button className="w-96 font-semibold text-black" disabled={isLoading}>
           <Link to="/register">S'inscrire</Link>
         </Button>
       </div>
