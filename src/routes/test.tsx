@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { getAllCreditTransfers } from "@/api/CreditTransferAPI";
+import { getAllCreditTransfers } from "@/api/CreditTransfersAPI";
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 export const Route = createFileRoute("/test")({
