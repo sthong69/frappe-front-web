@@ -33,23 +33,23 @@ import {
 } from "@/components/ui/command";
 import { useAuth } from "@/context/Auth";
 import { updateStudentInfo } from "@/api/StudentsAPI";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Student } from "@/lib/types/AuthTypes";
 import { GENDERS } from "@/lib/consts";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { COUNTRIES } from "@/lib/countries";
-
-const CAMPUSES = [
-  { id: 1, name: "Brest" },
-  { id: 2, name: "Rennes" },
-  { id: 3, name: "Nantes" },
-];
+import { getAllCampuses } from "@/api/CampusAPI";
 
 const StudentProfileForm = () => {
   const { user } = useAuth();
   const student = user as Student;
+
+  const CAMPUSES = useQuery({
+    queryKey: ["campuses"],
+    queryFn: getAllCampuses,
+  });
 
   const mutation = useMutation({
     mutationFn: (newStudentInfos: Student) => {
@@ -98,6 +98,22 @@ const StudentProfileForm = () => {
         creditTransferId: parseInt(values.creditTransferId),
       });
     }
+  }
+
+  if (CAMPUSES.isLoading) {
+    return <></>;
+  }
+
+  if (CAMPUSES.isError || !CAMPUSES.data) {
+    return (
+      <div className="flex flex-col gap-8">
+        <p>
+          Les campus et la liste des encadrants TING n'ont pas pu être
+          récupérées depuis le serveur.
+        </p>
+        <p>{CAMPUSES.error?.message}</p>
+      </div>
+    );
   }
 
   return (
@@ -205,7 +221,7 @@ const StudentProfileForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {CAMPUSES.map((campus) => (
+                    {CAMPUSES.data.map((campus) => (
                       <SelectItem key={campus.id} value={campus.id.toString()}>
                         {campus.name}
                       </SelectItem>
