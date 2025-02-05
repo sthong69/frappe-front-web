@@ -33,7 +33,6 @@ import {
   CommandList,
 } from "./ui/command";
 import { Check } from "lucide-react";
-import { getAllCitiesPerCountryName } from "@/api/CitiesAPI";
 
 interface ChooseMeetingTypeProps {
   meetingInfos: {
@@ -59,18 +58,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
   const [country, setCountry] = useState<
     { label: string; value: string } | undefined
   >(undefined);
-  const [cities, setCities] = useState<string[]>([]);
-  const [city, setCity] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    const fetchCities = async () => {
-      if (country) {
-        const citiesData = await getAllCitiesPerCountryName(country.value);
-        setCities(citiesData);
-      }
-    };
-    fetchCities();
-  }, [country]);
 
   const formSchema = z.object({
     theme: z.string(),
@@ -154,146 +141,74 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 )}
               />
               {theme && theme.value == "Internship request" ? (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="wanted_country"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>Pays envisagé pour le stage</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                role="combobox"
-                                className={cn(
-                                  "justify-between",
-                                  !field.value && "text-muted-foreground",
-                                )}
-                              >
-                                {field.value
-                                  ? COUNTRIES.find(
-                                      (country) =>
-                                        country.value === field.value,
-                                    )?.label
-                                  : "Sélectionnez un pays"}
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-96 p-0">
-                            <Command>
-                              <CommandInput
-                                placeholder="Rechercher un pays..."
-                                className="h-9"
-                              />
-                              <CommandList>
-                                <CommandEmpty>
-                                  Pas de pays correspondant.
-                                </CommandEmpty>
-                                <CommandGroup>
-                                  {COUNTRIES.map((country) => (
-                                    <CommandItem
-                                      value={country.label}
-                                      key={country.value}
-                                      onSelect={() => {
-                                        form.setValue(
-                                          "wanted_country",
-                                          country.value,
-                                        );
-                                        setCountry(country);
-                                        form.setValue("wanted_city", "");
-                                        setCity(undefined);
-                                      }}
-                                    >
-                                      {country.label}
-                                      <Check
-                                        className={cn(
-                                          "ml-auto",
-                                          country.value === field.value
-                                            ? "opacity-100"
-                                            : "opacity-0",
-                                        )}
-                                      />
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="wanted_city"
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>Ville envisagée pour le stage</FormLabel>
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                disabled={!country}
-                                variant="outline"
-                                role="combobox"
-                                className={cn(
-                                  "justify-between",
-                                  !field.value && "text-muted-foreground",
-                                )}
-                              >
-                                {city ? field.value : "Sélectionnez un pays"}
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-96 p-0">
-                            <Command>
-                              <CommandInput
-                                placeholder="Rechercher une ville..."
-                                className="h-9"
-                              />
-                              <CommandList>
-                                <CommandEmpty>
-                                  Pas de ville correspondante dans le pays
-                                  spécifié.
-                                </CommandEmpty>
-                                <CommandGroup>
-                                  {country ? (
-                                    cities.map((city) => (
-                                      <CommandItem
-                                        value={city}
-                                        key={city}
-                                        onSelect={() => {
-                                          form.setValue("wanted_city", city);
-                                          setCity(city);
-                                        }}
-                                      >
-                                        {city}
-                                        <Check
-                                          className={cn(
-                                            "ml-auto",
-                                            city === field.value
-                                              ? "opacity-100"
-                                              : "opacity-0",
-                                          )}
-                                        />
-                                      </CommandItem>
-                                    ))
-                                  ) : (
-                                    <></>
-                                  )}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
+                <FormField
+                  control={form.control}
+                  name="wanted_country"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Pays envisagé pour le stage</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              className={cn(
+                                "justify-between",
+                                !field.value && "text-muted-foreground",
+                              )}
+                            >
+                              {field.value
+                                ? COUNTRIES.find(
+                                    (country) => country.value === field.value,
+                                  )?.label
+                                : "Sélectionnez un pays"}
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-96 p-0">
+                          <Command>
+                            <CommandInput
+                              placeholder="Rechercher un pays..."
+                              className="h-9"
+                            />
+                            <CommandList>
+                              <CommandEmpty>
+                                Pas de pays correspondant.
+                              </CommandEmpty>
+                              <CommandGroup>
+                                {COUNTRIES.map((country) => (
+                                  <CommandItem
+                                    value={country.label}
+                                    key={country.value}
+                                    onSelect={() => {
+                                      form.setValue(
+                                        "wanted_country",
+                                        country.value,
+                                      );
+                                      setCountry(country);
+                                    }}
+                                  >
+                                    {country.label}
+                                    <Check
+                                      className={cn(
+                                        "ml-auto",
+                                        country.value === field.value
+                                          ? "opacity-100"
+                                          : "opacity-0",
+                                      )}
+                                    />
+                                  </CommandItem>
+                                ))}
+                              </CommandGroup>
+                            </CommandList>
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               ) : (
                 <></>
               )}
