@@ -1,9 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import Accrodion from "@/components/ui/Accrodion"
 
 export const Route = createFileRoute("/faq")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return "Hello /faq!";
+  return (
+    <>
+    <div>
+      <Accrodion/>
+    </div>
+    </>
+
+  );
 }
