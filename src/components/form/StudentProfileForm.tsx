@@ -87,7 +87,9 @@ const StudentProfileForm = () => {
       }),
     phoneNumber: z
       .string()
-      .refine(isValidPhoneNumber, { message: "Numéro de téléphone invalide" }),
+      .refine(isValidPhoneNumber, {
+        message: "Le numéro de téléphone est invalide",
+      }),
     campusId: z.string(),
     gender: z.string(),
     nationality: z.string(),
