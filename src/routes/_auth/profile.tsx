@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_auth/profile")({
 
 function RouteComponent() {
   return (
-    <Page title="Votre profil FRAPPE">
+    <Page>
       <ProfileForm />
     </Page>
   );

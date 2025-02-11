@@ -11,7 +11,6 @@ import {
   FormControl,
   FormMessage,
 } from "../ui/form";
-import { toast } from "sonner";
 import { useState } from "react";
 import { PasswordInput } from "../PasswordInput";
 import { useMutation } from "@tanstack/react-query";
@@ -50,7 +49,12 @@ const RegisterForm = () => {
   const formSchema = z.object({
     lastName: z.string().max(128),
     firstName: z.string().max(128),
-    email: z.string().email(),
+    email: z
+      .string()
+      .email()
+      .refine((email) => email.endsWith("@imt-atlantique.net"), {
+        message: "L'adresse e-mail doit être une adresse '@imt-atlantique.net'",
+      }),
     createPassword: z.string().max(128),
     confirmPassword: z.string().max(128),
   });
@@ -84,8 +88,17 @@ const RegisterForm = () => {
         firstName: values.firstName,
         lastName: values.lastName,
       });
+    } else if (password != confirmPassword) {
+      form.setError("confirmPassword", {
+        type: "manual",
+        message: "Les mots de passe doivent correspondre",
+      });
+      setIsLoading(false);
     } else {
-      toast.error("Merci de fournir un mot de passe répondant aux critères.");
+      form.setError("createPassword", {
+        type: "manual",
+        message: "Le mot de passe doit répondre aux critères de sécurité",
+      });
       setIsLoading(false);
     }
   }

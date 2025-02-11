@@ -161,8 +161,7 @@ const FormMessage = React.forwardRef<
       case "Invalid email":
         return "L'adresse e-mail fournie n'est pas valide";
       default:
-        console.log(body);
-        return "L'information fournie n'est pas valide";
+        return body;
     }
   };
 
