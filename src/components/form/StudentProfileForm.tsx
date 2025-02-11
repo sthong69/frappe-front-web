@@ -1,11 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  formatPhoneNumber,
-  getCountryCallingCode,
-  isValidPhoneNumber,
-  parsePhoneNumber,
-} from "react-phone-number-input";
+import { isValidPhoneNumber } from "react-phone-number-input";
 import { z } from "zod";
 import {
   Form,
@@ -85,11 +80,9 @@ const StudentProfileForm = () => {
       .refine((email) => email.endsWith("@imt-atlantique.net"), {
         message: "L'adresse e-mail doit être une adresse '@imt-atlantique.net'",
       }),
-    phoneNumber: z
-      .string()
-      .refine(isValidPhoneNumber, {
-        message: "Le numéro de téléphone est invalide",
-      }),
+    phoneNumber: z.string().refine(isValidPhoneNumber, {
+      message: "Le numéro de téléphone est invalide",
+    }),
     campusId: z.string(),
     gender: z.string(),
     nationality: z.string(),
