@@ -1,5 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import {
+  formatPhoneNumber,
+  getCountryCallingCode,
+  isValidPhoneNumber,
+  parsePhoneNumber,
+} from "react-phone-number-input";
 import { z } from "zod";
 import {
   Form,
@@ -44,6 +50,7 @@ import { getAllCampuses } from "@/api/CampusAPI";
 import { useState } from "react";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PhoneInput } from "../ui/phone-input";
 
 const StudentProfileForm = () => {
   const { user } = useAuth();
@@ -76,9 +83,11 @@ const StudentProfileForm = () => {
       .string()
       .email()
       .refine((email) => email.endsWith("@imt-atlantique.net"), {
-        message: "L'adresse e-mail doit être une adresse imt-atlantique.net",
+        message: "L'adresse e-mail doit être une adresse '@imt-atlantique.net'",
       }),
-    phoneNumber: z.string().min(10),
+    phoneNumber: z
+      .string()
+      .refine(isValidPhoneNumber, { message: "Numéro de téléphone invalide" }),
     campusId: z.string(),
     gender: z.string(),
     nationality: z.string(),
@@ -262,10 +271,12 @@ const StudentProfileForm = () => {
                   <FormItem>
                     <FormLabel>Numéro de téléphone</FormLabel>
                     <FormControl>
-                      <Input
-                        type="phone"
-                        placeholder={student?.phoneNumber ?? "06 12 34 56 78"}
+                      <PhoneInput
+                        placeholder={
+                          student?.phoneNumber ? student.phoneNumber : ""
+                        }
                         {...field}
+                        international
                       />
                     </FormControl>
                     <FormMessage />
