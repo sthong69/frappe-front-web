@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import Accrodion from "@/components/ui/Accrodion"
+import Accordion from "@/components/ui/accordion";
+import Page from "@/components/Page";
 
 export const Route = createFileRoute("/faq")({
   component: RouteComponent,
@@ -8,10 +9,9 @@ export const Route = createFileRoute("/faq")({
 function RouteComponent() {
   return (
     <>
-    <div>
-      <Accrodion/>
-    </div>
+      <Page>
+        <Accordion />
+      </Page>
     </>
-
   );
 }
