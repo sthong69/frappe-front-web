@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import Page from "@/components/Page";
 import { useAuth } from "@/context/Auth";
 import { Button } from "@/components/ui/button";
+import { getAllMeetingRequests } from "@/api/MeetingRequestsAPI";
+import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -41,6 +43,15 @@ function RouteComponent() {
   }
 
   if (userRole == "ROLE_SUPERVISOR") {
+    const MEETING_REQUESTS = useQuery({
+      queryKey: ["meetingRequests"],
+      queryFn: getAllMeetingRequests,
+    });
+
+    if (MEETING_REQUESTS.isLoading) {
+      return <Page title={`Chargement...`} children={undefined} />;
+    }
+
     return (
       <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ENCADRANT`}>
         <div className="grid h-full grid-cols-2 py-8">
@@ -48,6 +59,13 @@ function RouteComponent() {
             <h2 className="text-center font-bold">RENDEZ-VOUS</h2>
             <div>
               <h3 className="font-bold">À VENIR</h3>
+              <p>
+                {MEETING_REQUESTS.data.map((request: any) => (
+                  <p>
+                    {request.supervisorId} - {request.studentId}
+                  </p>
+                ))}
+              </p>
             </div>
             <div>
               <h3 className="font-bold">PASSÉS</h3>
