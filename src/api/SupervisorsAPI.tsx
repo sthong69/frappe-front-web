@@ -26,7 +26,7 @@ export const getAllSupervisors = async (): Promise<
   }[]
 > => {
   return publicAPI
-    .get("/supervisors/")
+    .get("/supervisors")
     .then(function (response) {
       return Promise.resolve(response.data);
     })
