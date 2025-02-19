@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import Page from "@/components/Page";
 import { useAuth } from "@/context/Auth";
 import { Button } from "@/components/ui/button";
-import { getAllMeetingRequests } from "@/api/MeetingRequestsAPI";
+import { getSupervisorMeetingRequests } from "@/api/MeetingRequestsAPI";
 import { useQuery } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_auth/dashboard")({
@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_auth/dashboard")({
 });
 
 function RouteComponent() {
-  const { userRole } = useAuth();
+  const { userRole, user } = useAuth();
   if (userRole == "ROLE_STUDENT") {
     return (
       <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ÉTUDIANT`}>
@@ -44,11 +44,11 @@ function RouteComponent() {
 
   if (userRole == "ROLE_SUPERVISOR") {
     const MEETING_REQUESTS = useQuery({
-      queryKey: ["meetingRequests"],
-      queryFn: getAllMeetingRequests,
+      queryKey: ["meetingRequests", user?.id],
+      queryFn: getSupervisorMeetingRequests,
     });
 
-    if (MEETING_REQUESTS.isLoading) {
+    if (MEETING_REQUESTS.isLoading || !MEETING_REQUESTS.data) {
       return <Page title={`Chargement...`} children={undefined} />;
     }
 
