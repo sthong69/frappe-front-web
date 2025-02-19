@@ -19,7 +19,8 @@ export default function Navbar() {
   return (
     <header className="border-b border-black px-8 file:bg-transparent">
       <div
-        className={`container flex h-[${NAVBAR_HEIGHT}px] items-center justify-between px-4 md:px-6`}
+        className={`container flex items-center justify-between px-4 md:px-6`}
+        style={{ height: NAVBAR_HEIGHT }}
       >
         <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium">
           <Link

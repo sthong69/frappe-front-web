@@ -24,11 +24,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
 import ChooseMeetingType from "../ChooseMeetingType";
-
-const DURATIONS = [
-  { value: "30m", label: "30 minutes" },
-  { value: "60m", label: "1 heure" },
-];
+import { MEETING_DURATIONS } from "@/lib/consts";
 
 const ChooseMeetingForm = () => {
   const [meetingInfos, setMeetingInfos] = useState<
@@ -37,6 +33,10 @@ const ChooseMeetingForm = () => {
         supervisorInfos: { id: number; firstName: string; lastName: string };
         startDate: Date | undefined;
         endDate: Date | undefined;
+        theme: string | undefined;
+        request_description: string | undefined;
+        internship_duration: string | undefined;
+        wanted_country: string | undefined;
         duration: string;
       }
     | undefined
@@ -100,6 +100,10 @@ const ChooseMeetingForm = () => {
       campusInfos: campus,
       startDate: undefined,
       endDate: undefined,
+      theme: undefined,
+      request_description: undefined,
+      internship_duration: undefined,
+      wanted_country: undefined,
     });
   }
 
@@ -216,7 +220,7 @@ const ChooseMeetingForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {DURATIONS.map((duration) => (
+                        {MEETING_DURATIONS.map((duration) => (
                           <SelectItem
                             key={duration.value}
                             value={duration.value}
@@ -253,7 +257,6 @@ const ChooseMeetingForm = () => {
   }
 
   if (meetingInfos.startDate && meetingInfos.endDate) {
-    console.log(meetingInfos);
     return (
       <ChooseMeetingType
         meetingInfos={{
@@ -261,6 +264,7 @@ const ChooseMeetingForm = () => {
           startDate: meetingInfos.startDate,
           endDate: meetingInfos.endDate,
         }}
+        setMeetingInfos={setMeetingInfos}
       />
     );
   }

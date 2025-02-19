@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { AxiosErrors } from "./errors/consts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -36,4 +37,18 @@ export function findCitiesPerCountryName(
   countryName: string,
 ) {
   return cities.filter((city) => city.country_name === countryName);
+}
+
+export function translateErrorCode({
+  errorCode,
+  language,
+}: {
+  errorCode: string | undefined;
+  language: "french";
+}): string {
+  return (
+    AxiosErrors.find((error) => error.code === errorCode)?.[
+      `label_${language}`
+    ] ?? "Une erreur est survenue, veuillez réessayer."
+  );
 }

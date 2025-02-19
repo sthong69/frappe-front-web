@@ -4,6 +4,11 @@ export const GENDERS = [
   { label: "Autre", value: "Other" },
 ];
 
+export const MEETING_DURATIONS = [
+  { value: "30m", label: "30 minutes" },
+  { value: "60m", label: "1 heure" },
+];
+
 export const MEETING_THEMES = [
   { label: "Recherche de stage", value: "Internship request" },
   { label: "Project professionnel", value: "Professional project" },
@@ -16,6 +21,15 @@ export const MEETING_THEMES = [
   },
   { label: "Premier emploi", value: "First job" },
   { label: "Autre", value: "Other" },
+];
+
+export const INTERNSHIP_DURATIONS = [
+  { label: "1 mois", value: "1 month" },
+  { label: "2 mois", value: "2 months" },
+  { label: "3 mois", value: "3 months" },
+  { label: "4 mois", value: "4 months" },
+  { label: "5 mois", value: "5 months" },
+  { label: "6 mois", value: "6 months" },
 ];
 
 export const HOUR_LIMIT_BEFORE_MEETING = 1;

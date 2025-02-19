@@ -18,6 +18,7 @@ import { router } from "@/router";
 import { useAuth } from "@/context/Auth";
 import { AxiosError } from "axios";
 import { useState } from "react";
+import { translateErrorCode } from "@/lib/utils";
 
 const LoginForm = () => {
   const authContext = useAuth();
@@ -33,11 +34,10 @@ const LoginForm = () => {
       authContext.storeUserRole(data.role);
       router.navigate({ to: "/dashboard" });
     },
-    onError: (error: AxiosError<{ message: string }>) => {
+    onError: (error: AxiosError) => {
       setIsLoading(false);
       setError(
-        error.response?.data.message ??
-          "Une erreur est survenue, veuillez réessayer.",
+        translateErrorCode({ errorCode: error.code, language: "french" }),
       );
     },
   });
@@ -57,12 +57,13 @@ const LoginForm = () => {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
+    setIsLoading(true);
     mutation.mutate(values);
   }
 
   return (
     <>
-      <div className="flex flex-grow flex-col items-center justify-center gap-4 border-b p-4">
+      <div className="flex flex-grow flex-col items-center justify-center gap-8 border-b p-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -96,9 +97,9 @@ const LoginForm = () => {
             >
               Connexion
             </Button>
-            {error && <p className="text-center text-red-500">{error}</p>}
           </form>
         </Form>
+        {error && <p className="text-center text-red-500">{error}</p>}
 
         <Link className="text-sm" to="/recover-password">
           *MOT DE PASSE OUBLIÉ ?
@@ -106,7 +107,7 @@ const LoginForm = () => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 py-8">
         <p>PAS ENCORE DE COMPTE ?</p>
-        <Button className="w-96 font-semibold text-black">
+        <Button className="w-96 font-semibold text-black" disabled={isLoading}>
           <Link to="/register">S'inscrire</Link>
         </Button>
       </div>

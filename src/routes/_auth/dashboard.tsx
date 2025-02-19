@@ -2,13 +2,17 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import Page from "@/components/Page";
 import { useAuth } from "@/context/Auth";
 import { Button } from "@/components/ui/button";
+import { getSupervisorMeetingRequests } from "@/api/MeetingRequestsAPI";
+import { useQuery } from "@tanstack/react-query";
+import { formatDateToFrench } from "@/lib/utils";
+import { getHours, getMinutes, parseJSON } from "date-fns";
 
 export const Route = createFileRoute("/_auth/dashboard")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { userRole } = useAuth();
+  const { userRole, user } = useAuth();
   if (userRole == "ROLE_STUDENT") {
     return (
       <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ÉTUDIANT`}>
@@ -41,6 +45,15 @@ function RouteComponent() {
   }
 
   if (userRole == "ROLE_SUPERVISOR") {
+    const MEETING_REQUESTS = useQuery({
+      queryKey: ["meetingRequests", user?.id],
+      queryFn: getSupervisorMeetingRequests,
+    });
+
+    if (MEETING_REQUESTS.isLoading || !MEETING_REQUESTS.data) {
+      return <Page title={`Chargement...`} children={undefined} />;
+    }
+
     return (
       <Page title={`VOUS ÊTES CONNECTÉ À VOTRE ESPACE ENCADRANT`}>
         <div className="grid h-full grid-cols-2 py-8">
@@ -48,6 +61,33 @@ function RouteComponent() {
             <h2 className="text-center font-bold">RENDEZ-VOUS</h2>
             <div>
               <h3 className="font-bold">À VENIR</h3>
+              <div>
+                {MEETING_REQUESTS.data.map(
+                  (request: {
+                    startDate: string;
+                    endDate: string;
+                    theme: string;
+                    location: string;
+                    requestDescription: string;
+                    status: string;
+                    studentId: number;
+                    supervisorId: number;
+                  }) => (
+                    <li key={request.requestDescription}>
+                      {formatDateToFrench(parseJSON(request.startDate))} |{" "}
+                      {getHours(parseJSON(request.startDate))}:
+                      {getMinutes(parseJSON(request.startDate))
+                        .toString()
+                        .padEnd(2, "0")}{" "}
+                      - {getHours(parseJSON(request.endDate))}:
+                      {getMinutes(parseJSON(request.endDate))
+                        .toString()
+                        .padEnd(2, "0")}{" "}
+                      | {request.theme} - studentId {request.studentId}
+                    </li>
+                  ),
+                )}
+              </div>
             </div>
             <div>
               <h3 className="font-bold">PASSÉS</h3>

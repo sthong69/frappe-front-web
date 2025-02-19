@@ -19,6 +19,10 @@ interface ChooseDayAndTimeProps {
     duration: string;
     startDate: Date | undefined;
     endDate: Date | undefined;
+    theme: string | undefined;
+    request_description: string | undefined;
+    internship_duration: string | undefined;
+    wanted_country: string | undefined;
   };
   setMeetingInfos: React.Dispatch<
     React.SetStateAction<
@@ -35,6 +39,10 @@ interface ChooseDayAndTimeProps {
           duration: string;
           startDate: Date | undefined;
           endDate: Date | undefined;
+          theme: string | undefined;
+          request_description: string | undefined;
+          internship_duration: string | undefined;
+          wanted_country: string | undefined;
         }
       | undefined
     >
@@ -183,39 +191,50 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
           )}
         </TabsContent>
       </Tabs>
-      <Button
-        className="ml-auto mt-auto w-96 font-semibold text-black"
-        onClick={() => {
-          if (input.selectedDate == undefined) {
-            toast.error("Veuillez sélectionner une date pour le rendez-vous.");
-            return;
-          }
-          if (
-            input.startHours == undefined ||
-            input.startMinutes == undefined ||
-            input.endHours == undefined ||
-            input.endMinutes == undefined
-          ) {
-            toast.error(
-              "Veuillez sélectionner un créneau pour le rendez-vous.",
-            );
-            return;
-          }
-          props.setMeetingInfos({
-            ...props.meetingInfos,
-            startDate: setHours(
-              setMinutes(input.selectedDate, input.startMinutes),
-              input.startHours,
-            ),
-            endDate: setHours(
-              setMinutes(input.selectedDate, input.endMinutes),
-              input.endHours,
-            ),
-          });
-        }}
-      >
-        Valider
-      </Button>
+      <div className="ml-auto mt-auto flex flex-row gap-8">
+        <Button
+          className="w-48 font-semibold text-black"
+          variant={"destructive"}
+          onClick={() => props.setMeetingInfos(undefined)}
+        >
+          Annuler
+        </Button>
+        <Button
+          className="w-48 font-semibold text-black"
+          onClick={() => {
+            if (input.selectedDate == undefined) {
+              toast.error(
+                "Veuillez sélectionner une date pour le rendez-vous.",
+              );
+              return;
+            }
+            if (
+              input.startHours == undefined ||
+              input.startMinutes == undefined ||
+              input.endHours == undefined ||
+              input.endMinutes == undefined
+            ) {
+              toast.error(
+                "Veuillez sélectionner un créneau pour le rendez-vous.",
+              );
+              return;
+            }
+            props.setMeetingInfos({
+              ...props.meetingInfos,
+              startDate: setHours(
+                setMinutes(input.selectedDate, input.startMinutes),
+                input.startHours,
+              ),
+              endDate: setHours(
+                setMinutes(input.selectedDate, input.endMinutes),
+                input.endHours,
+              ),
+            });
+          }}
+        >
+          Valider
+        </Button>
+      </div>
     </div>
   );
 };

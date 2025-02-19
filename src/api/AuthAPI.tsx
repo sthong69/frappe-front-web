@@ -23,7 +23,7 @@ export const register = async (input: {
       }
     })
     .catch(function (error) {
-      return Promise.reject(error.response.data.message);
+      return Promise.reject(error);
     });
 };
 
@@ -42,7 +42,7 @@ export const verify = async (input: {
       }
     })
     .catch(function (error) {
-      return Promise.reject(error.response.data.message);
+      return Promise.reject(error);
     });
 };
 
