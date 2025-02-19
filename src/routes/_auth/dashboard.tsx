@@ -4,6 +4,8 @@ import { useAuth } from "@/context/Auth";
 import { Button } from "@/components/ui/button";
 import { getSupervisorMeetingRequests } from "@/api/MeetingRequestsAPI";
 import { useQuery } from "@tanstack/react-query";
+import { formatDateToFrench } from "@/lib/utils";
+import { getHours, getMinutes, parseJSON } from "date-fns";
 
 export const Route = createFileRoute("/_auth/dashboard")({
   component: RouteComponent,
@@ -59,13 +61,33 @@ function RouteComponent() {
             <h2 className="text-center font-bold">RENDEZ-VOUS</h2>
             <div>
               <h3 className="font-bold">À VENIR</h3>
-              <p>
-                {MEETING_REQUESTS.data.map((request: any) => (
-                  <p>
-                    {request.supervisorId} - {request.studentId}
-                  </p>
-                ))}
-              </p>
+              <div>
+                {MEETING_REQUESTS.data.map(
+                  (request: {
+                    startDate: string;
+                    endDate: string;
+                    theme: string;
+                    location: string;
+                    requestDescription: string;
+                    status: string;
+                    studentId: number;
+                    supervisorId: number;
+                  }) => (
+                    <li key={request.requestDescription}>
+                      {formatDateToFrench(parseJSON(request.startDate))} |{" "}
+                      {getHours(parseJSON(request.startDate))}:
+                      {getMinutes(parseJSON(request.startDate))
+                        .toString()
+                        .padEnd(2, "0")}{" "}
+                      - {getHours(parseJSON(request.endDate))}:
+                      {getMinutes(parseJSON(request.endDate))
+                        .toString()
+                        .padEnd(2, "0")}{" "}
+                      | {request.theme} - studentId {request.studentId}
+                    </li>
+                  ),
+                )}
+              </div>
             </div>
             <div>
               <h3 className="font-bold">PASSÉS</h3>
