@@ -69,11 +69,7 @@ const ExampleAccordion = () => {
   return (
     <div style={{ maxWidth: "600px", margin: "0 auto", padding: "1rem" }}>
       <h2>Comment nous contacter ?</h2>
-      <p>
-        Il existe différents moyens de nous contacter : Par mail à l’adresse
-        contact@junior-atlantique.fr, par téléphone au numéro de notre
-        Responsable Développement Commercial, etc.
-      </p>
+      <p>Il existe différents moyens de nous contacter</p>
 
       {/* 分割线，非必需，可按需调整 */}
       <hr />
