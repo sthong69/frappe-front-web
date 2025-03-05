@@ -1,19 +1,25 @@
+import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import secureAPI from "./axios";
 
 export const getSupervisorMeetingRequests = async (): Promise<
-  {
-    startDate: string;
-    endDate: string;
-    theme: string;
-    location: string;
-    requestDescription: string;
-    status: string;
-    studentId: number;
-    supervisorId: number;
-  }[]
+  MeetingRequest[]
 > => {
   return secureAPI
     .get("/supervisors/me/meeting-requests")
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      return Promise.reject(error);
+    });
+};
+
+export const getStudentMeetingRequests = async (): Promise<
+  MeetingRequest[]
+> => {
+  return secureAPI
+    .get("/students/me/meeting-requests")
     .then(function (response) {
       return Promise.resolve(response.data);
     })
