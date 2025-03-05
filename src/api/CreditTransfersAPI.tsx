@@ -10,7 +10,7 @@ export const getAllCreditTransfers = async (): Promise<
   }[]
 > => {
   return publicAPI
-    .get("/credit-transfers/")
+    .get("/credit-transfers")
     .then(function (response) {
       return Promise.resolve(response.data);
     })
@@ -29,7 +29,7 @@ export const getCreditTransfer = async (
   endDate: string;
 }> => {
   return publicAPI
-    .get("/credit-transfers/" + id + "/")
+    .get("/credit-transfers/" + id)
     .then(function (response) {
       return Promise.resolve(response.data);
     })

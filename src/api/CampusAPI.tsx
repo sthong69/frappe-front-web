@@ -7,7 +7,7 @@ export const getAllCampuses = async (): Promise<
   }[]
 > => {
   return publicAPI
-    .get("/campuses/")
+    .get("/campuses")
     .then(function (response) {
       return Promise.resolve(response.data);
     })
@@ -23,7 +23,7 @@ export const getCampus = async (
   name: string;
 }> => {
   return publicAPI
-    .get("/campuses/" + id + "/")
+    .get("/campuses/" + id)
     .then(function (response) {
       return Promise.resolve(response.data);
     })
