@@ -1,5 +1,6 @@
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import secureAPI from "./axios";
+import { parseJSON } from "date-fns";
 
 export const getSupervisorMeetingRequests = async (): Promise<
   MeetingRequest[]
@@ -7,7 +8,24 @@ export const getSupervisorMeetingRequests = async (): Promise<
   return secureAPI
     .get("/supervisors/me/meeting-requests")
     .then(function (response) {
-      return Promise.resolve(response.data);
+      return Promise.resolve(
+        response.data.map(
+          (meetingRequest: {
+            startDate: string;
+            endDate: string;
+            theme: string;
+            location: string;
+            requestDescription: string;
+            status: string;
+            studentId: number;
+            supervisorId: number;
+          }) => ({
+            ...meetingRequest,
+            startDate: parseJSON(meetingRequest.startDate),
+            endDate: parseJSON(meetingRequest.endDate),
+          }),
+        ),
+      );
     })
     .catch(function (error) {
       console.log(error);
@@ -21,7 +39,24 @@ export const getStudentMeetingRequests = async (): Promise<
   return secureAPI
     .get("/students/me/meeting-requests")
     .then(function (response) {
-      return Promise.resolve(response.data);
+      return Promise.resolve(
+        response.data.map(
+          (meetingRequest: {
+            startDate: string;
+            endDate: string;
+            theme: string;
+            location: string;
+            requestDescription: string;
+            status: string;
+            studentId: number;
+            supervisorId: number;
+          }) => ({
+            ...meetingRequest,
+            startDate: parseJSON(meetingRequest.startDate),
+            endDate: parseJSON(meetingRequest.endDate),
+          }),
+        ),
+      );
     })
     .catch(function (error) {
       console.log(error);
@@ -40,16 +75,7 @@ export const requestAMeeting = async (meetingInfos: {
   internship_duration: string | undefined;
   wanted_country: string | undefined;
   duration: string;
-}): Promise<{
-  startDate: string;
-  endDate: string;
-  theme: string;
-  location: string;
-  requestDescription: string;
-  status: string;
-  studentId: number;
-  supervisorId: number;
-}> => {
+}): Promise<MeetingRequest> => {
   return secureAPI
     .post("/meeting-requests", {
       supervisorId: meetingInfos.supervisorInfos.id,
@@ -62,7 +88,11 @@ export const requestAMeeting = async (meetingInfos: {
       location: meetingInfos.campusInfos.name,
     })
     .then(function (response) {
-      return Promise.resolve(response.data);
+      return {
+        ...response.data,
+        startDate: parseJSON(response.data.startDate),
+        endDate: parseJSON(response.data.endDate),
+      };
     })
     .catch(function (error) {
       console.log(error);

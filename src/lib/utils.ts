@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { AxiosErrors } from "./errors/consts";
+import { MEETING_THEMES } from "./consts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,5 +51,12 @@ export function translateErrorCode({
     AxiosErrors.find((error) => error.code === errorCode)?.[
       `label_${language}`
     ] ?? "Une erreur est survenue, veuillez réessayer."
+  );
+}
+
+export function translateMeetingTheme(theme: string): string {
+  return (
+    MEETING_THEMES.find((meetingTheme) => meetingTheme.value === theme)
+      ?.label ?? theme
   );
 }

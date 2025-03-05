@@ -24,3 +24,17 @@ export const updateStudentInfo = async (student: Student): Promise<Student> => {
       return Promise.reject(error);
     });
 };
+
+export const getStudentInfoFromId = async (
+  studentId: number,
+): Promise<Student> => {
+  return secureAPI
+    .get(`/students/${studentId}`)
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      return Promise.reject(error);
+    });
+};

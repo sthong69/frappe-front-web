@@ -1,6 +1,6 @@
 export interface MeetingRequest {
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   theme: string;
   location: string;
   requestDescription: string;
