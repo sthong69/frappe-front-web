@@ -11,7 +11,7 @@ export const MEETING_DURATIONS = [
 
 export const MEETING_THEMES = [
   { label: "Recherche de stage", value: "Internship request" },
-  { label: "Project professionnel", value: "Professional project" },
+  { label: "Projet professionnel", value: "Professional project" },
   { label: "Orientation", value: "Orientation" },
   { label: "Correction outil", value: "Correction outil" },
   { label: "Simulation d'entretien", value: "Interview simulation" },
