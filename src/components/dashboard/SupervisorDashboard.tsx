@@ -2,6 +2,7 @@ import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import Page from "../Page";
 import MeetingList from "./MeetingList";
 import { Button } from "../ui/button";
+import { Link } from "@tanstack/react-router";
 
 interface SupervisorDashboardProps {
   meetingRequests: MeetingRequest[];
@@ -16,7 +17,7 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
             <h2 className="text-center font-bold">VOS RENDEZ-VOUS</h2>
             <MeetingList meetingRequests={props.meetingRequests} />
             <Button className="ml-auto w-96 font-semibold text-black">
-              Voir tous les rendez-vous
+              <Link to="/dashboard/meetings">Voir tous les rendez-vous</Link>
             </Button>
           </div>
         </div>
