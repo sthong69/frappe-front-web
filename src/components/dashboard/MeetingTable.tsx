@@ -3,7 +3,7 @@ import Page from "../Page";
 import { useMemo, useState } from "react";
 import { getHours, getMinutes, isBefore } from "date-fns";
 import { Badge } from "../ui/badge";
-import { CalendarClock, Clock, MapPin, User } from "lucide-react";
+import { Clock, MapPin, User } from "lucide-react";
 import { Card, CardHeader, CardContent } from "../ui/card";
 import {
   Table,
@@ -17,6 +17,7 @@ import { Label } from "../ui/label";
 import { Switch } from "../ui/switch";
 import {
   formatDateToFrench,
+  getMeetingsAfterDate,
   sortMeetingsPerStartDate,
   translateMeetingTheme,
 } from "@/lib/utils";
@@ -49,13 +50,13 @@ const MeetingTable = (props: MeetingTableProps) => {
 
   const filteredMeetings = useMemo(() => {
     let meetingRequests = props.meetingRequests;
-    const now = new Date();
 
     if (hidePastMeetings) {
       return sortMeetingsPerStartDate({
-        meetings: props.meetingRequests.filter((meeting) =>
-          isBefore(now, meeting.endDate),
-        ),
+        meetings: getMeetingsAfterDate({
+          meetings: props.meetingRequests,
+          date: new Date(),
+        }),
         order: "asc",
       });
     }
@@ -84,15 +85,17 @@ const MeetingTable = (props: MeetingTableProps) => {
           <div className="rounded-md border">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead>Date & Heure</TableHead>
-                  <TableHead>Thème</TableHead>
-                  <TableHead className="hidden md:table-cell">Lieu</TableHead>
-                  <TableHead className="hidden lg:table-cell">
+                <TableRow className="text-lg">
+                  <TableHead className="text-black">Date & Heure</TableHead>
+                  <TableHead className="text-black">Thème</TableHead>
+                  <TableHead className="hidden text-black md:table-cell">
+                    Lieu
+                  </TableHead>
+                  <TableHead className="hidden text-black lg:table-cell">
                     Description
                   </TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="hidden md:table-cell">
+                  <TableHead className="text-black">Statut</TableHead>
+                  <TableHead className="hidden text-black md:table-cell">
                     Participants
                   </TableHead>
                 </TableRow>
@@ -100,7 +103,14 @@ const MeetingTable = (props: MeetingTableProps) => {
               <TableBody>
                 {filteredMeetings.length > 0 ? (
                   filteredMeetings.map((meeting, index) => (
-                    <TableRow key={index}>
+                    <TableRow
+                      key={index}
+                      className={
+                        isBefore(meeting.endDate, new Date())
+                          ? "opacity-50"
+                          : ""
+                      }
+                    >
                       <TableCell>
                         <div className="font-medium">
                           {formatDateToFrench(meeting.startDate)}
@@ -154,7 +164,7 @@ const MeetingTable = (props: MeetingTableProps) => {
                       colSpan={6}
                       className="py-6 text-center text-muted-foreground"
                     >
-                      No meetings to display
+                      Pas de rendez-vous à afficher
                     </TableCell>
                   </TableRow>
                 )}
