@@ -1,6 +1,5 @@
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
-import { isBefore } from "date-fns";
-import MeetingCard from "./MeetingCard";
+import MeetingCard from "./meetings/MeetingCard";
 import {
   countRemainingMeetingRequestsPerDay,
   getMeetingsAfterDate,
@@ -38,7 +37,7 @@ const MeetingList = (props: MeetingTableProps) => {
             meetingRequests: props.meetingRequests,
             date: new Date(),
           })}{" "}
-          rendez-vous restants aujourd'hui{")"}
+          rendez-vous restant{"("}s{")"} aujourd'hui{")"}
         </h2>
         <div className="flex flex-col gap-2">
           {UPCOMING_MEETINGS.map((meeting) => (

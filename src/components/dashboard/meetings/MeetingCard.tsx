@@ -1,8 +1,8 @@
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../../ui/card";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { getHours, getMinutes } from "date-fns";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../ui/badge";
 import { formatDateToFrench, translateMeetingTheme } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { getStudentInfoFromId } from "@/api/StudentsAPI";

@@ -2,7 +2,7 @@ import {
   getStudentMeetingRequests,
   getSupervisorMeetingRequests,
 } from "@/api/MeetingRequestsAPI";
-import MeetingTable from "@/components/dashboard/MeetingTable";
+import MeetingTable from "@/components/dashboard/meetings/meetings-table/MeetingTable";
 import Page from "@/components/Page";
 import { useAuth } from "@/context/Auth";
 import { useQuery } from "@tanstack/react-query";
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/_auth/dashboard/meetings")({
 
 function RouteComponent() {
   const { userRole, user } = useAuth();
+
   if (userRole == "ROLE_STUDENT") {
     const MEETING_REQUESTS = useQuery({
       queryKey: ["meetingRequests", user?.id],

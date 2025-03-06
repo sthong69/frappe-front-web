@@ -19,7 +19,7 @@ export default function Navbar() {
   return (
     <header
       style={{ height: NAVBAR_HEIGHT }}
-      className="flex items-center justify-between border-b border-black px-4 md:px-6"
+      className="flex items-center justify-between border-b border-black px-4 md:px-16"
     >
       <nav className="flex flex-1 items-center justify-center gap-6 text-sm font-medium">
         <Link
