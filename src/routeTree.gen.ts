@@ -21,7 +21,8 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthProfileImport } from './routes/_auth/profile'
 import { Route as AuthMeetingImport } from './routes/_auth/meeting'
-import { Route as AuthDashboardImport } from './routes/_auth/dashboard'
+import { Route as AuthDashboardIndexImport } from './routes/_auth/dashboard/index'
+import { Route as AuthDashboardMeetingsImport } from './routes/_auth/dashboard/meetings'
 
 // Create/Update Routes
 
@@ -84,9 +85,15 @@ const AuthMeetingRoute = AuthMeetingImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthDashboardRoute = AuthDashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthDashboardIndexRoute = AuthDashboardIndexImport.update({
+  id: '/dashboard/',
+  path: '/dashboard/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthDashboardMeetingsRoute = AuthDashboardMeetingsImport.update({
+  id: '/dashboard/meetings',
+  path: '/dashboard/meetings',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -150,13 +157,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
-    '/_auth/dashboard': {
-      id: '/_auth/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthDashboardImport
-      parentRoute: typeof AuthImport
-    }
     '/_auth/meeting': {
       id: '/_auth/meeting'
       path: '/meeting'
@@ -171,21 +171,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthProfileImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/dashboard/meetings': {
+      id: '/_auth/dashboard/meetings'
+      path: '/dashboard/meetings'
+      fullPath: '/dashboard/meetings'
+      preLoaderRoute: typeof AuthDashboardMeetingsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/dashboard/': {
+      id: '/_auth/dashboard/'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthDashboardIndexImport
+      parentRoute: typeof AuthImport
+    }
   }
 }
 
 // Create and export the route tree
 
 interface AuthRouteChildren {
-  AuthDashboardRoute: typeof AuthDashboardRoute
   AuthMeetingRoute: typeof AuthMeetingRoute
   AuthProfileRoute: typeof AuthProfileRoute
+  AuthDashboardMeetingsRoute: typeof AuthDashboardMeetingsRoute
+  AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
-  AuthDashboardRoute: AuthDashboardRoute,
   AuthMeetingRoute: AuthMeetingRoute,
   AuthProfileRoute: AuthProfileRoute,
+  AuthDashboardMeetingsRoute: AuthDashboardMeetingsRoute,
+  AuthDashboardIndexRoute: AuthDashboardIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -199,9 +215,10 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/dashboard': typeof AuthDashboardRoute
   '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
+  '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/dashboard': typeof AuthDashboardIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -213,9 +230,10 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/dashboard': typeof AuthDashboardRoute
   '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
+  '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/dashboard': typeof AuthDashboardIndexRoute
 }
 
 export interface FileRoutesById {
@@ -228,9 +246,10 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/_auth/dashboard': typeof AuthDashboardRoute
   '/_auth/meeting': typeof AuthMeetingRoute
   '/_auth/profile': typeof AuthProfileRoute
+  '/_auth/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/_auth/dashboard/': typeof AuthDashboardIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -244,9 +263,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
-    | '/dashboard'
     | '/meeting'
     | '/profile'
+    | '/dashboard/meetings'
+    | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -257,9 +277,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
-    | '/dashboard'
     | '/meeting'
     | '/profile'
+    | '/dashboard/meetings'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
@@ -270,9 +291,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
-    | '/_auth/dashboard'
     | '/_auth/meeting'
     | '/_auth/profile'
+    | '/_auth/dashboard/meetings'
+    | '/_auth/dashboard/'
   fileRoutesById: FileRoutesById
 }
 
@@ -324,9 +346,10 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/dashboard",
         "/_auth/meeting",
-        "/_auth/profile"
+        "/_auth/profile",
+        "/_auth/dashboard/meetings",
+        "/_auth/dashboard/"
       ]
     },
     "/add-supervisor": {
@@ -347,16 +370,20 @@ export const routeTree = rootRoute
     "/verify-email": {
       "filePath": "verify-email.tsx"
     },
-    "/_auth/dashboard": {
-      "filePath": "_auth/dashboard.tsx",
-      "parent": "/_auth"
-    },
     "/_auth/meeting": {
       "filePath": "_auth/meeting.tsx",
       "parent": "/_auth"
     },
     "/_auth/profile": {
       "filePath": "_auth/profile.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/dashboard/meetings": {
+      "filePath": "_auth/dashboard/meetings.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/dashboard/": {
+      "filePath": "_auth/dashboard/index.tsx",
       "parent": "/_auth"
     }
   }

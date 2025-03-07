@@ -1,6 +1,9 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { AxiosErrors } from "./errors/consts";
+import { MEETING_THEMES } from "./consts";
+import { compareAsc, isAfter, isBefore, isSameDay } from "date-fns";
+import { MeetingRequest } from "./types/MeetingRequestTypes";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -51,4 +54,58 @@ export function translateErrorCode({
       `label_${language}`
     ] ?? "Une erreur est survenue, veuillez réessayer."
   );
+}
+
+export function translateMeetingTheme(theme: string): string {
+  return (
+    MEETING_THEMES.find((meetingTheme) => meetingTheme.value === theme)
+      ?.label ?? theme
+  );
+}
+
+export function countRemainingMeetingRequestsPerDay({
+  meetingRequests,
+  date,
+}: {
+  meetingRequests: MeetingRequest[];
+  date: Date;
+}) {
+  return meetingRequests.filter(
+    (meeting) =>
+      isSameDay(meeting.startDate, date) && isAfter(meeting.endDate, date),
+  ).length;
+}
+
+export function getMeetingsBeforeDate({
+  meetings,
+  date,
+}: {
+  meetings: MeetingRequest[];
+  date: Date;
+}) {
+  return meetings.filter((meeting) => isBefore(meeting.endDate, date));
+}
+
+export function getMeetingsAfterDate({
+  meetings,
+  date,
+}: {
+  meetings: MeetingRequest[];
+  date: Date;
+}) {
+  return meetings.filter((meeting) => isAfter(meeting.endDate, date));
+}
+
+export function sortMeetingsPerStartDate({
+  meetings,
+  order,
+}: {
+  meetings: MeetingRequest[];
+  order: "asc" | "desc";
+}) {
+  return [...meetings].sort((a, b) => {
+    return order === "asc"
+      ? compareAsc(a.startDate, b.startDate)
+      : compareAsc(b.startDate, a.startDate);
+  });
 }

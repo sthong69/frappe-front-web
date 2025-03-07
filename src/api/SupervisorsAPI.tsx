@@ -34,3 +34,17 @@ export const getAllSupervisors = async (): Promise<
       return Promise.reject(error);
     });
 };
+
+export const getSupervisorInfoFromId = async (
+  supervisorId: number,
+): Promise<Supervisor> => {
+  return secureAPI
+    .get(`/supervisors/${supervisorId}`)
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+      return Promise.reject(error);
+    });
+};
