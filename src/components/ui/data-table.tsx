@@ -57,27 +57,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      {/*Filtre par thème*/}
-      {/*<div className="flex items-center py-4">
-        <Select
-          value={(table.getColumn("theme")?.getFilterValue() as string) ?? ""}
-          onValueChange={(value) =>
-            table.getColumn("theme")?.setFilterValue(value)
-          }
-        >
-          <SelectTrigger className="max-w-sm">
-            <SelectValue placeholder="Filtrer par thème..." />
-          </SelectTrigger>
-          <SelectContent>
-            {MEETING_THEMES.map((theme) => (
-              <SelectItem key={theme.value} value={theme.value}>
-                {theme.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>*/}
-
       <div className="space-y-4">
         <div className="rounded-md border">
           <Table>

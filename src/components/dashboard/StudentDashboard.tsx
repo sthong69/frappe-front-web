@@ -15,9 +15,11 @@ const StudentDashboard = (props: StudentDashboardProps) => {
         <div className="flex h-full flex-col gap-8 p-4">
           <h2 className="text-center font-bold">VOS RENDEZ-VOUS</h2>
           <MeetingList meetingRequests={props.meetingRequests} />
-          <Button className="ml-auto w-96 font-semibold text-black">
-            <Link to="/dashboard/meetings">Voir tous les rendez-vous</Link>
-          </Button>
+          <Link to="/dashboard/meetings">
+            <Button className="ml-auto w-96 font-semibold text-black">
+              Voir tous les rendez-vous
+            </Button>
+          </Link>
         </div>
         <div className="flex h-full flex-col gap-8 pl-8">
           <h2 className="text-center font-bold">PRENDRE RENDEZ-VOUS</h2>

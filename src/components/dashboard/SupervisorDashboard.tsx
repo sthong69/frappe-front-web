@@ -16,9 +16,11 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
           <div className="flex h-full flex-col gap-8 p-4">
             <h2 className="text-center font-bold">VOS RENDEZ-VOUS</h2>
             <MeetingList meetingRequests={props.meetingRequests} />
-            <Button className="ml-auto w-96 font-semibold text-black">
-              <Link to="/dashboard/meetings">Voir tous les rendez-vous</Link>
-            </Button>
+            <Link to="/dashboard/meetings">
+              <Button className="ml-auto w-96 font-semibold text-black">
+                Voir tous les rendez-vous
+              </Button>
+            </Link>
           </div>
         </div>
         <div>
@@ -28,9 +30,11 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
               Le tableau de suivi des élèves vous permet de gérer des fiches de
               suivi de chaque étudiant d’IMT Atlantique.
             </p>
-            <Button className="ml-auto w-96 font-semibold text-black">
-              Voir le tableau de suivi
-            </Button>
+            <Link to="/dashboard/meetings">
+              <Button className="ml-auto w-96 font-semibold text-black">
+                Voir le tableau de suivi
+              </Button>
+            </Link>
           </div>
           <div className="flex flex-col gap-8 p-4">
             <h2 className="text-center font-bold">AJOUTEZ UN COLLABORATEUR</h2>
@@ -38,9 +42,11 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
               Vous pouvez ajouter un collaborateur qui pourra prendre des
               étudiants en rendez-vous et modifier le fichier de suivi.
             </p>
-            <Button className="ml-auto w-96 font-semibold text-black">
-              Ajouter un collaborateur
-            </Button>
+            <Link to="/dashboard/meetings">
+              <Button className="ml-auto w-96 font-semibold text-black">
+                Ajouter un collaborateur
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
