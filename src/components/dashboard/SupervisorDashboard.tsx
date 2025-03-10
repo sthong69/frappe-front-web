@@ -42,7 +42,7 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
               Vous pouvez ajouter un collaborateur qui pourra prendre des
               étudiants en rendez-vous et modifier le fichier de suivi.
             </p>
-            <Link to="/dashboard/meetings">
+            <Link to="/dashboard/add-supervisor">
               <Button className="ml-auto w-96 font-semibold text-black">
                 Ajouter un collaborateur
               </Button>
