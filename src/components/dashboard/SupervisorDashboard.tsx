@@ -30,7 +30,7 @@ const SupervisorDashboard = (props: SupervisorDashboardProps) => {
               Le tableau de suivi des élèves vous permet de gérer des fiches de
               suivi de chaque étudiant d’IMT Atlantique.
             </p>
-            <Link className="ml-auto" to="/dashboard/meetings">
+            <Link className="ml-auto" to="/dashboard/students-tracking">
               <Button className="w-96 font-semibold text-black">
                 Voir le tableau de suivi
               </Button>
