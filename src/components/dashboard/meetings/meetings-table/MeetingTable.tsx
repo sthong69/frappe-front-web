@@ -3,7 +3,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import { columns } from "./columns";
 import { DataTable } from "@/components/ui/data-table";
-import { getMeetingsBeforeDate, sortMeetingsPerStartDate } from "@/lib/utils";
+import { sortMeetingsPerStartDate } from "@/lib/utils";
 import { useState } from "react";
 import { isBefore } from "date-fns";
 import { Label } from "@/components/ui/label";

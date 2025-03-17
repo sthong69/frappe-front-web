@@ -48,3 +48,35 @@ export const getSupervisorInfoFromId = async (
       return Promise.reject(error);
     });
 };
+
+export const createSupervisor = async ({
+  username,
+  email,
+  password,
+  campusId,
+  firstName,
+  lastName,
+}: {
+  username: string;
+  email: string;
+  password: string;
+  campusId: number;
+  firstName: string;
+  lastName: string;
+}): Promise<Supervisor> => {
+  return secureAPI
+    .post("/supervisors", {
+      username,
+      email,
+      password,
+      campusId,
+      firstName,
+      lastName,
+    })
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      return Promise.reject(error);
+    });
+};

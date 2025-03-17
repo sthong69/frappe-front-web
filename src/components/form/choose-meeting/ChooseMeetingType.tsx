@@ -10,19 +10,19 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Button } from "./ui/button";
+} from "../../ui/form";
+import { Button } from "../../ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../../ui/select";
 import { useState } from "react";
 import { INTERNSHIP_DURATIONS, MEETING_THEMES } from "@/lib/consts";
-import { Textarea } from "./ui/textarea";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { Textarea } from "../../ui/textarea";
+import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { COUNTRIES } from "@/lib/countries";
 import {
   Command,
@@ -31,7 +31,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./ui/command";
+} from "../../ui/command";
 import { Check } from "lucide-react";
 import { useAuth } from "@/context/Auth";
 import { requestAMeeting } from "@/api/MeetingRequestsAPI";
