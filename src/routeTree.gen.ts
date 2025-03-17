@@ -27,6 +27,7 @@ import { Route as AuthDashboardIndexImport } from './routes/_auth/dashboard/inde
 import { Route as AuthDashboardMeetingsImport } from './routes/_auth/dashboard/meetings'
 import { Route as AuthDashboardSupervisorImport } from './routes/_auth/dashboard/_supervisor'
 import { Route as AuthDashboardSupervisorStudentsTrackingImport } from './routes/_auth/dashboard/_supervisor/students-tracking'
+import { Route as AuthDashboardSupervisorAddSupervisorImport } from './routes/_auth/dashboard/_supervisor/add-supervisor'
 
 // Create Virtual Routes
 
@@ -120,6 +121,13 @@ const AuthDashboardSupervisorStudentsTrackingRoute =
   AuthDashboardSupervisorStudentsTrackingImport.update({
     id: '/students-tracking',
     path: '/students-tracking',
+    getParentRoute: () => AuthDashboardSupervisorRoute,
+  } as any)
+
+const AuthDashboardSupervisorAddSupervisorRoute =
+  AuthDashboardSupervisorAddSupervisorImport.update({
+    id: '/add-supervisor',
+    path: '/add-supervisor',
     getParentRoute: () => AuthDashboardSupervisorRoute,
   } as any)
 
@@ -225,6 +233,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardIndexImport
       parentRoute: typeof AuthDashboardImport
     }
+    '/_auth/dashboard/_supervisor/add-supervisor': {
+      id: '/_auth/dashboard/_supervisor/add-supervisor'
+      path: '/add-supervisor'
+      fullPath: '/dashboard/add-supervisor'
+      preLoaderRoute: typeof AuthDashboardSupervisorAddSupervisorImport
+      parentRoute: typeof AuthDashboardSupervisorImport
+    }
     '/_auth/dashboard/_supervisor/students-tracking': {
       id: '/_auth/dashboard/_supervisor/students-tracking'
       path: '/students-tracking'
@@ -238,11 +253,14 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthDashboardSupervisorRouteChildren {
+  AuthDashboardSupervisorAddSupervisorRoute: typeof AuthDashboardSupervisorAddSupervisorRoute
   AuthDashboardSupervisorStudentsTrackingRoute: typeof AuthDashboardSupervisorStudentsTrackingRoute
 }
 
 const AuthDashboardSupervisorRouteChildren: AuthDashboardSupervisorRouteChildren =
   {
+    AuthDashboardSupervisorAddSupervisorRoute:
+      AuthDashboardSupervisorAddSupervisorRoute,
     AuthDashboardSupervisorStudentsTrackingRoute:
       AuthDashboardSupervisorStudentsTrackingRoute,
   }
@@ -296,6 +314,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthDashboardSupervisorRouteWithChildren
   '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
   '/dashboard/': typeof AuthDashboardIndexRoute
+  '/dashboard/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/dashboard/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
 }
 
@@ -312,6 +331,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthProfileRoute
   '/dashboard': typeof AuthDashboardIndexRoute
   '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/dashboard/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/dashboard/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
 }
 
@@ -331,6 +351,7 @@ export interface FileRoutesById {
   '/_auth/dashboard/_supervisor': typeof AuthDashboardSupervisorRouteWithChildren
   '/_auth/dashboard/meetings': typeof AuthDashboardMeetingsRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
+  '/_auth/dashboard/_supervisor/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/_auth/dashboard/_supervisor/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
 }
 
@@ -350,6 +371,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard/meetings'
     | '/dashboard/'
+    | '/dashboard/add-supervisor'
     | '/dashboard/students-tracking'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -365,6 +387,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/dashboard'
     | '/dashboard/meetings'
+    | '/dashboard/add-supervisor'
     | '/dashboard/students-tracking'
   id:
     | '__root__'
@@ -382,6 +405,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard/_supervisor'
     | '/_auth/dashboard/meetings'
     | '/_auth/dashboard/'
+    | '/_auth/dashboard/_supervisor/add-supervisor'
     | '/_auth/dashboard/_supervisor/students-tracking'
   fileRoutesById: FileRoutesById
 }
@@ -478,6 +502,7 @@ export const routeTree = rootRoute
       "filePath": "_auth/dashboard/_supervisor.tsx",
       "parent": "/_auth/dashboard",
       "children": [
+        "/_auth/dashboard/_supervisor/add-supervisor",
         "/_auth/dashboard/_supervisor/students-tracking"
       ]
     },
@@ -488,6 +513,10 @@ export const routeTree = rootRoute
     "/_auth/dashboard/": {
       "filePath": "_auth/dashboard/index.tsx",
       "parent": "/_auth/dashboard"
+    },
+    "/_auth/dashboard/_supervisor/add-supervisor": {
+      "filePath": "_auth/dashboard/_supervisor/add-supervisor.tsx",
+      "parent": "/_auth/dashboard/_supervisor"
     },
     "/_auth/dashboard/_supervisor/students-tracking": {
       "filePath": "_auth/dashboard/_supervisor/students-tracking.tsx",

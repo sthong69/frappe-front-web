@@ -1,4 +1,4 @@
-import ChooseMeetingForm from "@/components/form/ChooseMeetingForm";
+import ChooseMeetingForm from "@/components/form/choose-meeting/ChooseMeetingForm";
 import Page from "@/components/Page";
 import { createFileRoute } from "@tanstack/react-router";
 

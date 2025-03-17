@@ -5,12 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { getAvailableDays } from "@/api/AvailabilitiesAPI";
 import { addDays, isSameDay, setHours, setMinutes } from "date-fns";
 import { useState } from "react";
-import ChooseTime from "./ChooseTime";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import ChooseTime from "../../ChooseTime";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs";
 import { formatDateToFrench } from "@/lib/utils";
 import { DAYS_RANGE_FOR_MEETING } from "@/lib/consts";
 import { toast } from "sonner";
-import LoadingSpinner from "./LoadingSpinner";
+import LoadingSpinner from "../../LoadingSpinner";
 
 interface ChooseDayAndTimeProps {
   meetingInfos: {

@@ -16,14 +16,14 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../ui/form";
+} from "@/components/ui/form";
 import { toast } from "sonner";
-import ChooseDayAndTime from "../ChooseDayAndTime";
+import ChooseDayAndTime from "@/components/form/choose-meeting/ChooseDayAndTime";
 import { getAllSupervisors } from "@/api/SupervisorsAPI";
 import { useQuery } from "@tanstack/react-query";
 import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
-import ChooseMeetingType from "../ChooseMeetingType";
+import ChooseMeetingType from "@/components/form/choose-meeting/ChooseMeetingType";
 import { MEETING_DURATIONS } from "@/lib/consts";
 
 const ChooseMeetingForm = () => {
