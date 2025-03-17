@@ -1,39 +1,53 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { createSupervisor } from "@/api/SupervisorsAPI";
+import { translateErrorCode } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PasswordChecklist from "react-password-checklist";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import Page from "@/components/Page";
 import {
   Form,
+  FormControl,
   FormField,
   FormItem,
-  FormControl,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/PasswordInput";
-import { useMutation } from "@tanstack/react-query";
-import { register } from "@/api/AuthAPI";
-import Page from "@/components/Page";
-import { AxiosError } from "axios";
-import { translateErrorCode } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { getAllCampuses } from "@/api/CampusAPI";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const RegisterForm = () => {
+const AddSupervisorForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const CAMPUSES = useQuery({
+    queryKey: ["campuses"],
+    queryFn: getAllCampuses,
+  });
+
   const mutation = useMutation({
-    mutationFn: (newUserData: {
+    mutationFn: (newSupervisorData: {
       username: string;
       password: string;
       email: string;
+      campusId: number;
       firstName: string;
       lastName: string;
     }) => {
-      return register(newUserData);
+      return createSupervisor(newSupervisorData);
     },
     onSuccess: () => {
       setRegistrationSuccess(true);
@@ -55,6 +69,7 @@ const RegisterForm = () => {
       .refine((email) => email.endsWith("@imt-atlantique.net"), {
         message: "L'adresse e-mail doit être une adresse '@imt-atlantique.net'",
       }),
+    campusId: z.string(),
     createPassword: z.string().max(128),
     confirmPassword: z.string().max(128),
   });
@@ -65,17 +80,17 @@ const RegisterForm = () => {
       lastName: "",
       firstName: "",
       email: "",
+      campusId: "",
       createPassword: "",
       confirmPassword: "",
     },
   });
+
   const [password, setPassword] = useState(form.getValues("createPassword"));
   const [confirmPassword, setConfirmPassword] = useState(
     form.getValues("confirmPassword"),
   );
   const [isPasswordValid, setIsPasswordValid] = useState(false);
-
-  // const specialCharacterRegex = /[~`¿¡!#$%\^&*€£@+÷=éÉèÈçÇàÀùÙ§\-\[\]\\';,/{}\(\)|\\":<>\?\.\_]/g;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
@@ -85,6 +100,7 @@ const RegisterForm = () => {
         username: values.email,
         password: values.createPassword,
         email: values.email,
+        campusId: parseInt(values.campusId),
         firstName: values.firstName,
         lastName: values.lastName,
       });
@@ -108,6 +124,19 @@ const RegisterForm = () => {
       <Page className="text-center">
         Un e-mail de confirmation a été envoyé. Merci de valider votre compte !
       </Page>
+    );
+  }
+
+  if (CAMPUSES.isLoading) {
+    return <></>;
+  }
+
+  if (CAMPUSES.isError || !CAMPUSES.data) {
+    return (
+      <div className="flex flex-col gap-8">
+        <p>Les campus n'ont pas pu être récupérés depuis le serveur.</p>
+        <p>{CAMPUSES.error?.message}</p>
+      </div>
     );
   }
 
@@ -147,6 +176,32 @@ const RegisterForm = () => {
                 <FormControl>
                   <Input placeholder="E-mail" {...field} />
                 </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="campusId"
+            render={({ field }) => (
+              <FormItem>
+                <Select
+                  defaultValue={field.value}
+                  onValueChange={field.onChange}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Campus" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {CAMPUSES.data.map((campus) => (
+                      <SelectItem key={campus.id} value={campus.id.toString()}>
+                        {campus.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -214,7 +269,7 @@ const RegisterForm = () => {
             type="submit"
             disabled={isLoading}
           >
-            S'inscrire
+            Ajoutez
           </Button>
         </form>
       </Form>
@@ -223,4 +278,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default AddSupervisorForm;

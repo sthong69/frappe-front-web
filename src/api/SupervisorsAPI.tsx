@@ -53,34 +53,25 @@ export const createSupervisor = async ({
   username,
   email,
   password,
+  campusId,
   firstName,
   lastName,
-  campusId,
-  meetingUrl,
-  caldavUsername,
-  caldavPassword,
 }: {
   username: string;
   email: string;
   password: string;
+  campusId: number;
   firstName: string;
   lastName: string;
-  campusId: number;
-  meetingUrl: string;
-  caldavUsername: string;
-  caldavPassword: string;
 }): Promise<Supervisor> => {
   return secureAPI
     .post("/supervisors", {
       username,
       email,
       password,
+      campusId,
       firstName,
       lastName,
-      campusId,
-      meetingUrl,
-      caldavUsername,
-      caldavPassword,
     })
     .then(function (response) {
       return Promise.resolve(response.data);
