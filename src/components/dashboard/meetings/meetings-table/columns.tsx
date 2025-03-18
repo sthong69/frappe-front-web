@@ -27,7 +27,12 @@ const getStatusBadge = (status: string) => {
 export const columns: ColumnDef<MeetingRequest>[] = [
   {
     header: ({ column }) => (
-      <SortableColumnHeader column={column} title="Date" />
+      <SortableColumnHeader
+        column={column}
+        title="Date"
+        ascLabel="Ordre chronologique"
+        descLabel="Ordre chronologique inverse"
+      />
     ),
     accessorKey: "startDate",
     cell: ({ row }) => {
