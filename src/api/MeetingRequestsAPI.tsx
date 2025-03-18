@@ -1,6 +1,7 @@
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import secureAPI from "./axios";
 import { parseJSON } from "date-fns";
+import { Student, Supervisor } from "@/lib/types/AuthTypes";
 
 export const getSupervisorMeetingRequests = async (): Promise<
   MeetingRequest[]
@@ -17,8 +18,8 @@ export const getSupervisorMeetingRequests = async (): Promise<
             location: string;
             requestDescription: string;
             status: string;
-            studentId: number;
-            supervisorId: number;
+            student: Student;
+            supervisor: Supervisor;
           }) => ({
             ...meetingRequest,
             startDate: parseJSON(meetingRequest.startDate),
@@ -48,8 +49,8 @@ export const getStudentMeetingRequests = async (): Promise<
             location: string;
             requestDescription: string;
             status: string;
-            studentId: number;
-            supervisorId: number;
+            student: Student;
+            supervisor: Supervisor;
           }) => ({
             ...meetingRequest,
             startDate: parseJSON(meetingRequest.startDate),

@@ -26,7 +26,7 @@ const StudentsTrackingTable = (props: StudentsTrackingTableProps) => {
   };
 
   return (
-    <Page title="VOS RENDEZ-VOUS">
+    <Page title="LISTE DES ÉTUDIANTS">
       <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center justify-end space-x-2 py-2">

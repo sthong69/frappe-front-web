@@ -18,7 +18,7 @@ import { router } from "@/router";
 import { useAuth } from "@/context/Auth";
 import { AxiosError } from "axios";
 import { useState } from "react";
-import { translateErrorCode } from "@/lib/utils";
+import { handleError } from "@/lib/errors/utils";
 
 const LoginForm = () => {
   const authContext = useAuth();
@@ -36,9 +36,7 @@ const LoginForm = () => {
     },
     onError: (error: AxiosError) => {
       setIsLoading(false);
-      setError(
-        translateErrorCode({ errorCode: error.code, language: "french" }),
-      );
+      setError(handleError(error));
     },
   });
 

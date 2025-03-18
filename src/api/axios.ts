@@ -16,7 +16,7 @@ const secureAPI = axios.create({
   },
 });
 
-// Add an interceptor for secure API
+// Add an interceptor for secureAPI to add the Authorization header for each request on secure API endpoints
 secureAPI.interceptors.request.use((config) => {
   const token = localStorage.getItem("authToken");
   if (token) {

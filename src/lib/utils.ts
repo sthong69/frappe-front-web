@@ -1,6 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { AxiosErrors } from "./errors/consts";
 import { MEETING_THEMES } from "./consts";
 import { compareAsc, isAfter, isBefore, isSameDay } from "date-fns";
 import { MeetingRequest } from "./types/MeetingRequestTypes";
@@ -12,11 +11,8 @@ export function cn(...inputs: ClassValue[]) {
 export function filterSupervisorsPerCampusId(
   supervisors: {
     id: number;
-    username: string;
-    email: string;
     firstName: string;
     lastName: string;
-    phoneNumber: string;
     campusId: number;
     meetingUrl: string;
   }[],
@@ -40,20 +36,6 @@ export function findCitiesPerCountryName(
   countryName: string,
 ) {
   return cities.filter((city) => city.country_name === countryName);
-}
-
-export function translateErrorCode({
-  errorCode,
-  language,
-}: {
-  errorCode: string | undefined;
-  language: "french";
-}): string {
-  return (
-    AxiosErrors.find((error) => error.code === errorCode)?.[
-      `label_${language}`
-    ] ?? "Une erreur est survenue, veuillez réessayer."
-  );
 }
 
 export function translateMeetingTheme(theme: string): string {

@@ -1,5 +1,4 @@
 import { createSupervisor } from "@/api/SupervisorsAPI";
-import { translateErrorCode } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PasswordChecklist from "react-password-checklist";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -26,6 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { handleError } from "@/lib/errors/utils";
 
 const AddSupervisorForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
@@ -54,9 +54,7 @@ const AddSupervisorForm = () => {
     },
     onError: (error: AxiosError) => {
       setIsLoading(false);
-      setError(
-        translateErrorCode({ errorCode: error.code, language: "french" }),
-      );
+      setError(handleError(error));
     },
   });
 

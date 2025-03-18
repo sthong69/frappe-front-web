@@ -1,4 +1,4 @@
-import { publicAPI } from "./axios";
+import secureAPI from "./axios";
 
 export const getAllCreditTransfers = async (): Promise<
   {
@@ -9,7 +9,7 @@ export const getAllCreditTransfers = async (): Promise<
     endDate: string;
   }[]
 > => {
-  return publicAPI
+  return secureAPI
     .get("/credit-transfers")
     .then(function (response) {
       return Promise.resolve(response.data);
@@ -28,7 +28,7 @@ export const getCreditTransfer = async (
   startDate: string;
   endDate: string;
 }> => {
-  return publicAPI
+  return secureAPI
     .get("/credit-transfers/" + id)
     .then(function (response) {
       return Promise.resolve(response.data);

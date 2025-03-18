@@ -17,7 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import { register } from "@/api/AuthAPI";
 import Page from "@/components/Page";
 import { AxiosError } from "axios";
-import { translateErrorCode } from "@/lib/utils";
+import { handleError } from "@/lib/errors/utils";
 
 const RegisterForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
@@ -40,9 +40,7 @@ const RegisterForm = () => {
     },
     onError: (error: AxiosError) => {
       setIsLoading(false);
-      setError(
-        translateErrorCode({ errorCode: error.code, language: "french" }),
-      );
+      setError(handleError(error));
     },
   });
 

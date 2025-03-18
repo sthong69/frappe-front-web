@@ -1,4 +1,4 @@
-import { publicAPI } from "./axios";
+import secureAPI from "./axios";
 
 export const getAllCampuses = async (): Promise<
   {
@@ -6,7 +6,7 @@ export const getAllCampuses = async (): Promise<
     name: string;
   }[]
 > => {
-  return publicAPI
+  return secureAPI
     .get("/campuses")
     .then(function (response) {
       return Promise.resolve(response.data);
@@ -22,7 +22,7 @@ export const getCampus = async (
   id: number;
   name: string;
 }> => {
-  return publicAPI
+  return secureAPI
     .get("/campuses/" + id)
     .then(function (response) {
       return Promise.resolve(response.data);
