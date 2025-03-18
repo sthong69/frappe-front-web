@@ -27,7 +27,7 @@ export const columns: ColumnDef<Student>[] = [
             <BookOpenCheck className="mr-2" />
             Dernière réunion
           </Button>
-          <Link to={`/view-student-profile?id=${row.original.id}`}>
+          <Link to={`/dashboard/view-student-profile?id=${row.original.id}`}>
             <Button>
               <FileUser className="mr-2" />
               Fiche étudiant

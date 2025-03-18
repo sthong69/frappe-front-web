@@ -1,6 +1,7 @@
 import { Student, Supervisor } from "./AuthTypes";
 
 export interface MeetingRequest {
+  id: number;
   startDate: Date;
   endDate: Date;
   theme: string;

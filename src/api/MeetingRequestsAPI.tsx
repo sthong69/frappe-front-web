@@ -12,6 +12,7 @@ export const getSupervisorMeetingRequests = async (): Promise<
       return Promise.resolve(
         response.data.map(
           (meetingRequest: {
+            id: number;
             startDate: string;
             endDate: string;
             theme: string;
@@ -43,6 +44,7 @@ export const getStudentMeetingRequests = async (): Promise<
       return Promise.resolve(
         response.data.map(
           (meetingRequest: {
+            id: number;
             startDate: string;
             endDate: string;
             theme: string;
