@@ -200,12 +200,14 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="gender"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Genre</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          disabled={!editable}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -234,6 +236,7 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="lastName"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Nom de famille</FormLabel>
@@ -250,6 +253,7 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="firstName"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Prénom</FormLabel>
@@ -266,6 +270,7 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="email"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Adresse e-mail</FormLabel>
@@ -282,6 +287,7 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="phoneNumber"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Numéro de téléphone</FormLabel>
@@ -301,12 +307,14 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="campusId"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Campus</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          disabled={!editable}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -331,15 +339,17 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="nationality"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Nationalité</FormLabel>
                         <Popover>
-                          <PopoverTrigger asChild>
+                          <PopoverTrigger asChild disabled={!editable}>
                             <FormControl>
                               <Button
                                 variant="outline"
                                 role="combobox"
+                                disabled={!editable}
                                 className={cn(
                                   "justify-between",
                                   !field.value && "text-muted-foreground",
@@ -401,16 +411,29 @@ const StudentProfile = ({ student, editable = false }: StudentProfileProps) => {
                   <FormField
                     control={form.control}
                     name="creditTransferId"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Transfert de crédit</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          disabled={!editable}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Sélectionnez une université partenaire" />
+                              <SelectValue
+                                placeholder={
+                                  CREDIT_TRANSFERS.data.find(
+                                    (creditTransfer) =>
+                                      student.creditTransferId ===
+                                      creditTransfer.id,
+                                  )?.university ??
+                                  (editable
+                                    ? "Sélectionnez votre transfert de crédit"
+                                    : "Pas de transfert de crédit renseigné")
+                                }
+                              />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>

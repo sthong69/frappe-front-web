@@ -194,6 +194,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={form.control}
                     name="lastName"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Nom de famille</FormLabel>
@@ -210,6 +211,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={form.control}
                     name="firstName"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Prénom</FormLabel>
@@ -226,6 +228,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={form.control}
                     name="email"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Adresse e-mail</FormLabel>
@@ -242,6 +245,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={form.control}
                     name="phoneNumber"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Numéro de téléphone</FormLabel>
@@ -263,12 +267,14 @@ const SupervisorProfile = ({
                   <FormField
                     control={form.control}
                     name="campusId"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Campus</FormLabel>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
+                          disabled={!editable}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -312,6 +318,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={zimbraForm.control}
                     name="caldavUsername"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>E-mail Zimbra</FormLabel>
@@ -328,6 +335,7 @@ const SupervisorProfile = ({
                   <FormField
                     control={zimbraForm.control}
                     name="caldavPassword"
+                    disabled={!editable}
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Mot de passe Zimbra</FormLabel>

@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ViewStudentProfileImport } from './routes/view-student-profile'
 import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as TestImport } from './routes/test'
 import { Route as RegisterImport } from './routes/register'
@@ -33,6 +34,12 @@ import { Route as AuthDashboardSupervisorAddSupervisorImport } from './routes/_a
 const AuthDashboardImport = createFileRoute('/_auth/dashboard')()
 
 // Create/Update Routes
+
+const ViewStudentProfileRoute = ViewStudentProfileImport.update({
+  id: '/view-student-profile',
+  path: '/view-student-profile',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const VerifyEmailRoute = VerifyEmailImport.update({
   id: '/verify-email',
@@ -177,6 +184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
+    '/view-student-profile': {
+      id: '/view-student-profile'
+      path: '/view-student-profile'
+      fullPath: '/view-student-profile'
+      preLoaderRoute: typeof ViewStudentProfileImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth/meeting': {
       id: '/_auth/meeting'
       path: '/meeting'
@@ -294,6 +308,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/view-student-profile': typeof ViewStudentProfileRoute
   '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
   '/dashboard': typeof AuthDashboardSupervisorRouteWithChildren
@@ -311,6 +326,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/view-student-profile': typeof ViewStudentProfileRoute
   '/meeting': typeof AuthMeetingRoute
   '/profile': typeof AuthProfileRoute
   '/dashboard': typeof AuthDashboardIndexRoute
@@ -328,6 +344,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/verify-email': typeof VerifyEmailRoute
+  '/view-student-profile': typeof ViewStudentProfileRoute
   '/_auth/meeting': typeof AuthMeetingRoute
   '/_auth/profile': typeof AuthProfileRoute
   '/_auth/dashboard': typeof AuthDashboardRouteWithChildren
@@ -348,6 +365,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
+    | '/view-student-profile'
     | '/meeting'
     | '/profile'
     | '/dashboard'
@@ -364,6 +382,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
+    | '/view-student-profile'
     | '/meeting'
     | '/profile'
     | '/dashboard'
@@ -379,6 +398,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/verify-email'
+    | '/view-student-profile'
     | '/_auth/meeting'
     | '/_auth/profile'
     | '/_auth/dashboard'
@@ -398,6 +418,7 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   TestRoute: typeof TestRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
+  ViewStudentProfileRoute: typeof ViewStudentProfileRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -408,6 +429,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   TestRoute: TestRoute,
   VerifyEmailRoute: VerifyEmailRoute,
+  ViewStudentProfileRoute: ViewStudentProfileRoute,
 }
 
 export const routeTree = rootRoute
@@ -426,7 +448,8 @@ export const routeTree = rootRoute
         "/recover-password",
         "/register",
         "/test",
-        "/verify-email"
+        "/verify-email",
+        "/view-student-profile"
       ]
     },
     "/": {
@@ -454,6 +477,9 @@ export const routeTree = rootRoute
     },
     "/verify-email": {
       "filePath": "verify-email.tsx"
+    },
+    "/view-student-profile": {
+      "filePath": "view-student-profile.tsx"
     },
     "/_auth/meeting": {
       "filePath": "_auth/meeting.tsx",
