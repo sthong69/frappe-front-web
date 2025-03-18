@@ -25,6 +25,7 @@ import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
 import ChooseMeetingType from "@/components/form/choose-meeting/ChooseMeetingType";
 import { MEETING_DURATIONS } from "@/lib/consts";
+import { Clock } from "lucide-react";
 
 const ChooseMeetingForm = () => {
   const [meetingInfos, setMeetingInfos] = useState<
@@ -187,7 +188,7 @@ const ChooseMeetingForm = () => {
                           disabled={!campusId}
                           className="w-full sm:w-80 md:w-96"
                         >
-                          <SelectValue placeholder="Encadrante" />
+                          <SelectValue placeholder="Encadrant" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -219,7 +220,7 @@ const ChooseMeetingForm = () => {
                     >
                       <FormControl>
                         <SelectTrigger className="w-full sm:w-80 md:w-96">
-                          <SelectValue placeholder="Durée" />
+                          <SelectValue placeholder="Durée du rendez-vous" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>

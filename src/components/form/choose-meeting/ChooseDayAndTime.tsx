@@ -13,6 +13,7 @@ import { formatDateToFrench } from "@/lib/utils";
 import { DAYS_RANGE_FOR_MEETING } from "@/lib/consts";
 import { toast } from "sonner";
 import LoadingSpinner from "../../LoadingSpinner";
+import { Clock, MapPin, User } from "lucide-react";
 
 interface ChooseDayAndTimeProps {
   meetingInfos: {
@@ -106,20 +107,20 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         Veuillez choisir le jour et l'heure du rendez-vous.
       </p>
 
-      {/* Meeting info summary - stacks on mobile */}
-      <div className="flex flex-col flex-wrap justify-center gap-2 px-4 sm:flex-row sm:gap-4 md:gap-8">
-        <div className="w-full rounded-lg bg-white p-2 text-center text-sm sm:w-auto md:text-base">
-          {props.meetingInfos.campusInfos.name}
+      <div className="flex flex-col flex-wrap justify-center gap-2 px-4 sm:gap-4 md:gap-8 lg:flex-row">
+        <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
+          <MapPin /> {props.meetingInfos.campusInfos.name}
         </div>
-        <div className="w-full rounded-lg bg-white p-2 text-center text-sm sm:w-auto md:text-base">
-          {props.meetingInfos.supervisorInfos.firstName}{" "}
+        <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
+          <User /> {props.meetingInfos.supervisorInfos.firstName}{" "}
           {props.meetingInfos.supervisorInfos.lastName}
         </div>
-        <div className="w-full rounded-lg bg-white p-2 text-center text-sm sm:w-auto md:text-base">
+        <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
+          <Clock />{" "}
           {props.meetingInfos.duration == "30m" ? "30 minutes" : "1 heure"}
         </div>
         <Button
-          className="mt-2 w-full font-semibold text-black sm:mt-0 sm:w-auto"
+          className="mt-2 w-full font-semibold text-black sm:mt-0 lg:w-auto lg:px-8"
           onClick={() => {
             props.setMeetingInfos(undefined);
           }}
@@ -128,7 +129,6 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         </Button>
       </div>
 
-      {/* Calendar and time selection tabs */}
       <Tabs defaultValue="date" className="px-2 py-4 sm:px-8 sm:py-8 md:px-16">
         <TabsList className="w-full justify-evenly">
           <TabsTrigger value="date" className="w-full text-xs sm:text-sm">
@@ -201,7 +201,6 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         </TabsContent>
       </Tabs>
 
-      {/* Action buttons */}
       <div className="mt-auto flex flex-col gap-2 px-4 pb-4 sm:ml-auto sm:flex-row sm:gap-8">
         <Button
           className="w-full font-semibold text-black sm:w-auto md:w-48"

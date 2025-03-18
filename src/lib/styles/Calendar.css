@@ -43,7 +43,6 @@
   box-sizing: border-box;
 }
 
-/* Custom Navigation Styles */
 @media screen and (max-width: 500px) {
   .react-calendar__navigation__prev2-button,
   .react-calendar__navigation__prev-button {
@@ -94,7 +93,6 @@
   font-size: 0.8em;
 }
 
-/* Each day should be round when hovered */
 .react-calendar__month-view__days__day {
   padding: 5px;
   background-clip: content-box !important;

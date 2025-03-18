@@ -34,7 +34,7 @@ import {
   CommandItem,
   CommandList,
 } from "../../ui/command";
-import { Check } from "lucide-react";
+import { Calendar, Check, Clock, MapPin, User } from "lucide-react";
 import { useAuth } from "@/context/Auth";
 import { requestAMeeting } from "@/api/MeetingRequestsAPI";
 import { useMutation } from "@tanstack/react-query";
@@ -195,21 +195,23 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
         Veuillez renseigner les informations complémentaires.
       </p>
       <div className="grid h-full flex-1 grid-cols-1 gap-6 px-4 md:grid-cols-3 md:gap-0">
-        {/* Meeting details - full width on mobile, 1/3 width on desktop */}
         <div className="flex flex-col gap-4">
-          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
-            {props.meetingInfos.campusInfos.name}
+          <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+            <MapPin /> {props.meetingInfos.campusInfos.name}
           </div>
-          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
-            {props.meetingInfos.supervisorInfos.firstName}{" "}
+          <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+            <User /> {props.meetingInfos.supervisorInfos.firstName}{" "}
             {props.meetingInfos.supervisorInfos.lastName}
           </div>
-          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
-            {`${getHours(props.meetingInfos.startDate)}:${getMinutes(props.meetingInfos.startDate).toString().padStart(2, "0")} - ${getHours(props.meetingInfos.endDate)}:${getMinutes(props.meetingInfos.endDate).toString().padStart(2, "0")}`}
-          </div>
-          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+          <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+            <Calendar />
             {formatDateToFrench(props.meetingInfos.startDate)}
           </div>
+          <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+            <Clock />{" "}
+            {`${getHours(props.meetingInfos.startDate)}:${getMinutes(props.meetingInfos.startDate).toString().padStart(2, "0")} - ${getHours(props.meetingInfos.endDate)}:${getMinutes(props.meetingInfos.endDate).toString().padStart(2, "0")}`}
+          </div>
+
           <Button
             className="w-full font-semibold text-black md:w-64"
             variant={"default"}
@@ -225,7 +227,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
           </Button>
         </div>
 
-        {/* Form - full width on mobile, 2/3 width on desktop */}
         <div className="md:col-span-2">
           <Form {...form}>
             <form
