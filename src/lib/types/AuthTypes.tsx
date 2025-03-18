@@ -15,8 +15,7 @@ export interface Student extends UserBase {
 }
 
 export interface Supervisor extends UserBase {
-  supervisor: true;
-  meeting_url?: string;
+  meetingUrl?: string;
 }
 
 export type User = Student | Supervisor;

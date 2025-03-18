@@ -2,7 +2,7 @@ export const ERROR_LABELS: { error: string; label: { fr: string } }[] = [
   {
     error: "Validation failed",
     label: {
-      fr: "Un des champs est invalide. Veuillez vérifier les informations saisies.",
+      fr: "Un des champs requis est invalide ou manquant. Veuillez vérifier les informations saisies.",
     },
   },
   {

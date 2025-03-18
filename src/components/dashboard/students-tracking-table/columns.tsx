@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SortableColumnHeader } from "@/components/ui/sortable-column-header";
 import { Student } from "@/lib/types/AuthTypes";
+import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table";
 import { BookOpenCheck, FileUser } from "lucide-react";
 
@@ -26,10 +27,12 @@ export const columns: ColumnDef<Student>[] = [
             <BookOpenCheck className="mr-2" />
             Dernière réunion
           </Button>
-          <Button>
-            <FileUser className="mr-2" />
-            Fiche étudiant
-          </Button>
+          <Link to={`/view-student-profile?id=${row.original.id}`}>
+            <Button>
+              <FileUser className="mr-2" />
+              Fiche étudiant
+            </Button>
+          </Link>
         </div>
       );
     },
