@@ -1,6 +1,6 @@
 import { cn, formatDateToFrench } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getHours, getMinutes } from "date-fns";
+import { getHours, getMinutes, set } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -37,6 +37,8 @@ import { useAuth } from "@/context/Auth";
 import { requestAMeeting } from "@/api/MeetingRequestsAPI";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import BookingAnimation from "@/components/BookingAnimation";
+import { router } from "@/router";
 
 interface ChooseMeetingTypeProps {
   meetingInfos: {
@@ -87,7 +89,10 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
     { label: string; value: string } | undefined
   >(undefined);
   const [editMode, setEditMode] = useState<boolean>(true);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [booking, setIsBooking] = useState<boolean>(false);
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
   const { user } = useAuth();
 
   const mutation = useMutation({
@@ -106,11 +111,10 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
       return requestAMeeting(meetingInfos);
     },
     onSuccess: () => {
-      toast.success("Rendez-vous proposé avec succès !");
+      setStatus("success");
     },
     onError: (error) => {
-      setIsLoading(false);
-      toast.error("Erreur lors de la demande de rendez-vous : " + error);
+      setStatus("error");
     },
   });
 
@@ -164,10 +168,34 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
       setEditMode(false);
       return;
     }
-    setIsLoading(true);
+    setIsBooking(true);
     mutation.mutate({ ...props.meetingInfos, ...values, studentId: user?.id! });
   }
 
+  {
+    /* Booking meeting mode */
+  }
+  if (booking) {
+    return (
+      <BookingAnimation
+        status={status}
+        onReset={() => {
+          if (status === "success") {
+            router.navigate({ to: "/" });
+            return;
+          }
+          if (status === "error") {
+            setStatus("loading");
+            setIsBooking(false);
+          }
+        }}
+      />
+    );
+  }
+
+  {
+    /* Input meeting infos mode */
+  }
   return (
     <div className="flex flex-1 flex-col gap-4">
       <p className="-mt-4 mb-4 px-4">
@@ -191,7 +219,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
           <Button
             className="w-64 font-semibold text-black"
             variant={"default"}
-            disabled={isLoading}
             onClick={() =>
               props.setMeetingInfos({
                 ...props.meetingInfos,
@@ -371,7 +398,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                   <Button
                     className="w-48 font-semibold text-black"
                     variant={"default"}
-                    disabled={isLoading}
                     onClick={() => setEditMode(true)}
                   >
                     Modifier
@@ -381,7 +407,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 <Button
                   className="w-48 font-semibold text-black"
                   variant={"destructive"}
-                  disabled={isLoading}
                   onClick={() => props.setMeetingInfos(undefined)}
                 >
                   Annuler
@@ -389,7 +414,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 <Button
                   className="w-48 font-semibold text-black"
                   type="submit"
-                  disabled={isLoading}
                   variant={editMode ? "default" : "confirm"}
                 >
                   {editMode ? "Continuer" : "Confirmer"}
