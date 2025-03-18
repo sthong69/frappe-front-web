@@ -25,6 +25,7 @@ import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
 import ChooseMeetingType from "@/components/form/choose-meeting/ChooseMeetingType";
 import { MEETING_DURATIONS } from "@/lib/consts";
+import { Clock } from "lucide-react";
 
 const ChooseMeetingForm = () => {
   const [meetingInfos, setMeetingInfos] = useState<
@@ -81,10 +82,10 @@ const ChooseMeetingForm = () => {
       return;
     }
     const supervisor = SUPERVISORS.data!.find(
-      (supervisor) => supervisor.id == parseInt(values.supervisorId),
+      (supervisor) => supervisor.id == Number.parseInt(values.supervisorId),
     );
     const campus = CAMPUSES.data!.find(
-      (campus) => campus.id == parseInt(values.campusId),
+      (campus) => campus.id == Number.parseInt(values.campusId),
     );
     if (!supervisor) {
       toast.error("L'encadrant sélectionné n'existe pas");
@@ -131,8 +132,8 @@ const ChooseMeetingForm = () => {
   if (!meetingInfos) {
     return (
       <>
-        <p className="-mt-4 mb-4 px-4">
-          Veuillez sélectionner le campus, l’encadrante TING et la durée estimée
+        <p className="-mt-4 mb-4 px-4 text-sm md:text-base">
+          Veuillez sélectionner le campus, l'encadrante TING et la durée estimée
           du rendez-vous.
         </p>
         <Form {...form}>
@@ -140,12 +141,12 @@ const ChooseMeetingForm = () => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex h-full flex-1 flex-col items-center gap-4"
           >
-            <div className="my-auto flex flex-col gap-4">
+            <div className="my-auto flex w-full flex-col gap-4 px-4 sm:w-auto">
               <FormField
                 control={form.control}
                 name="campusId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full sm:w-auto">
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
@@ -154,7 +155,7 @@ const ChooseMeetingForm = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-96">
+                        <SelectTrigger className="w-full sm:w-80 md:w-96">
                           <SelectValue placeholder="Campus" />
                         </SelectTrigger>
                       </FormControl>
@@ -177,20 +178,23 @@ const ChooseMeetingForm = () => {
                 control={form.control}
                 name="supervisorId"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full sm:w-auto">
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger disabled={!campusId} className="w-96">
-                          <SelectValue placeholder="Encadrante" />
+                        <SelectTrigger
+                          disabled={!campusId}
+                          className="w-full sm:w-80 md:w-96"
+                        >
+                          <SelectValue placeholder="Encadrant" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
                         {filterSupervisorsPerCampusId(
                           SUPERVISORS.data,
-                          parseInt(campusId!),
+                          Number.parseInt(campusId!),
                         ).map((supervisor) => (
                           <SelectItem
                             key={supervisor.id}
@@ -209,14 +213,14 @@ const ChooseMeetingForm = () => {
                 control={form.control}
                 name="duration"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-full sm:w-auto">
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-96">
-                          <SelectValue placeholder="Durée" />
+                        <SelectTrigger className="w-full sm:w-80 md:w-96">
+                          <SelectValue placeholder="Durée du rendez-vous" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -236,7 +240,7 @@ const ChooseMeetingForm = () => {
               />
             </div>
             <Button
-              className="ml-auto mt-auto w-96 font-semibold text-black"
+              className="mx-auto mt-auto w-full max-w-xs font-semibold text-black sm:ml-auto sm:mr-4 sm:w-80 md:w-96"
               type="submit"
             >
               Continuer

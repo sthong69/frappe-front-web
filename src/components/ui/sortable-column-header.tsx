@@ -14,12 +14,16 @@ interface SortableColumnHeaderProps<TData, TValue>
   extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
+  descLabel: string;
+  ascLabel: string;
 }
 
 export function SortableColumnHeader<TData, TValue>({
   column,
   title,
   className,
+  descLabel,
+  ascLabel,
 }: SortableColumnHeaderProps<TData, TValue>) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
@@ -36,9 +40,9 @@ export function SortableColumnHeader<TData, TValue>({
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
-              <ArrowDown />
-            ) : column.getIsSorted() === "asc" ? (
               <ArrowUp />
+            ) : column.getIsSorted() === "asc" ? (
+              <ArrowDown />
             ) : (
               <ChevronsUpDown />
             )}
@@ -46,12 +50,12 @@ export function SortableColumnHeader<TData, TValue>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Ordre chronologique
+            <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
+            {ascLabel}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="h-3.5 w-3.5 text-muted-foreground/70" />
-            Ordre chronologique inverse
+            <ArrowUp className="h-3.5 w-3.5 text-muted-foreground/70" />
+            {descLabel}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
