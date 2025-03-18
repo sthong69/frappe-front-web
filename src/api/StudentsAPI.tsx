@@ -8,7 +8,6 @@ export const fetchStudentInfo = async (): Promise<Student> => {
       return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
       return Promise.reject(error);
     });
 };
@@ -20,7 +19,6 @@ export const updateStudentInfo = async (student: Student): Promise<Student> => {
       return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
       return Promise.reject(error);
     });
 };
@@ -34,7 +32,17 @@ export const getStudentInfoFromId = async (
       return Promise.resolve(response.data);
     })
     .catch(function (error) {
-      console.log(error);
+      return Promise.reject(error);
+    });
+};
+
+export const getStudentsList = async (): Promise<Student[]> => {
+  return secureAPI
+    .get("/students")
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
       return Promise.reject(error);
     });
 };

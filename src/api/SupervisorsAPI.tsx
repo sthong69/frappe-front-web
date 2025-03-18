@@ -1,5 +1,5 @@
 import { Supervisor } from "@/lib/types/AuthTypes";
-import secureAPI, { publicAPI } from "./axios";
+import secureAPI from "./axios";
 
 export const fetchSupervisorInfo = async (): Promise<Supervisor> => {
   return secureAPI
@@ -13,7 +13,7 @@ export const fetchSupervisorInfo = async (): Promise<Supervisor> => {
     });
 };
 
-export const getAllSupervisors = async (): Promise<
+export const getAllSupervisorsAsSupervisor = async (): Promise<
   {
     id: number;
     username: string;
@@ -25,7 +25,26 @@ export const getAllSupervisors = async (): Promise<
     meetingUrl: string;
   }[]
 > => {
-  return publicAPI
+  return secureAPI
+    .get("/supervisors")
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      return Promise.reject(error);
+    });
+};
+
+export const getAllSupervisorsAsStudent = async (): Promise<
+  {
+    id: number;
+    firstName: string;
+    lastName: string;
+    campusId: number;
+    meetingUrl: string;
+  }[]
+> => {
+  return secureAPI
     .get("/supervisors")
     .then(function (response) {
       return Promise.resolve(response.data);

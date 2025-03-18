@@ -1,7 +1,14 @@
-export const AxiosErrors = [
+export const ERROR_LABELS: { error: string; label: { fr: string } }[] = [
   {
-    code: "ERR_NETWORK",
-    label_french:
-      "Impossible de communiquer avec le serveur, veuillez vérifier votre connexion internet.",
+    error: "Validation failed",
+    label: {
+      fr: "Un des champs est invalide. Veuillez vérifier les informations saisies.",
+    },
+  },
+  {
+    error: "Unexpected error",
+    label: {
+      fr: "Une erreur inattendue est survenue. Veuillez réessayer.",
+    },
   },
 ];

@@ -1,4 +1,4 @@
-import { publicAPI } from "./axios";
+import secureAPI, { publicAPI } from "./axios";
 import {
   getMinutes,
   setHours,
@@ -17,7 +17,7 @@ export const getAvailableDays = async (meetingInfos: {
   startDate: Date;
   endDate: Date;
 }): Promise<Date[]> => {
-  return publicAPI
+  return secureAPI
     .get(`/availabilities/${meetingInfos.supervisorId}/days`, {
       params: {
         duration: meetingInfos.duration,
@@ -53,7 +53,7 @@ export const getAvailableSlots = async (meetingInfos: {
   let formattedMonth = (getMonth(parsedDate) + 1).toString().padStart(2, "0");
   let formattedDay = getDate(parsedDate).toString().padStart(2, "0");
   let formattedDate = `${getYear(parsedDate)}-${formattedMonth}-${formattedDay}`;
-  return publicAPI
+  return secureAPI
     .get(`/availabilities/${meetingInfos.supervisorId}/slots`, {
       params: {
         date: formattedDate,

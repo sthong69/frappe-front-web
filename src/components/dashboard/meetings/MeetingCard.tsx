@@ -18,15 +18,6 @@ const MeetingCard = (props: MeetingCardProps) => {
   const { userRole } = useAuth();
 
   if (userRole === "ROLE_STUDENT") {
-    const SUPERVISOR_INFO = useQuery({
-      queryKey: ["supervisor", props.meeting.supervisorId],
-      queryFn: () => getSupervisorInfoFromId(props.meeting.supervisorId),
-    });
-
-    if (SUPERVISOR_INFO.isLoading) {
-      return <div>Loading...</div>;
-    }
-
     return (
       <Card
         onClick={() => {}}
@@ -34,8 +25,8 @@ const MeetingCard = (props: MeetingCardProps) => {
       >
         <CardHeader className="flex flex-row">
           <h3>
-            Réunion avec {SUPERVISOR_INFO.data?.lastName}{" "}
-            {SUPERVISOR_INFO.data?.firstName}
+            Réunion avec {props.meeting.supervisor.lastName}{" "}
+            {props.meeting.supervisor.firstName}
           </h3>
           <Badge className="ml-auto">
             {translateMeetingTheme(props.meeting.theme)}
@@ -63,15 +54,6 @@ const MeetingCard = (props: MeetingCardProps) => {
     );
   }
 
-  const STUDENT_INFO = useQuery({
-    queryKey: ["student", props.meeting.studentId],
-    queryFn: () => getStudentInfoFromId(props.meeting.studentId),
-  });
-
-  if (STUDENT_INFO.isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Card
       onClick={() => {}}
@@ -79,8 +61,8 @@ const MeetingCard = (props: MeetingCardProps) => {
     >
       <CardHeader className="flex flex-row">
         <h3>
-          Réunion avec {STUDENT_INFO.data?.lastName}{" "}
-          {STUDENT_INFO.data?.firstName}
+          Réunion avec {props.meeting.student.lastName}{" "}
+          {props.meeting.student.firstName}
         </h3>
         <Badge className="ml-auto">
           {translateMeetingTheme(props.meeting.theme)}

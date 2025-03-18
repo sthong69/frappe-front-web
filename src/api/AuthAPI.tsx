@@ -60,9 +60,6 @@ export const login = async (input: {
       password: input.password,
     })
     .then(function (response) {
-      if (!response.data.token) {
-        return Promise.reject(response.data.message);
-      }
       return Promise.resolve(response.data);
     })
     .catch(function (error) {

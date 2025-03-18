@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { toast } from "sonner";
 import ChooseDayAndTime from "@/components/form/choose-meeting/ChooseDayAndTime";
-import { getAllSupervisors } from "@/api/SupervisorsAPI";
+import { getAllSupervisorsAsStudent } from "@/api/SupervisorsAPI";
 import { useQuery } from "@tanstack/react-query";
 import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
@@ -49,7 +49,7 @@ const ChooseMeetingForm = () => {
   });
   const SUPERVISORS = useQuery({
     queryKey: ["supervisors"],
-    queryFn: getAllSupervisors,
+    queryFn: getAllSupervisorsAsStudent,
   });
 
   const formSchema = z.object({

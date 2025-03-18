@@ -66,10 +66,13 @@ export const columns: ColumnDef<MeetingRequest>[] = [
       return (
         <div className="flex flex-col text-xs">
           <span className="flex items-center gap-1">
-            <User className="h-3 w-3" /> Étudiant : {row.getValue("studentId")}
+            <User className="h-3 w-3" /> Étudiant :{" "}
+            {row.original.student.lastName} {row.original.student.firstName}
           </span>
           <span className="flex items-center gap-1">
-            <User className="h-3 w-3" /> Encadrant : {row.original.supervisorId}
+            <User className="h-3 w-3" /> Encadrant :{" "}
+            {row.original.supervisor.lastName}{" "}
+            {row.original.supervisor.firstName}
           </span>
         </div>
       );
