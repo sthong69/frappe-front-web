@@ -1,6 +1,8 @@
+import type React from "react";
+
 import { cn, formatDateToFrench } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getHours, getMinutes, set } from "date-fns";
+import { getHours, getMinutes } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -36,7 +38,6 @@ import { Check } from "lucide-react";
 import { useAuth } from "@/context/Auth";
 import { requestAMeeting } from "@/api/MeetingRequestsAPI";
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
 import BookingAnimation from "@/components/BookingAnimation";
 import { router } from "@/router";
 
@@ -171,10 +172,6 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
     setIsBooking(true);
     mutation.mutate({ ...props.meetingInfos, ...values, studentId: user?.id! });
   }
-
-  {
-    /* Booking meeting mode */
-  }
   if (booking) {
     return (
       <BookingAnimation
@@ -192,32 +189,29 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
       />
     );
   }
-
-  {
-    /* Input meeting infos mode */
-  }
   return (
     <div className="flex flex-1 flex-col gap-4">
-      <p className="-mt-4 mb-4 px-4">
+      <p className="-mt-4 mb-4 px-4 text-sm md:text-base">
         Veuillez renseigner les informations complémentaires.
       </p>
-      <div className="grid h-full flex-1 grid-cols-3">
+      <div className="grid h-full flex-1 grid-cols-1 gap-6 px-4 md:grid-cols-3 md:gap-0">
+        {/* Meeting details - full width on mobile, 1/3 width on desktop */}
         <div className="flex flex-col gap-4">
-          <div className="w-64 rounded-lg bg-white p-2 text-center">
+          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
             {props.meetingInfos.campusInfos.name}
           </div>
-          <div className="w-64 rounded-lg bg-white p-2 text-center">
+          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
             {props.meetingInfos.supervisorInfos.firstName}{" "}
             {props.meetingInfos.supervisorInfos.lastName}
           </div>
-          <div className="w-64 rounded-lg bg-white p-2 text-center">
-            {`${getHours(props.meetingInfos.startDate)}:${getMinutes(props.meetingInfos.startDate).toString().padEnd(2, "0")} - ${getHours(props.meetingInfos.endDate)}:${getMinutes(props.meetingInfos.endDate).toString().padEnd(2, "0")}`}
+          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
+            {`${getHours(props.meetingInfos.startDate)}:${getMinutes(props.meetingInfos.startDate).toString().padStart(2, "0")} - ${getHours(props.meetingInfos.endDate)}:${getMinutes(props.meetingInfos.endDate).toString().padStart(2, "0")}`}
           </div>
-          <div className="w-64 rounded-lg bg-white p-2 text-center">
+          <div className="w-full rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
             {formatDateToFrench(props.meetingInfos.startDate)}
           </div>
           <Button
-            className="w-64 font-semibold text-black"
+            className="w-full font-semibold text-black md:w-64"
             variant={"default"}
             onClick={() =>
               props.setMeetingInfos({
@@ -230,7 +224,9 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
             Modifier la date et l'heure
           </Button>
         </div>
-        <div className="col-span-2">
+
+        {/* Form - full width on mobile, 2/3 width on desktop */}
+        <div className="md:col-span-2">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -252,7 +248,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="w-96">
+                        <SelectTrigger className="w-full md:w-96">
                           <SelectValue placeholder="Motif" />
                         </SelectTrigger>
                       </FormControl>
@@ -284,7 +280,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                                 variant="outline"
                                 role="combobox"
                                 className={cn(
-                                  "justify-between",
+                                  "w-full justify-between md:w-96",
                                   !field.value && "text-muted-foreground",
                                 )}
                               >
@@ -297,7 +293,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                               </Button>
                             </FormControl>
                           </PopoverTrigger>
-                          <PopoverContent className="w-96 p-0">
+                          <PopoverContent className="w-full p-0 md:w-96">
                             <Command>
                               <CommandInput
                                 placeholder="Rechercher un pays..."
@@ -350,7 +346,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                           disabled={!editMode}
                         >
                           <FormControl>
-                            <SelectTrigger className="w-96">
+                            <SelectTrigger className="w-full md:w-96">
                               <SelectValue placeholder="Durée du stage" />
                             </SelectTrigger>
                           </FormControl>
@@ -384,6 +380,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                         disabled={!editMode}
                         {...field}
                         placeholder="Merci de décrire au mieux le sujet de votre rendez-vous afin que les encadrants TING puissent vous aider au mieux."
+                        className="min-h-[100px]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -391,12 +388,12 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 )}
               />
 
-              <div className="ml-auto mt-auto flex flex-row gap-8">
+              <div className="mt-auto flex flex-col gap-2 sm:ml-auto sm:flex-row sm:gap-8">
                 {editMode ? (
                   <></>
                 ) : (
                   <Button
-                    className="w-48 font-semibold text-black"
+                    className="w-full font-semibold text-black sm:w-auto md:w-48"
                     variant={"default"}
                     onClick={() => setEditMode(true)}
                   >
@@ -405,14 +402,14 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 )}
 
                 <Button
-                  className="w-48 font-semibold text-black"
+                  className="w-full font-semibold text-black sm:w-auto md:w-48"
                   variant={"destructive"}
                   onClick={() => props.setMeetingInfos(undefined)}
                 >
                   Annuler
                 </Button>
                 <Button
-                  className="w-48 font-semibold text-black"
+                  className="w-full font-semibold text-black sm:w-auto md:w-48"
                   type="submit"
                   variant={editMode ? "default" : "confirm"}
                 >
