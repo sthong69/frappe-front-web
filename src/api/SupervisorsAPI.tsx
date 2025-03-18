@@ -99,3 +99,16 @@ export const createSupervisor = async ({
       return Promise.reject(error);
     });
 };
+
+export const updateSupervisorInfo = async (
+  student: Supervisor,
+): Promise<Supervisor> => {
+  return secureAPI
+    .patch("/supervisors/me", student)
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      return Promise.reject(error);
+    });
+};

@@ -14,6 +14,12 @@ export function handleError(error: AxiosError): string {
       return "L'identifiant ou le mot de passe est incorrect.";
     }
 
+    if ((error.response.data as { error: string; details: any }).details) {
+      return translateError(
+        (error.response.data as { error: string; details: any }).error,
+      );
+    }
+
     return (
       translateError(error.response.data as string) ??
       "Une erreur est survenue, veuillez réessayer."
