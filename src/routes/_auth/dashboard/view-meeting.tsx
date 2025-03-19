@@ -10,6 +10,7 @@ import Page from "@/components/Page";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import PageNotFound from "@/components/PageNotFound";
 import MeetingRecord from "@/components/dashboard/meetings/MeetingRecord";
+import { AxiosError } from "axios";
 
 type ViewMeetingSearchParams = {
   id: number;
@@ -43,6 +44,15 @@ function RouteComponent() {
   const MEETING_ACTION = useQuery({
     queryKey: ["meeting-action", id],
     queryFn: () => getMeetingAction(id),
+    retry: (failureCount, error: AxiosError) => {
+      if (error.status === 404) {
+        return false;
+      }
+      if (failureCount <= 3) {
+        return true;
+      }
+      return false;
+    },
   });
 
   if (MEETING_INFOS.isLoading || MEETING_ACTION.isLoading) {
