@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { addMeetingAction } from "@/api/MeetingRequestsAPI";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 import { handleError } from "@/lib/errors/utils";
@@ -44,6 +44,7 @@ interface MeetingRecordProps {
 }
 
 const MeetingRecord = ({ meeting, action }: MeetingRecordProps) => {
+  const queryClient = useQueryClient();
   const { userRole } = useAuth();
 
   const [showActionPlanForm, setShowActionPlanForm] = useState(false);
@@ -57,7 +58,9 @@ const MeetingRecord = ({ meeting, action }: MeetingRecordProps) => {
       return addMeetingAction(meeting.id, data);
     },
     onSuccess: () => {
-      router.invalidate();
+      queryClient.invalidateQueries({
+        queryKey: ["meeting-action", meeting.id],
+      });
     },
     onError: (error: AxiosError) => {
       toast.error(handleError(error));

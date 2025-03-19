@@ -35,15 +35,15 @@ function RouteComponent() {
     queryKey: ["meeting", userRole, id],
     queryFn: () => {
       if (userRole === "ROLE_STUDENT") {
-        return getMeetingInfoPerIdAsStudent(id);
+        return getMeetingInfoPerIdAsStudent({ meetingId: id });
       }
-      return getMeetingInfoPerIdAsSupervisor(id);
+      return getMeetingInfoPerIdAsSupervisor({ meetingId: id });
     },
   });
 
   const MEETING_ACTION = useQuery({
     queryKey: ["meeting-action", id],
-    queryFn: () => getMeetingAction(id),
+    queryFn: () => getMeetingAction({ meetingId: id }),
     retry: (failureCount, error: AxiosError) => {
       if (error.status === 404) {
         return false;
