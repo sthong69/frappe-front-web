@@ -23,6 +23,7 @@ import { Route as IndexImport } from './routes/index'
 import { Route as AuthProfileImport } from './routes/_auth/profile'
 import { Route as AuthMeetingImport } from './routes/_auth/meeting'
 import { Route as AuthDashboardIndexImport } from './routes/_auth/dashboard/index'
+import { Route as AuthDashboardViewMeetingImport } from './routes/_auth/dashboard/view-meeting'
 import { Route as AuthDashboardMeetingsImport } from './routes/_auth/dashboard/meetings'
 import { Route as AuthDashboardSupervisorImport } from './routes/_auth/dashboard/_supervisor'
 import { Route as AuthDashboardSupervisorViewStudentProfileImport } from './routes/_auth/dashboard/_supervisor/view-student-profile'
@@ -97,6 +98,12 @@ const AuthMeetingRoute = AuthMeetingImport.update({
 const AuthDashboardIndexRoute = AuthDashboardIndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthDashboardRoute,
+} as any)
+
+const AuthDashboardViewMeetingRoute = AuthDashboardViewMeetingImport.update({
+  id: '/view-meeting',
+  path: '/view-meeting',
   getParentRoute: () => AuthDashboardRoute,
 } as any)
 
@@ -220,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthDashboardMeetingsImport
       parentRoute: typeof AuthDashboardImport
     }
+    '/_auth/dashboard/view-meeting': {
+      id: '/_auth/dashboard/view-meeting'
+      path: '/view-meeting'
+      fullPath: '/dashboard/view-meeting'
+      preLoaderRoute: typeof AuthDashboardViewMeetingImport
+      parentRoute: typeof AuthDashboardImport
+    }
     '/_auth/dashboard/': {
       id: '/_auth/dashboard/'
       path: '/'
@@ -277,12 +291,14 @@ const AuthDashboardSupervisorRouteWithChildren =
 interface AuthDashboardRouteChildren {
   AuthDashboardSupervisorRoute: typeof AuthDashboardSupervisorRouteWithChildren
   AuthDashboardMeetingsRoute: typeof AuthDashboardMeetingsRoute
+  AuthDashboardViewMeetingRoute: typeof AuthDashboardViewMeetingRoute
   AuthDashboardIndexRoute: typeof AuthDashboardIndexRoute
 }
 
 const AuthDashboardRouteChildren: AuthDashboardRouteChildren = {
   AuthDashboardSupervisorRoute: AuthDashboardSupervisorRouteWithChildren,
   AuthDashboardMeetingsRoute: AuthDashboardMeetingsRoute,
+  AuthDashboardViewMeetingRoute: AuthDashboardViewMeetingRoute,
   AuthDashboardIndexRoute: AuthDashboardIndexRoute,
 }
 
@@ -316,6 +332,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthProfileRoute
   '/dashboard': typeof AuthDashboardSupervisorRouteWithChildren
   '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/dashboard/view-meeting': typeof AuthDashboardViewMeetingRoute
   '/dashboard/': typeof AuthDashboardIndexRoute
   '/dashboard/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/dashboard/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
@@ -334,6 +351,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthProfileRoute
   '/dashboard': typeof AuthDashboardIndexRoute
   '/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/dashboard/view-meeting': typeof AuthDashboardViewMeetingRoute
   '/dashboard/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/dashboard/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
   '/dashboard/view-student-profile': typeof AuthDashboardSupervisorViewStudentProfileRoute
@@ -353,6 +371,7 @@ export interface FileRoutesById {
   '/_auth/dashboard': typeof AuthDashboardRouteWithChildren
   '/_auth/dashboard/_supervisor': typeof AuthDashboardSupervisorRouteWithChildren
   '/_auth/dashboard/meetings': typeof AuthDashboardMeetingsRoute
+  '/_auth/dashboard/view-meeting': typeof AuthDashboardViewMeetingRoute
   '/_auth/dashboard/': typeof AuthDashboardIndexRoute
   '/_auth/dashboard/_supervisor/add-supervisor': typeof AuthDashboardSupervisorAddSupervisorRoute
   '/_auth/dashboard/_supervisor/students-tracking': typeof AuthDashboardSupervisorStudentsTrackingRoute
@@ -373,6 +392,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/dashboard'
     | '/dashboard/meetings'
+    | '/dashboard/view-meeting'
     | '/dashboard/'
     | '/dashboard/add-supervisor'
     | '/dashboard/students-tracking'
@@ -390,6 +410,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/dashboard'
     | '/dashboard/meetings'
+    | '/dashboard/view-meeting'
     | '/dashboard/add-supervisor'
     | '/dashboard/students-tracking'
     | '/dashboard/view-student-profile'
@@ -407,6 +428,7 @@ export interface FileRouteTypes {
     | '/_auth/dashboard'
     | '/_auth/dashboard/_supervisor'
     | '/_auth/dashboard/meetings'
+    | '/_auth/dashboard/view-meeting'
     | '/_auth/dashboard/'
     | '/_auth/dashboard/_supervisor/add-supervisor'
     | '/_auth/dashboard/_supervisor/students-tracking'
@@ -493,6 +515,7 @@ export const routeTree = rootRoute
       "children": [
         "/_auth/dashboard/_supervisor",
         "/_auth/dashboard/meetings",
+        "/_auth/dashboard/view-meeting",
         "/_auth/dashboard/"
       ]
     },
@@ -507,6 +530,10 @@ export const routeTree = rootRoute
     },
     "/_auth/dashboard/meetings": {
       "filePath": "_auth/dashboard/meetings.tsx",
+      "parent": "/_auth/dashboard"
+    },
+    "/_auth/dashboard/view-meeting": {
+      "filePath": "_auth/dashboard/view-meeting.tsx",
       "parent": "/_auth/dashboard"
     },
     "/_auth/dashboard/": {
