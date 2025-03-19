@@ -1,114 +1,83 @@
-import { Supervisor } from "@/lib/types/AuthTypes";
+import {
+  GetSupervisorInfoInput,
+  Supervisor,
+  SupervisorAsStudent,
+} from "@/lib/types/AuthTypes";
 import secureAPI from "./axios";
+import { Axios, AxiosAdapter, AxiosError, AxiosResponse } from "axios";
 
 export const fetchSupervisorInfo = async (): Promise<Supervisor> => {
   return secureAPI
     .get("/supervisors/me")
-    .then(function (response) {
+    .then(function (response: AxiosResponse<Supervisor>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
 export const getAllSupervisorsAsSupervisor = async (): Promise<
-  {
-    id: number;
-    username: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber: string;
-    campusId: number;
-    meetingUrl: string;
-  }[]
+  Supervisor[]
 > => {
   return secureAPI
     .get("/supervisors")
-    .then(function (response) {
+    .then(function (response: AxiosResponse<Supervisor[]>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
 export const getAllSupervisorsAsStudent = async (): Promise<
-  {
-    id: number;
-    firstName: string;
-    lastName: string;
-    campusId: number;
-    meetingUrl: string;
-  }[]
+  SupervisorAsStudent[]
 > => {
   return secureAPI
     .get("/supervisors")
-    .then(function (response) {
+    .then(function (response: AxiosResponse<SupervisorAsStudent[]>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
 export const getSupervisorInfoFromId = async (
-  supervisorId: number,
+  input: GetSupervisorInfoInput,
 ): Promise<Supervisor> => {
   return secureAPI
-    .get(`/supervisors/${supervisorId}`)
-    .then(function (response) {
+    .get(`/supervisors/${input.supervisorId}`)
+    .then(function (response: AxiosResponse<Supervisor>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
-export const createSupervisor = async ({
-  username,
-  email,
-  password,
-  campusId,
-  firstName,
-  lastName,
-}: {
-  username: string;
-  email: string;
-  password: string;
-  campusId: number;
-  firstName: string;
-  lastName: string;
-}): Promise<Supervisor> => {
+export const createSupervisor = async (
+  supervisor: Supervisor,
+): Promise<Supervisor> => {
   return secureAPI
-    .post("/supervisors", {
-      username,
-      email,
-      password,
-      campusId,
-      firstName,
-      lastName,
-    })
-    .then(function (response) {
+    .post("/supervisors", supervisor)
+    .then(function (response: AxiosResponse<Supervisor>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
 export const updateSupervisorInfo = async (
-  student: Supervisor,
+  supervisor: Supervisor,
 ): Promise<Supervisor> => {
   return secureAPI
-    .patch("/supervisors/me", student)
-    .then(function (response) {
+    .patch("/supervisors/me", supervisor)
+    .then(function (response: AxiosResponse<Supervisor>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };

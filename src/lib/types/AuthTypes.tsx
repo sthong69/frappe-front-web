@@ -16,6 +16,14 @@ export interface Student extends UserBase {
 
 export interface Supervisor extends UserBase {
   meetingUrl?: string;
+  campusId: number;
+}
+
+export interface SupervisorAsStudent {
+  id: number;
+  firstName: string;
+  lastName: string;
+  campusId: number;
 }
 
 export type User = Student | Supervisor;
@@ -56,4 +64,8 @@ export interface LoginResponse {
 export interface LoginInput {
   email: string;
   password: string;
+}
+
+export interface GetSupervisorInfoInput {
+  supervisorId: number;
 }
