@@ -1,33 +1,25 @@
+import { Campus, GetCampusInput } from "@/lib/types/CampusTypes";
 import secureAPI from "./axios";
+import { AxiosError, AxiosResponse } from "axios";
 
-export const getAllCampuses = async (): Promise<
-  {
-    id: number;
-    name: string;
-  }[]
-> => {
+export const getAllCampuses = async (): Promise<Campus[]> => {
   return secureAPI
     .get("/campuses")
-    .then(function (response) {
+    .then(function (response: AxiosResponse<Campus[]>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
-export const getCampus = async (
-  id: number,
-): Promise<{
-  id: number;
-  name: string;
-}> => {
+export const getCampus = async (input: GetCampusInput): Promise<Campus> => {
   return secureAPI
-    .get("/campuses/" + id)
-    .then(function (response) {
+    .get("/campuses/" + input.id)
+    .then(function (response: AxiosResponse<Campus>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
