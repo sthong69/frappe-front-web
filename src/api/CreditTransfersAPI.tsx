@@ -1,40 +1,30 @@
+import {
+  CreditTransfer,
+  GetCreditTransfersInput,
+} from "@/lib/types/CreditTransfersTypes";
 import secureAPI from "./axios";
+import { AxiosError, AxiosResponse } from "axios";
 
-export const getAllCreditTransfers = async (): Promise<
-  {
-    id: number;
-    university: string;
-    country: string;
-    startDate: string;
-    endDate: string;
-  }[]
-> => {
+export const getAllCreditTransfers = async (): Promise<CreditTransfer[]> => {
   return secureAPI
     .get("/credit-transfers")
-    .then(function (response) {
+    .then(function (response: AxiosResponse<CreditTransfer[]>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
 
 export const getCreditTransfer = async (
-  id: number,
-): Promise<{
-  id: number;
-  university: string;
-  country: string;
-  startDate: string;
-  endDate: string;
-}> => {
+  input: GetCreditTransfersInput,
+): Promise<CreditTransfer> => {
   return secureAPI
-    .get("/credit-transfers/" + id)
-    .then(function (response) {
+    .get("/credit-transfers/" + input.id)
+    .then(function (response: AxiosResponse<CreditTransfer>) {
       return Promise.resolve(response.data);
     })
-    .catch(function (error) {
-      console.log(error);
+    .catch(function (error: AxiosError) {
       return Promise.reject(error);
     });
 };
