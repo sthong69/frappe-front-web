@@ -31,3 +31,29 @@ export type AuthContextType = {
   isProfileComplete: () => boolean;
   fetchUserInfo: () => Promise<boolean>;
 };
+
+export type RegisterResponse = string;
+
+export interface RegisterInput {
+  username: string;
+  password: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+}
+
+export type VerifyResponse = string;
+
+export interface VerifyInput {
+  token: string;
+}
+
+export interface LoginResponse {
+  token: string;
+  role: "ROLE_STUDENT" | "ROLE_SUPERVISOR";
+}
+
+export interface LoginInput {
+  email: string;
+  password: string;
+}
