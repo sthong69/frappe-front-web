@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { handleError } from "@/lib/errors/utils";
+import { RegisterSupervisorInput } from "@/lib/types/AuthTypes";
 
 const AddSupervisorForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
@@ -39,14 +40,7 @@ const AddSupervisorForm = () => {
   });
 
   const mutation = useMutation({
-    mutationFn: (newSupervisorData: {
-      username: string;
-      password: string;
-      email: string;
-      campusId: number;
-      firstName: string;
-      lastName: string;
-    }) => {
+    mutationFn: (newSupervisorData: RegisterSupervisorInput) => {
       return createSupervisor(newSupervisorData);
     },
     onSuccess: () => {

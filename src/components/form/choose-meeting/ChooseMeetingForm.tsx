@@ -25,22 +25,11 @@ import { getAllCampuses } from "@/api/CampusAPI";
 import { filterSupervisorsPerCampusId } from "@/lib/utils";
 import ChooseMeetingType from "@/components/form/choose-meeting/ChooseMeetingType";
 import { MEETING_DURATIONS } from "@/lib/consts";
-import { Clock } from "lucide-react";
+import { MeetingInfosWithWantedDates } from "@/lib/types/AvailabilitiesTypes";
 
 const ChooseMeetingForm = () => {
   const [meetingInfos, setMeetingInfos] = useState<
-    | {
-        campusInfos: { id: number; name: string };
-        supervisorInfos: { id: number; firstName: string; lastName: string };
-        startDate: Date | undefined;
-        endDate: Date | undefined;
-        theme: string | undefined;
-        request_description: string | undefined;
-        internship_duration: string | undefined;
-        wanted_country: string | undefined;
-        duration: string;
-      }
-    | undefined
+    MeetingInfosWithWantedDates | undefined
   >(undefined);
   const [campusId, setCampusId] = useState<string | null>(null);
 
@@ -97,14 +86,10 @@ const ChooseMeetingForm = () => {
     }
     setMeetingInfos({
       ...values,
-      supervisorInfos: supervisor,
-      campusInfos: campus,
+      supervisor: supervisor,
+      campus: campus,
       startDate: undefined,
       endDate: undefined,
-      theme: undefined,
-      request_description: undefined,
-      internship_duration: undefined,
-      wanted_country: undefined,
     });
   }
 

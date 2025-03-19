@@ -1,6 +1,10 @@
+import { SupervisorAsStudent } from "./AuthTypes";
+import { Campus } from "./CampusTypes";
+
 export interface BaseMeetingInfos {
-  supervisorId: number;
+  supervisor: SupervisorAsStudent;
   duration: string;
+  campus: Campus;
 }
 
 export interface MeetingInfosWithWantedDay extends BaseMeetingInfos {
@@ -8,8 +12,8 @@ export interface MeetingInfosWithWantedDay extends BaseMeetingInfos {
 }
 
 export interface MeetingInfosWithWantedDates extends BaseMeetingInfos {
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
 }
 
 export interface MeetingInfosWithDateSearchRange extends BaseMeetingInfos {

@@ -3,19 +3,14 @@ import { twMerge } from "tailwind-merge";
 import { MEETING_THEMES } from "./consts";
 import { compareAsc, isAfter, isBefore, isSameDay } from "date-fns";
 import { MeetingRequest } from "./types/MeetingRequestTypes";
+import { SupervisorAsStudent } from "./types/AuthTypes";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export function filterSupervisorsPerCampusId(
-  supervisors: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    campusId: number;
-    meetingUrl: string;
-  }[],
+  supervisors: SupervisorAsStudent[],
   campusId: number,
 ) {
   return supervisors.filter((supervisor) => supervisor.campusId === campusId);

@@ -1,4 +1,4 @@
-import { Student, Supervisor } from "./AuthTypes";
+import { Student, Supervisor, SupervisorAsStudent } from "./AuthTypes";
 import { Campus } from "./CampusTypes";
 
 export interface MeetingRequest {
@@ -13,10 +13,17 @@ export interface MeetingRequest {
   supervisor: Supervisor;
 }
 
-export interface MeetingRequestInput extends MeetingRequest {
-  studentId: number;
-  supervisorInfos: Supervisor;
+export interface MeetingRequestInput {
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  theme: string | undefined;
+  location: string;
+  requestDescription: string | undefined;
+  studentId: number | undefined;
+  supervisorInfos: SupervisorAsStudent;
   campusInfos: Campus;
+  internshipDuration: string | undefined;
+  wantedCountry: string | undefined;
 }
 
 export interface MeetingRequestResponse {

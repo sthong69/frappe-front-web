@@ -1,13 +1,11 @@
 import { getAvailableSlots } from "@/api/AvailabilitiesAPI";
 import { HOUR_LIMIT_BEFORE_MEETING } from "@/lib/consts";
+import { MeetingInfosWithWantedDates } from "@/lib/types/AvailabilitiesTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getHours, isSameDay } from "date-fns";
 
 interface ChooseTimeProps {
-  meetingInfos: {
-    supervisorId: number;
-    duration: string;
-  };
+  meetingInfos: MeetingInfosWithWantedDates;
   input: {
     selectedDate: Date;
     startHours: number | undefined;
@@ -34,7 +32,7 @@ const ChooseTime = (props: ChooseTimeProps) => {
     queryFn: () =>
       getAvailableSlots({
         ...props.meetingInfos,
-        supervisorId: props.meetingInfos.supervisorId,
+        supervisor: props.meetingInfos.supervisor,
         day: props.input.selectedDate,
       }),
   });

@@ -18,6 +18,7 @@ import { register } from "@/api/AuthAPI";
 import Page from "@/components/Page";
 import { AxiosError } from "axios";
 import { handleError } from "@/lib/errors/utils";
+import { RegisterInput } from "@/lib/types/AuthTypes";
 
 const RegisterForm = () => {
   const [registrationSuccess, setRegistrationSuccess] =
@@ -26,13 +27,7 @@ const RegisterForm = () => {
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (newUserData: {
-      username: string;
-      password: string;
-      email: string;
-      firstName: string;
-      lastName: string;
-    }) => {
+    mutationFn: (newUserData: RegisterInput) => {
       return register(newUserData);
     },
     onSuccess: () => {

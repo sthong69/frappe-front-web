@@ -14,41 +14,12 @@ import { DAYS_RANGE_FOR_MEETING } from "@/lib/consts";
 import { toast } from "sonner";
 import LoadingSpinner from "../../LoadingSpinner";
 import { Clock, MapPin, User } from "lucide-react";
+import { MeetingInfosWithWantedDates } from "@/lib/types/AvailabilitiesTypes";
 
 interface ChooseDayAndTimeProps {
-  meetingInfos: {
-    campusInfos: { id: number; name: string };
-    supervisorInfos: { id: number; firstName: string; lastName: string };
-    duration: string;
-    startDate: Date | undefined;
-    endDate: Date | undefined;
-    theme: string | undefined;
-    request_description: string | undefined;
-    internship_duration: string | undefined;
-    wanted_country: string | undefined;
-  };
+  meetingInfos: MeetingInfosWithWantedDates;
   setMeetingInfos: React.Dispatch<
-    React.SetStateAction<
-      | {
-          campusInfos: {
-            id: number;
-            name: string;
-          };
-          supervisorInfos: {
-            id: number;
-            firstName: string;
-            lastName: string;
-          };
-          duration: string;
-          startDate: Date | undefined;
-          endDate: Date | undefined;
-          theme: string | undefined;
-          request_description: string | undefined;
-          internship_duration: string | undefined;
-          wanted_country: string | undefined;
-        }
-      | undefined
-    >
+    React.SetStateAction<MeetingInfosWithWantedDates | undefined>
   >;
 }
 
@@ -72,7 +43,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
     queryFn: () =>
       getAvailableDays({
         ...props.meetingInfos,
-        supervisorId: props.meetingInfos.supervisorInfos.id,
+        supervisor: props.meetingInfos.supervisor,
         startDate: new Date(),
         endDate: addDays(new Date(), DAYS_RANGE_FOR_MEETING),
       }),
@@ -109,11 +80,11 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
 
       <div className="flex flex-col flex-wrap justify-center gap-2 px-4 sm:gap-4 md:gap-8 lg:flex-row">
         <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
-          <MapPin /> {props.meetingInfos.campusInfos.name}
+          <MapPin /> {props.meetingInfos.campus.name}
         </div>
         <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
-          <User /> {props.meetingInfos.supervisorInfos.firstName}{" "}
-          {props.meetingInfos.supervisorInfos.lastName}
+          <User /> {props.meetingInfos.supervisor.firstName}{" "}
+          {props.meetingInfos.supervisor.lastName}
         </div>
         <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:text-base lg:w-auto lg:px-8">
           <Clock />{" "}
@@ -188,10 +159,7 @@ const ChooseDayAndTime = (props: ChooseDayAndTimeProps) => {
         <TabsContent value="time">
           {input.selectedDate != null ? (
             <ChooseTime
-              meetingInfos={{
-                supervisorId: props.meetingInfos.supervisorInfos.id,
-                ...props.meetingInfos,
-              }}
+              meetingInfos={props.meetingInfos}
               input={{ ...input, selectedDate: input.selectedDate }}
               setInput={setInput}
             />

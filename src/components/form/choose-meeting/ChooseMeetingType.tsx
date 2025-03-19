@@ -40,48 +40,13 @@ import { requestAMeeting } from "@/api/MeetingRequestsAPI";
 import { useMutation } from "@tanstack/react-query";
 import BookingAnimation from "@/components/BookingAnimation";
 import { router } from "@/router";
+import { MeetingRequestInput } from "@/lib/types/MeetingRequestTypes";
+import { MeetingInfosWithWantedDates } from "@/lib/types/AvailabilitiesTypes";
 
 interface ChooseMeetingTypeProps {
-  meetingInfos: {
-    campusInfos: {
-      id: number;
-      name: string;
-    };
-    supervisorInfos: {
-      id: number;
-      firstName: string;
-      lastName: string;
-    };
-    startDate: Date;
-    endDate: Date;
-    duration: string;
-    theme: string | undefined;
-    request_description: string | undefined;
-    internship_duration: string | undefined;
-    wanted_country: string | undefined;
-  };
+  meetingInfos: MeetingInfosWithWantedDates;
   setMeetingInfos: React.Dispatch<
-    React.SetStateAction<
-      | {
-          campusInfos: {
-            id: number;
-            name: string;
-          };
-          supervisorInfos: {
-            id: number;
-            firstName: string;
-            lastName: string;
-          };
-          duration: string;
-          startDate: Date | undefined;
-          endDate: Date | undefined;
-          theme: string | undefined;
-          request_description: string | undefined;
-          internship_duration: string | undefined;
-          wanted_country: string | undefined;
-        }
-      | undefined
-    >
+    React.SetStateAction<MeetingInfosWithWantedDates | undefined>
   >;
 }
 
@@ -97,42 +62,31 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
   const { user } = useAuth();
 
   const mutation = useMutation({
-    mutationFn: (meetingInfos: {
-      campusInfos: { id: number; name: string };
-      supervisorInfos: { id: number; firstName: string; lastName: string };
-      studentId: number;
-      startDate: Date;
-      endDate: Date;
-      theme: string;
-      request_description: string;
-      internship_duration: string | undefined;
-      wanted_country: string | undefined;
-      duration: string;
-    }) => {
+    mutationFn: (meetingInfos: MeetingRequestInput) => {
       return requestAMeeting(meetingInfos);
     },
     onSuccess: () => {
       setStatus("success");
     },
-    onError: (error) => {
+    onError: () => {
       setStatus("error");
     },
   });
 
   const formSchema = z.object({
     theme: z.string(),
-    request_description: z.string(),
-    internship_duration: z.string(),
-    wanted_country: z.string(),
+    requestDescription: z.string(),
+    internshipDuration: z.string(),
+    wantedCountry: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       theme: "",
-      request_description: "",
-      internship_duration: "",
-      wanted_country: "",
+      requestDescription: "",
+      internshipDuration: "",
+      wantedCountry: "",
     },
   });
 
@@ -142,26 +96,26 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
         message: "Veuillez sélectionner un motif.",
       });
     }
-    if (!values.request_description) {
-      form.setError("request_description", {
+    if (!values.requestDescription) {
+      form.setError("requestDescription", {
         message: "Veuillez renseigner un commentaire.",
       });
     }
-    if (theme?.value == "Internship request" && !values.wanted_country) {
-      form.setError("wanted_country", {
+    if (theme?.value == "Internship request" && !values.wantedCountry) {
+      form.setError("wantedCountry", {
         message: "Veuillez sélectionner un pays envisagé pour votre stage.",
       });
     }
-    if (theme?.value == "Internship request" && !values.internship_duration) {
-      form.setError("internship_duration", {
+    if (theme?.value == "Internship request" && !values.internshipDuration) {
+      form.setError("internshipDuration", {
         message: "Veuillez sélectionner une durée de stage.",
       });
     }
     if (
       !values.theme ||
-      !values.request_description ||
+      !values.requestDescription ||
       (theme?.value === "Internship request" &&
-        (!values.wanted_country || !values.internship_duration))
+        (!values.wantedCountry || !values.internshipDuration))
     ) {
       return;
     }
@@ -170,7 +124,14 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
       return;
     }
     setIsBooking(true);
-    mutation.mutate({ ...props.meetingInfos, ...values, studentId: user?.id! });
+    mutation.mutate({
+      ...props.meetingInfos,
+      ...values,
+      campusInfos: props.meetingInfos.campus,
+      supervisorInfos: props.meetingInfos.supervisor,
+      studentId: user?.id!,
+      location: props.meetingInfos.campus.name,
+    });
   }
   if (booking) {
     return (
@@ -197,19 +158,19 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
       <div className="grid h-full flex-1 grid-cols-1 gap-6 px-4 md:grid-cols-3 md:gap-0">
         <div className="flex flex-col gap-4">
           <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
-            <MapPin /> {props.meetingInfos.campusInfos.name}
+            <MapPin /> {props.meetingInfos.campus.name}
           </div>
           <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
-            <User /> {props.meetingInfos.supervisorInfos.firstName}{" "}
-            {props.meetingInfos.supervisorInfos.lastName}
+            <User /> {props.meetingInfos.supervisor.firstName}{" "}
+            {props.meetingInfos.supervisor.lastName}
           </div>
           <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
             <Calendar />
-            {formatDateToFrench(props.meetingInfos.startDate)}
+            {formatDateToFrench(props.meetingInfos.startDate!)}
           </div>
           <div className="flex w-full flex-row gap-2 rounded-lg bg-white p-2 text-center text-sm md:w-64 md:text-base">
             <Clock />{" "}
-            {`${getHours(props.meetingInfos.startDate)}:${getMinutes(props.meetingInfos.startDate).toString().padStart(2, "0")} - ${getHours(props.meetingInfos.endDate)}:${getMinutes(props.meetingInfos.endDate).toString().padStart(2, "0")}`}
+            {`${getHours(props.meetingInfos.startDate!)}:${getMinutes(props.meetingInfos.startDate!).toString().padStart(2, "0")} - ${getHours(props.meetingInfos.endDate!)}:${getMinutes(props.meetingInfos.endDate!).toString().padStart(2, "0")}`}
           </div>
 
           <Button
@@ -269,7 +230,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                 <>
                   <FormField
                     control={form.control}
-                    name="wanted_country"
+                    name="wantedCountry"
                     render={({ field }) => (
                       <FormItem className="flex flex-col">
                         <FormLabel>Pays envisagé pour le stage</FormLabel>
@@ -311,7 +272,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                                       key={country.value}
                                       onSelect={() => {
                                         form.setValue(
-                                          "wanted_country",
+                                          "wantedCountry",
                                           country.value,
                                         );
                                       }}
@@ -338,7 +299,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
                   />
                   <FormField
                     control={form.control}
-                    name="internship_duration"
+                    name="internshipDuration"
                     render={({ field }) => (
                       <FormItem>
                         <Select
@@ -372,7 +333,7 @@ const ChooseMeetingType = (props: ChooseMeetingTypeProps) => {
               )}
               <FormField
                 control={form.control}
-                name="request_description"
+                name="requestDescription"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Commentaire</FormLabel>

@@ -19,6 +19,7 @@ import { useAuth } from "@/context/Auth";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { handleError } from "@/lib/errors/utils";
+import { LoginInput } from "@/lib/types/AuthTypes";
 
 const LoginForm = () => {
   const authContext = useAuth();
@@ -26,7 +27,7 @@ const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (userData: { email: string; password: string }) => {
+    mutationFn: (userData: LoginInput) => {
       return login(userData);
     },
     onSuccess: async (data) => {

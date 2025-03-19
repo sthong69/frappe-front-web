@@ -1,5 +1,6 @@
 import {
   GetSupervisorInfoInput,
+  RegisterSupervisorInput,
   Supervisor,
   SupervisorAsStudent,
 } from "@/lib/types/AuthTypes";
@@ -57,7 +58,7 @@ export const getSupervisorInfoFromId = async (
 };
 
 export const createSupervisor = async (
-  supervisor: Supervisor,
+  supervisor: RegisterSupervisorInput,
 ): Promise<Supervisor> => {
   return secureAPI
     .post("/supervisors", supervisor)

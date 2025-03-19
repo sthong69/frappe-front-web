@@ -50,6 +50,10 @@ export interface RegisterInput {
   lastName: string;
 }
 
+export interface RegisterSupervisorInput extends RegisterInput {
+  campusId: number;
+}
+
 export type VerifyResponse = string;
 
 export interface VerifyInput {

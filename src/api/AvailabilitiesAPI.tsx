@@ -24,7 +24,7 @@ export const getAvailableDays = async (
   meetingInfos: MeetingInfosWithDateSearchRange,
 ): Promise<AvailableDay[]> => {
   return secureAPI
-    .get(`/availabilities/${meetingInfos.supervisorId}/days`, {
+    .get(`/availabilities/${meetingInfos.supervisor.id}/days`, {
       params: {
         duration: meetingInfos.duration,
         startDate: meetingInfos.startDate.toISOString().split("T")[0],
@@ -51,7 +51,7 @@ export const getAvailableSlots = async (
   let formattedDay = getDate(parsedDate).toString().padStart(2, "0");
   let formattedDate = `${getYear(parsedDate)}-${formattedMonth}-${formattedDay}`;
   return secureAPI
-    .get(`/availabilities/${meetingInfos.supervisorId}/slots`, {
+    .get(`/availabilities/${meetingInfos.supervisor.id}/slots`, {
       params: {
         date: formattedDate,
         duration: meetingInfos.duration,
