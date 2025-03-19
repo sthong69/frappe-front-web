@@ -1,4 +1,4 @@
-import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
+import { MeetingAction, MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import secureAPI from "./axios";
 import { parseJSON } from "date-fns";
 import { Student, Supervisor } from "@/lib/types/AuthTypes";
@@ -91,14 +91,92 @@ export const requestAMeeting = async (meetingInfos: {
       location: meetingInfos.campusInfos.name,
     })
     .then(function (response) {
-      return {
+      return Promise.resolve({
         ...response.data,
         startDate: parseJSON(response.data.startDate),
         endDate: parseJSON(response.data.endDate),
-      };
+      });
     })
     .catch(function (error) {
       console.log(error);
+      return Promise.reject(error);
+    });
+};
+
+export const getMeetingInfoPerIdAsStudent = async (
+  meetingRequestId: number,
+): Promise<MeetingRequest> => {
+  return secureAPI
+    .get(`/students/me/meeting-requests`)
+    .then(function (response) {
+      const meetingRequest = response.data.find(
+        (meetingRequest: MeetingRequest) =>
+          meetingRequest.id === meetingRequestId,
+      );
+      if (meetingRequest) {
+        return Promise.resolve({
+          ...meetingRequest,
+          startDate: parseJSON(meetingRequest.startDate),
+          endDate: parseJSON(meetingRequest.endDate),
+        });
+      }
+      return Promise.reject("Meeting request not found");
+    })
+    .catch(function (error) {
+      return Promise.reject(error);
+    });
+};
+
+export const getMeetingInfoPerIdAsSupervisor = async (
+  meetingRequestId: number,
+): Promise<MeetingRequest> => {
+  return secureAPI
+    .get("/supervisors/me/meeting-requests")
+    .then(function (response) {
+      const meetingRequest = response.data.find(
+        (meetingRequest: MeetingRequest) =>
+          meetingRequest.id === meetingRequestId,
+      );
+      if (meetingRequest) {
+        return Promise.resolve({
+          ...meetingRequest,
+          startDate: parseJSON(meetingRequest.startDate),
+          endDate: parseJSON(meetingRequest.endDate),
+        });
+      }
+      return Promise.reject("Meeting request not found");
+    });
+};
+
+export const getMeetingAction = async (
+  meetingId: number,
+): Promise<MeetingAction> => {
+  return secureAPI
+    .get(`/meeting-requests/${meetingId}/actions`)
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
+      return Promise.reject(error);
+    });
+};
+
+export const addMeetingAction = async (
+  meetingId: number,
+  actionInfos: {
+    notes: string;
+    actionPlan: string;
+  },
+): Promise<MeetingAction> => {
+  return secureAPI
+    .post(`/meeting-requests/${meetingId}/actions`, {
+      notes: actionInfos.notes,
+      actionPlan: actionInfos.actionPlan,
+    })
+    .then(function (response) {
+      return Promise.resolve(response.data);
+    })
+    .catch(function (error) {
       return Promise.reject(error);
     });
 };

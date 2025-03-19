@@ -3,9 +3,12 @@ import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
 import { formatDateToFrench } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { getHours, getMinutes } from "date-fns";
-import { Clock, User } from "lucide-react";
+import { Clock, Eye, FileUser, User } from "lucide-react";
 import { translateMeetingTheme } from "@/lib/utils";
 import { SortableColumnHeader } from "@/components/ui/sortable-column-header";
+import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
+import { useAuth } from "@/context/Auth";
 
 const getStatusBadge = (status: string) => {
   switch (status.toUpperCase()) {
@@ -24,7 +27,7 @@ const getStatusBadge = (status: string) => {
   }
 };
 
-export const columns: ColumnDef<MeetingRequest>[] = [
+export const supervisorColumns: ColumnDef<MeetingRequest>[] = [
   {
     header: ({ column }) => (
       <SortableColumnHeader
@@ -97,5 +100,28 @@ export const columns: ColumnDef<MeetingRequest>[] = [
   {
     header: "Lieu",
     accessorKey: "location",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2 text-xs text-white">
+          <Link to={`/dashboard/view-meeting?id=${row.original.id}`}>
+            <Button>
+              <Eye className="mr-2" />
+              Voir la fiche de réunion
+            </Button>
+          </Link>
+          <Link
+            to={`/dashboard/view-student-profile?id=${row.original.student.id}`}
+          >
+            <Button>
+              <FileUser className="mr-2" />
+              Fiche étudiant
+            </Button>
+          </Link>
+        </div>
+      );
+    },
   },
 ];

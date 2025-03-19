@@ -1,7 +1,8 @@
 import Page from "@/components/Page";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { MeetingRequest } from "@/lib/types/MeetingRequestTypes";
-import { columns } from "./columns";
+import { supervisorColumns } from "./supervisor-columns";
+import { studentColumns } from "./student-columns";
 import { DataTable } from "@/components/ui/data-table";
 import { cn, formatDateToFrench, sortMeetingsPerStartDate } from "@/lib/utils";
 import { useState } from "react";
@@ -19,12 +20,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { CalendarIcon, FilterX } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
+import { useAuth } from "@/context/Auth";
 
 interface MeetingTableProps {
   meetingRequests: MeetingRequest[];
 }
 
 const MeetingTable = (props: MeetingTableProps) => {
+  const { userRole } = useAuth();
   const [hidePastMeetings, setHidePastMeetings] = useState(true);
   const [search, setSearch] = useState("");
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -119,7 +122,11 @@ const MeetingTable = (props: MeetingTableProps) => {
         </CardHeader>
         <CardContent>
           <DataTable
-            columns={columns}
+            columns={
+              userRole === "ROLE_SUPERVISOR"
+                ? supervisorColumns
+                : studentColumns
+            }
             data={sortMeetingsPerStartDate({
               meetings: props.meetingRequests,
               order: "asc",

@@ -19,7 +19,7 @@ const MeetingCard = (props: MeetingCardProps) => {
 
   if (userRole === "ROLE_STUDENT") {
     return (
-      <Link to={`/view-meeting?id=${props.meeting.id}`}>
+      <Link to={`/dashboard/view-meeting?id=${props.meeting.id}`}>
         <Card
           className={`${props.isPassed ? "opacity-80" : "hover:bg-gray-100"}`}
         >
@@ -63,7 +63,7 @@ const MeetingCard = (props: MeetingCardProps) => {
   }
 
   return (
-    <Link to={`/view-meeting?id=${props.meeting.id}`}>
+    <Link to={`/dashboard/view-meeting?id=${props.meeting.id}`}>
       <Card
         className={`${props.isPassed ? "opacity-80" : "hover:bg-gray-100"}`}
       >

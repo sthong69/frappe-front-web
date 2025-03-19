@@ -11,3 +11,9 @@ export interface MeetingRequest {
   student: Student;
   supervisor: Supervisor;
 }
+
+export interface MeetingAction {
+  id: number;
+  notes: string;
+  actionPlan: string;
+}
