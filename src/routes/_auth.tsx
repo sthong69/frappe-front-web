@@ -24,9 +24,11 @@ export const Route = createFileRoute("/_auth")({
     if (!context.auth.isProfileComplete() && location.pathname !== "/profile") {
       toast.warning("Veuillez compléter votre profil avant de continuer.");
       {
+        /*
         throw redirect({
           to: "/profile",
         });
+      */
       }
     }
   },

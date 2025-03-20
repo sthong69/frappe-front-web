@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Public API instance
 export const publicAPI = axios.create({
-  baseURL: import.meta.env.BACKEND_API_BASE_URL,
+  baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -10,7 +10,7 @@ export const publicAPI = axios.create({
 
 // Secure API instance
 const secureAPI = axios.create({
-  baseURL: import.meta.env.BACKEND_API_BASE_URL,
+  baseURL: import.meta.env.VITE_BACKEND_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
