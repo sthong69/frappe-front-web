@@ -67,7 +67,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
 
   const isAuthenticated = async (): Promise<boolean> => {
     if (localStorage.getItem("authToken") === null) {
-      console.log("no auth token");
+      if (import.meta.env.DEV) {
+        console.log("no auth token");
+      }
       return false;
     }
 
@@ -76,44 +78,67 @@ export const AuthProvider = ({ children }: { children: any }) => {
         userRole == "ROLE_STUDENT" ||
         localStorage.getItem("userRole") == "ROLE_STUDENT"
       ) {
-        console.log("trying to fetch student info");
+        if (import.meta.env.DEV) {
+          console.log("trying to fetch student info");
+        }
         await fetchStudentInfo();
-        console.log("student info fetched");
+        if (import.meta.env.DEV) {
+          console.log("student info fetched");
+        }
         return true;
       }
       if (
         userRole == "ROLE_SUPERVISOR" ||
         localStorage.getItem("userRole") == "ROLE_SUPERVISOR"
       ) {
-        console.log("trying to fetch supervisor info");
+        if (import.meta.env.DEV) {
+          console.log("trying to fetch supervisor info");
+        }
         await fetchSupervisorInfo();
-        console.log("supervisor info fetched");
+        if (import.meta.env.DEV) {
+          console.log("supervisor info fetched");
+        }
         return true;
       }
-      console.log("fallback");
+
+      if (import.meta.env.DEV) {
+        console.log("fallback");
+      }
       return false;
     } catch (error) {
-      console.log("error", error);
+      if (import.meta.env.DEV) {
+        console.log("error", error);
+      }
       return false;
     }
   };
 
   const isProfileComplete = (): boolean => {
-    console.log("Checking profile completion");
+    if (import.meta.env.DEV) {
+      console.log("Checking profile completion");
+    }
     if (!user) {
-      console.log("profile check no user");
+      if (import.meta.env.DEV) {
+        console.log("profile check no user");
+      }
       return false;
     }
 
     if (userRole === "ROLE_SUPERVISOR") {
-      console.log("supervisor bypass");
+      if (import.meta.env.DEV) {
+        console.log("supervisor bypass");
+      }
       return true;
     }
 
     if (userRole === "ROLE_STUDENT") {
-      console.log("student check");
+      if (import.meta.env.DEV) {
+        console.log("student check");
+      }
       const student = user as Student;
-      console.log(student);
+      if (import.meta.env.DEV) {
+        console.log(student);
+      }
       return (
         student.firstName !== "" &&
         student.lastName !== "" &&
@@ -125,7 +150,9 @@ export const AuthProvider = ({ children }: { children: any }) => {
       );
     }
 
-    console.log("fallback profile check");
+    if (import.meta.env.DEV) {
+      console.log("fallback profile check");
+    }
     return false;
   };
 
