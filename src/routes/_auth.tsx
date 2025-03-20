@@ -3,7 +3,6 @@ import { toast } from "sonner";
 
 export const Route = createFileRoute("/_auth")({
   beforeLoad: async ({ context, location }) => {
-    console.log("Checking auth");
     const authStatus = await context.auth.isAuthenticated();
 
     if (!authStatus) {
@@ -25,9 +24,9 @@ export const Route = createFileRoute("/_auth")({
     if (!context.auth.isProfileComplete() && location.pathname !== "/profile") {
       toast.warning("Veuillez compléter votre profil avant de continuer.");
       {
-        /*throw redirect({
-        to: "/profile",
-      });*/
+        throw redirect({
+          to: "/profile",
+        });
       }
     }
   },
