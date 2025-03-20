@@ -7,9 +7,7 @@ import {
 import { routeTree } from "./routeTree.gen";
 import PageNotFound from "./components/PageNotFound";
 
-const history = import.meta.env.DEV
-  ? createBrowserHistory()
-  : createHashHistory();
+const history = createBrowserHistory();
 
 export const router = createRouter({
   routeTree,
