@@ -5,6 +5,7 @@ import { verify } from "@/api/AuthAPI";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import Page from "@/components/Page";
 
 type VerificationTokenSearchParams = {
   token: string;
@@ -42,14 +43,14 @@ function RouteComponent() {
     return <div>Une erreur est survenue : {mutation.error.message}</div>;
   } else {
     return (
-      <div>
+      <Page className="flex flex-1 flex-col items-center justify-center">
         <p>Votre compte a bien été vérifié !</p>
         <Link to="/">
           <Button className="w-96 font-semibold text-black" type="submit">
             Connexion
           </Button>
         </Link>
-      </div>
+      </Page>
     );
   }
 }
