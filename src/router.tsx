@@ -1,8 +1,4 @@
-import {
-  createBrowserHistory,
-  createHashHistory,
-  createRouter,
-} from "@tanstack/react-router";
+import { createBrowserHistory, createRouter } from "@tanstack/react-router";
 
 import { routeTree } from "./routeTree.gen";
 import PageNotFound from "./components/PageNotFound";
