@@ -8,7 +8,6 @@ import { translateMeetingTheme } from "@/lib/utils";
 import { SortableColumnHeader } from "@/components/ui/sortable-column-header";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { useAuth } from "@/context/Auth";
 
 const getStatusBadge = (status: string) => {
   switch (status.toUpperCase()) {

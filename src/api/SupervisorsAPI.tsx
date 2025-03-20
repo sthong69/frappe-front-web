@@ -5,7 +5,7 @@ import {
   SupervisorAsStudent,
 } from "@/lib/types/AuthTypes";
 import secureAPI from "./axios";
-import { Axios, AxiosAdapter, AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 
 export const fetchSupervisorInfo = async (): Promise<Supervisor> => {
   return secureAPI
