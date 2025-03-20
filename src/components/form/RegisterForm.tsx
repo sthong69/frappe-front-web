@@ -98,7 +98,7 @@ const RegisterForm = () => {
 
   if (registrationSuccess) {
     return (
-      <Page className="text-center">
+      <Page className="flex flex-1 items-center justify-center text-center">
         Un e-mail de confirmation a été envoyé. Merci de valider votre compte !
       </Page>
     );
