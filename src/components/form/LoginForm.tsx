@@ -106,9 +106,14 @@ const LoginForm = () => {
       </div>
       <div className="flex flex-col items-center justify-center gap-4 py-8">
         <p>PAS ENCORE DE COMPTE ?</p>
-        <Button className="w-96 font-semibold text-black" disabled={isLoading}>
-          <Link to="/register">S'inscrire</Link>
-        </Button>
+        <Link to="/register">
+          <Button
+            className="w-96 font-semibold text-black"
+            disabled={isLoading}
+          >
+            S'inscrire
+          </Button>
+        </Link>
       </div>
     </>
   );
