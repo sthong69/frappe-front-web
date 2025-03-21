@@ -45,9 +45,15 @@ const RegisterForm = () => {
     email: z
       .string()
       .email()
-      .refine((email) => email.endsWith("@imt-atlantique.net"), {
-        message: "L'adresse e-mail doit être une adresse '@imt-atlantique.net'",
-      }),
+      .refine(
+        (email) =>
+          email.endsWith("@imt-atlantique.net") ||
+          email.endsWith("@imt-atlantique.fr"),
+        {
+          message:
+            "L'adresse e-mail doit être une adresse '@imt-atlantique.net' ou '@imt-atlantique.fr'",
+        },
+      ),
     createPassword: z.string().max(128),
     confirmPassword: z.string().max(128),
   });
